@@ -124,7 +124,12 @@ class BrandStrategyEngine:
         """
         
         try:
-            response = await self.model.generate_content_async(competitive_prompt)
+            response = await asyncio.get_event_loop().run_in_executor(None,
+                lambda: self.client.models.generate_content(
+                    model="gemini-2.5-flash", 
+                    contents=competitive_prompt
+                )
+            )
             return json.loads(response.text.strip().replace('```json', '').replace('```', '').strip())
         except:
             return {"key_competitors": [], "competitive_advantages": [], "differentiation_opportunities": []}
