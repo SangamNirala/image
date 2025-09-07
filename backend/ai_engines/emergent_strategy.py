@@ -16,7 +16,7 @@ class EmergentStrategyEngine:
     """Advanced brand strategy generation engine using Emergent LLM"""
     
     def __init__(self):
-        self.api_key = os.getenv('GOOGLE_API_KEY')
+        self.api_key = os.getenv('GEMINI_API_KEY')
         self.model_provider = "google"  # Using Google Gemini
         self.logger = logging.getLogger(__name__)
         
