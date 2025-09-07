@@ -247,37 +247,63 @@ class BrandForgeAPITester:
                     print(f"   ❌ CRITICAL: Missing asset types: {missing_types}")
                     return False
                 
-                # CRITICAL TEST: Verify asset URLs contain substantial base64 data (not tiny placeholders)
+                # CRITICAL TEST: Verify asset URLs contain substantial base64 data and proper encoding
                 tiny_placeholders = 0
                 valid_assets = 0
+                encoding_errors = 0
                 
                 for asset in response['generated_assets']:
                     asset_url = asset.get('asset_url', '')
-                    if asset_url.startswith('data:image/png;base64,'):
-                        base64_data = asset_url.split(',')[1] if ',' in asset_url else ''
-                        data_length = len(base64_data)
-                        
-                        # Check if it's a tiny placeholder (less than 200 chars is suspicious)
-                        if data_length < 200:
-                            print(f"   ⚠️  {asset['asset_type']}: Potentially tiny placeholder ({data_length} chars)")
-                            tiny_placeholders += 1
-                        else:
-                            print(f"   ✅ {asset['asset_type']}: Valid image data ({data_length} chars)")
-                            valid_assets += 1
+                    asset_type = asset.get('asset_type', 'unknown')
+                    
+                    # Check data URL format
+                    if not asset_url.startswith('data:image/png;base64,'):
+                        print(f"   ❌ {asset_type}: Invalid data URL format")
+                        encoding_errors += 1
+                        continue
+                    
+                    # Extract base64 data
+                    base64_data = asset_url.split(',')[1] if ',' in asset_url else ''
+                    
+                    # CRITICAL: Check for Python byte notation (the main bug we're fixing)
+                    if "b'" in base64_data or "\\x" in base64_data:
+                        print(f"   ❌ CRITICAL: {asset_type}: Python byte notation detected in base64 data")
+                        encoding_errors += 1
+                        continue
+                    
+                    # Validate base64 format
+                    try:
+                        import base64
+                        base64.b64decode(base64_data)
+                    except Exception as e:
+                        print(f"   ❌ CRITICAL: {asset_type}: Invalid base64 format - {str(e)}")
+                        encoding_errors += 1
+                        continue
+                    
+                    # Check data size
+                    data_length = len(base64_data)
+                    if data_length < 200:
+                        print(f"   ⚠️  {asset_type}: Potentially tiny placeholder ({data_length} chars)")
+                        tiny_placeholders += 1
                     else:
-                        print(f"   ❌ {asset['asset_type']}: Invalid asset URL format")
-                        return False
+                        print(f"   ✅ {asset_type}: Valid base64 image data ({data_length} chars)")
+                        valid_assets += 1
                 
-                # Report on image quality
-                print(f"   📊 Image Quality Summary:")
+                # Report on encoding quality
+                print(f"   📊 Base64 Encoding Summary:")
                 print(f"      Valid assets: {valid_assets}/6")
-                print(f"      Tiny placeholders: {tiny_placeholders}/6")
+                print(f"      Tiny placeholders: {tiny_placeholders}/6") 
+                print(f"      Encoding errors: {encoding_errors}/6")
+                
+                if encoding_errors > 0:
+                    print(f"   ❌ CRITICAL: {encoding_errors} assets have base64 encoding issues")
+                    return False
                 
                 if tiny_placeholders > 0:
                     print(f"   ⚠️  WARNING: {tiny_placeholders} assets may be tiny placeholders")
                     # Don't fail the test for this, as branded placeholders are acceptable
                 
-                print("   ✅ ENHANCED COMPLETE PACKAGE GENERATION: All critical tests passed")
+                print("   ✅ BASE64 ENCODING FIX VERIFIED: All assets have clean base64 data URLs")
                 return True
             else:
                 print("   ❌ CRITICAL: No 'generated_assets' field in response")
