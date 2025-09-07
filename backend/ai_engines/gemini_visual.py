@@ -426,7 +426,7 @@ class GeminiVisualEngine:
         
         🧠 BRAND INTELLIGENCE:
         - Business: {brand_strategy.business_name}
-        - Industry Context: {brand_strategy.industry}
+        - Industry Context: Professional services
         - Brand Archetype: {brand_archetype}
         - Personality Traits: {', '.join(primary_traits)}
         - Visual Philosophy: {visual_philosophy}
