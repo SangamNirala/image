@@ -246,69 +246,68 @@ class GeminiVisualEngine:
         project_id: str,
         brand_strategy: BrandStrategy,
         variant_type: str,
-        base_logo: GeneratedAsset
+        base_logo: GeneratedAsset,
+        consistency_enforcer: bool = True
     ) -> GeneratedAsset:
-        """Generate logo variant maintaining consistency with base logo"""
+        """🔄 PHASE 3: Generate logo variant with advanced consistency enforcement"""
+        
+        # Extract visual DNA from primary logo
+        visual_dna = self._extract_visual_dna_from_asset(base_logo, brand_strategy)
         
         variant_prompt = f"""
-        Create a {variant_type} version of this logo while maintaining perfect brand consistency.
+        Create a {variant_type} version of this logo while maintaining PERFECT brand consistency.
         
-        Original Logo Context:
+        🧬 BRAND DNA PRESERVATION:
         - Brand: {brand_strategy.business_name}
+        - Visual DNA Hash: {visual_dna.get('dna_hash', 'N/A')}
         - Brand Personality: {', '.join(brand_strategy.brand_personality.get('primary_traits', []))}
         - Color Palette: {', '.join(brand_strategy.color_palette)}
         - Visual Style: {brand_strategy.visual_direction.get('design_style', 'modern')}
         
-        Variant Requirements for {variant_type}:
+        🎯 VARIANT SPECIFICATIONS for {variant_type}:
         """
         
         variant_specs = {
-            "horizontal": "Create a horizontal layout version that works well in wide spaces",
-            "vertical": "Create a vertical/stacked layout version for narrow spaces",
-            "icon_only": "Create an icon-only version without text that represents the brand",
-            "monochrome": "Create a single-color version that works in black and white"
+            "horizontal": "Create a horizontal layout version optimized for wide spaces (letterheads, websites)",
+            "vertical": "Create a vertical/stacked layout version perfect for narrow spaces (business cards, mobile)",
+            "icon_only": "Create an icon-only version without text that powerfully represents the brand essence",
+            "monochrome": "Create a single-color version that maintains impact in black and white applications",
+            "reversed": "Create a version optimized for dark backgrounds while maintaining brand recognition",
+            "simplified": "Create a minimalist version that works at tiny sizes while preserving brand identity"
         }
         
         variant_prompt += variant_specs.get(variant_type, "Create an alternative version")
         variant_prompt += f"""
         
-        Consistency Requirements:
-        - Maintain the same design principles and visual style
-        - Use the same color palette: {', '.join(brand_strategy.color_palette)}
-        - Keep the same brand personality and mood
-        - Ensure it's recognizable as the same brand
-        - Professional quality suitable for business use
+        🔒 STRICT CONSISTENCY REQUIREMENTS:
+        - Maintain IDENTICAL design principles and visual DNA
+        - Use EXACT color palette: {', '.join(brand_strategy.color_palette)}
+        - Preserve brand personality and emotional tone
+        - Ensure immediate brand recognition and connection
+        - Professional quality suitable for all business applications
+        - Maintain visual hierarchy and proportional relationships
+        
+        🏆 QUALITY STANDARDS:
+        - Premium professional execution
+        - Scalable from favicon to billboard
+        - Print and digital ready
+        - Distinctive and memorable
         """
         
         try:
-            loop = asyncio.get_event_loop()
-            response = await loop.run_in_executor(None,
-                lambda: self.client.models.generate_content(
-                    model="gemini-2.5-flash-image-preview", 
-                    contents=variant_prompt
-                )
-            )
-            
-            image_data = self._extract_image_data(response)
-            
-            if not image_data:
-                image_data = self._generate_placeholder_image(f"logo_{variant_type}")
-            
-            return GeneratedAsset(
+            # Use advanced generation with consistency enforcement
+            return await self.generate_with_consistency(
                 project_id=project_id,
                 asset_type=f"logo_{variant_type}",
-                asset_url=f"data:image/png;base64,{image_data}",
-                metadata={
-                    "variant_type": variant_type,
-                    "base_asset_id": base_logo.id,
-                    "consistency_maintained": True,
-                    "generation_method": "gemini_variant"
-                }
+                brand_strategy=brand_strategy,
+                quality_tier="premium",
+                prompt=variant_prompt,
+                consistency_seed=base_logo.metadata.get('consistency_seed')
             )
             
         except Exception as e:
             logging.error(f"Error generating {variant_type} logo variant: {str(e)}")
-            return self._create_placeholder_asset(project_id, f"logo_{variant_type}", str(e))
+            return self._create_enhanced_placeholder_asset(project_id, f"logo_{variant_type}", str(e))
     
     async def generate_marketing_asset(
         self,
