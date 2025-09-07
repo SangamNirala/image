@@ -902,11 +902,11 @@ class AssetRefinementEngine:
         """Initialize Gemini for refinement"""
         try:
             api_key = os.getenv('GEMINI_API_KEY', 'AIzaSyDF5OScBQWbdM6o6tsm8-YGxQLBOVjt-yA')
-            genai.configure(api_key=api_key)
-            self.gemini_model = genai.GenerativeModel('gemini-pro')
+            self.gemini_client = genai.Client(api_key=api_key)
             logging.info("✅ Asset Refinement Engine - Gemini initialized successfully")
         except Exception as e:
             logging.error(f"❌ Asset Refinement Engine - Gemini initialization failed: {e}")
+            self.gemini_client = None
     
     def execute_intelligent_refinement(
         self, 
