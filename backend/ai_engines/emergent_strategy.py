@@ -68,18 +68,18 @@ class AdvancedBrandStrategyEngine:
         }
     
     async def generate_comprehensive_strategy(self, business_input: BusinessInput) -> BrandStrategy:
-        """Generate comprehensive brand strategy using advanced analysis"""
+        """Generate comprehensive brand strategy using Phase 2 advanced multi-layer analysis"""
         
-        # Get multi-layer analysis
+        # Get revolutionary 5-layer analysis
         analysis = await self.analyze_business_concept(business_input)
         
-        # Create comprehensive strategy prompt
-        strategy_prompt = self._build_advanced_strategy_prompt(business_input, analysis)
+        # Build final strategy from all analysis layers
+        strategy_prompt = self._build_phase2_strategy_prompt(business_input, analysis)
         
         try:
             response = await asyncio.get_event_loop().run_in_executor(None,
                 lambda: self.client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model=self.gemini_model,
                     contents=strategy_prompt
                 )
             )
@@ -91,22 +91,109 @@ class AdvancedBrandStrategyEngine:
             
             strategy_data = json.loads(strategy_text)
             
-            # Create BrandStrategy object with enhanced data
+            # Create BrandStrategy object with Phase 2 enhanced data
             brand_strategy = BrandStrategy(
                 business_name=business_input.business_name,
                 brand_personality=strategy_data["brand_personality"],
                 visual_direction=strategy_data["visual_direction"],
                 color_palette=strategy_data["color_palette"],
                 messaging_framework=strategy_data["messaging_framework"],
-                consistency_rules=strategy_data["consistency_rules"]
+                consistency_rules=strategy_data["consistency_rules"],
+                advanced_analysis=analysis  # Include all Phase 2 analysis data
             )
             
             return brand_strategy
             
         except Exception as e:
-            logging.error(f"Error generating comprehensive brand strategy: {str(e)}")
-            # Fallback to simplified strategy
-            return await self._generate_fallback_strategy(business_input)
+            logging.error(f"Error generating Phase 2 comprehensive brand strategy: {str(e)}")
+            # Enhanced fallback with Phase 2 capabilities
+            return await self._generate_phase2_fallback_strategy(business_input)
+
+    def _build_phase2_strategy_prompt(self, business_input: BusinessInput, analysis: Dict[str, Any]) -> str:
+        """Build Phase 2 advanced strategy generation prompt with multi-layer analysis"""
+        
+        return f"""
+You are an expert brand strategist with 20+ years of experience creating world-class brand strategies.
+You have access to comprehensive 5-layer strategic analysis. Create the most sophisticated brand strategy possible.
+
+BUSINESS INFORMATION:
+- Name: {business_input.business_name}
+- Description: {business_input.business_description}
+- Industry: {business_input.industry}
+- Target Audience: {business_input.target_audience}
+- Values: {', '.join(business_input.business_values)}
+- Style Preference: {business_input.preferred_style}
+- Color Preference: {business_input.preferred_colors}
+
+ADVANCED STRATEGIC ANALYSIS (5 LAYERS):
+
+LAYER 1 - MARKET INTELLIGENCE:
+Market Position: {analysis.get('market_intelligence', {}).get('positioning_recommendations', {}).get('optimal_position', 'Standard')}
+Growth Opportunities: {analysis.get('market_intelligence', {}).get('market_opportunities', {}).get('emerging_trends', [])}
+
+LAYER 2 - COMPETITIVE POSITIONING:
+Differentiation Strategy: {analysis.get('competitive_positioning', {}).get('differentiation_strategy', {}).get('positioning_against_competition', 'Standard')}
+Unique Value Props: {analysis.get('competitive_positioning', {}).get('differentiation_strategy', {}).get('unique_value_propositions', [])}
+
+LAYER 3 - BRAND PERSONALITY:
+Primary Archetype: {analysis.get('brand_personality', {}).get('brand_archetype', {}).get('primary_archetype', 'Innovator')}
+Core Traits: {[trait.get('trait', '') for trait in analysis.get('brand_personality', {}).get('personality_traits', {}).get('core_traits', [])]}
+
+LAYER 4 - VISUAL DIRECTION:
+Visual Philosophy: {analysis.get('visual_direction', {}).get('visual_strategy', {}).get('visual_philosophy', 'Modern approach')}
+Color Strategy: {analysis.get('visual_direction', {}).get('color_strategy', {}).get('color_psychology_rationale', 'Strategic colors')}
+
+LAYER 5 - STRATEGIC SYNTHESIS:
+Key Insights: {analysis.get('strategic_recommendations', {}).get('strategic_insights', {}).get('key_insights', [])}
+Brand Promise: {analysis.get('strategic_recommendations', {}).get('brand_strategy_framework', {}).get('brand_promise', 'Excellence')}
+
+Generate the most advanced brand strategy with this exact JSON structure:
+{{
+    "brand_personality": {{
+        "primary_traits": ["trait1", "trait2", "trait3", "trait4", "trait5"],
+        "brand_archetype": "archetype_name_from_analysis",
+        "tone_of_voice": "sophisticated_tone_description_based_on_analysis",
+        "brand_essence": "powerful_one_sentence_brand_essence",
+        "emotional_drivers": ["driver1", "driver2", "driver3"],
+        "personality_expression": "how_personality_shows_up_across_touchpoints"
+    }},
+    "visual_direction": {{
+        "design_style": "advanced_style_description_from_visual_brief",
+        "visual_mood": "sophisticated_mood_from_analysis",
+        "typography_strategy": "strategic_typography_recommendations",
+        "imagery_style": "advanced_imagery_direction",
+        "logo_direction": "detailed_logo_design_guidance_from_brief",
+        "layout_principles": "advanced_layout_composition_guidelines",
+        "visual_consistency_framework": "comprehensive_visual_consistency_approach"
+    }},
+    "color_palette": ["#strategic_primary", "#strategic_secondary", "#strategic_accent1", "#strategic_accent2", "#strategic_neutral"],
+    "messaging_framework": {{
+        "tagline": "compelling_memorable_tagline_from_synthesis",
+        "key_messages": ["strategic_message1", "strategic_message2", "strategic_message3"],
+        "brand_promise": "clear_brand_promise_from_analysis",
+        "unique_value_proposition": "distinctive_uvp_from_competitive_analysis",
+        "brand_story": "compelling_brand_narrative_from_all_layers",
+        "messaging_hierarchy": "how_messages_prioritize_and_connect"
+    }},
+    "consistency_rules": {{
+        "logo_usage": "detailed_logo_usage_guidelines_from_visual_brief",
+        "color_usage": "strategic_color_application_rules",
+        "typography_rules": "comprehensive_typography_hierarchy",
+        "visual_consistency": "advanced_visual_consistency_requirements",
+        "brand_voice_consistency": "sophisticated_voice_tone_consistency_rules",
+        "touchpoint_consistency": "how_brand_stays_consistent_across_all_touchpoints"
+    }},
+    "strategic_insights": {{
+        "market_opportunity": "key_market_opportunity_from_analysis",
+        "competitive_advantage": "primary_competitive_advantage",
+        "brand_positioning": "precise_brand_positioning_statement",
+        "success_factors": ["factor1", "factor2", "factor3"]
+    }}
+}}
+
+Make the strategy revolutionary, sophisticated, and perfectly aligned with all 5 layers of strategic analysis.
+This should be the most advanced brand strategy possible using AI-powered multi-layer intelligence.
+        """
     
     async def analyze_market_position(self, business_input: BusinessInput) -> Dict[str, Any]:
         """Layer 1: Advanced Market Analysis & Industry Intelligence"""
