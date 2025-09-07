@@ -395,7 +395,7 @@ class EmergentStrategyEngine:
                 raise ValueError("Google API key not configured")
             
             # Create the model
-            model = genai.GenerativeModel('gemini-pro')
+            model = genai.GenerativeModel('gemini-1.5-flash')
             
             # Prepare the full prompt with system context
             system_context = "You are an expert brand strategist with 20+ years of experience creating successful brand identities for companies ranging from startups to Fortune 500. You think strategically, create distinctive brand personalities, and provide actionable guidance. Always respond with valid JSON when requested."
