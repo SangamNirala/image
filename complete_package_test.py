@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 class CompletePackageTest:
-    def __init__(self, base_url="https://strategic-ai-engine.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://visual-identity-ai.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.project_id = None
         
