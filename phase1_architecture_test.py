@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Any, List
 
 class Phase1ArchitectureTester:
-    def __init__(self, base_url="https://complete-gen-fix.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://asset-harmony.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.tests_run = 0
         self.tests_passed = 0

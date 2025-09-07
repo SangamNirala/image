@@ -3,7 +3,7 @@ import json
 
 def test_phase2_advanced_analysis_detailed():
     """Detailed test of Phase 2 Advanced Analysis response structure"""
-    base_url = "https://complete-gen-fix.preview.emergentagent.com/api"
+    base_url = "https://asset-harmony.preview.emergentagent.com/api"
     
     # Create test project
     test_data = {

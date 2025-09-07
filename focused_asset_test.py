@@ -5,7 +5,7 @@ import time
 def test_critical_asset_generation():
     """Test the critical fix for asset generation"""
     
-    base_url = "https://complete-gen-fix.preview.emergentagent.com/api"
+    base_url = "https://asset-harmony.preview.emergentagent.com/api"
     
     print("🚨 CRITICAL ASSET GENERATION TEST")
     print("=" * 50)
