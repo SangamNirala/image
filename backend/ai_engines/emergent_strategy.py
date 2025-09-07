@@ -6,11 +6,48 @@ from typing import Dict, Any, List
 from google import genai
 from models.brand_strategy import BusinessInput, BrandStrategy
 
-class BrandStrategyEngine:
-    """Advanced brand strategy generation using Gemini AI with sophisticated prompting"""
+class AdvancedBrandStrategyEngine:
+    """Phase 2: Advanced Multi-Layer AI Strategy Engine using Gemini AI with sophisticated strategic reasoning"""
     
     def __init__(self):
         self.client = genai.Client(api_key=os.environ.get('GEMINI_API_KEY'))
+        self.gemini_model = "gemini-2.5-flash"
+        self.analysis_layers = 5
+        
+    async def analyze_business_concept(self, business_input: BusinessInput) -> Dict[str, Any]:
+        """Revolutionary 5-Layer Strategic Analysis System"""
+        
+        # Layer 1: Market Analysis & Industry Intelligence
+        market_analysis = await self.analyze_market_position(business_input)
+        
+        # Layer 2: Competitive Landscape & Differentiation
+        competitive_analysis = await self.analyze_competitive_landscape(business_input, market_analysis)
+        
+        # Layer 3: Brand Personality & Archetype Development
+        personality_analysis = await self.develop_brand_personality(
+            business_input, market_analysis, competitive_analysis
+        )
+        
+        # Layer 4: Visual Direction & Creative Brief
+        visual_brief = await self.create_visual_brief(
+            personality_analysis, market_analysis, business_input
+        )
+        
+        # Layer 5: Strategic Synthesis & Recommendations
+        strategic_synthesis = await self.synthesize_strategy(
+            market_analysis, competitive_analysis, personality_analysis, visual_brief, business_input
+        )
+        
+        return {
+            "market_intelligence": market_analysis,
+            "competitive_positioning": competitive_analysis,
+            "brand_personality": personality_analysis,
+            "visual_direction": visual_brief,
+            "strategic_recommendations": strategic_synthesis,
+            "confidence_scores": self.calculate_analysis_confidence(
+                market_analysis, competitive_analysis, personality_analysis, visual_brief, strategic_synthesis
+            )
+        }
         
     async def analyze_business_concept(self, business_input: BusinessInput) -> Dict[str, Any]:
         """Multi-layer strategic analysis of business concept"""
