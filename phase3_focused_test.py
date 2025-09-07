@@ -11,7 +11,7 @@ import sys
 
 class Phase3Tester:
     def __init__(self):
-        self.base_url = "https://visual-identity-ai.preview.emergentagent.com/api"
+        self.base_url = "https://complete-gen-fix.preview.emergentagent.com/api"
         self.project_id = None
         self.test_results = []
         
