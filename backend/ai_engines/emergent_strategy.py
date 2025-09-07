@@ -2,7 +2,7 @@ import os
 import json
 import logging
 from typing import Dict, Any, List
-import google.generativeai as genai
+from google import genai
 from models.brand_strategy import BusinessInput, BrandStrategy
 
 class BrandStrategyEngine:
