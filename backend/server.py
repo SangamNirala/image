@@ -63,19 +63,7 @@ export_engine = ExportEngine()
 # Legacy API Routes for backward compatibility
 # These routes maintain the existing API while using the new architecture
 
-# Legacy API Routes - maintaining backward compatibility
-@api_router.post("/projects", response_model=Dict[str, Any])
-async def create_brand_project_legacy(business_input: BusinessInput):
-    """Generate comprehensive brand strategy using EmergentStrategyEngine"""
-    try:
-        # Use the strategy engine to generate brand strategy
-        brand_strategy = await strategy_engine.analyze_business_concept(business_input)
-        
-        return brand_strategy.dict()
-        
-    except Exception as e:
-        logging.error(f"Error generating brand strategy: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to generate brand strategy: {str(e)}")
+# Legacy API Routes removed - now using proper BrandProject architecture
 
 # Legacy visual asset functions removed - now using GeminiVisualEngine from ai_engines/
 # All visual generation is handled by the visual_engine instance above
