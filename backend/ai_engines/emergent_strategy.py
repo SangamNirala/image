@@ -6,18 +6,23 @@ Advanced brand strategy generation using Emergent LLM
 import logging
 import json
 import asyncio
+import os
 from typing import Dict, List, Any, Optional
 from datetime import datetime, timezone
-from emergentintegrations import emergent_llm_key
+import google.generativeai as genai
 from models.brand_strategy import BrandStrategy, BrandPersonality, VisualDirection, MessagingFramework, BusinessInput
 
 class EmergentStrategyEngine:
     """Advanced brand strategy generation engine using Emergent LLM"""
     
     def __init__(self):
-        self.api_key = emergent_llm_key.get_key()
-        self.model_provider = "openai"  # Default to OpenAI GPT-4
+        self.api_key = os.getenv('GOOGLE_API_KEY')
+        self.model_provider = "google"  # Using Google Gemini
         self.logger = logging.getLogger(__name__)
+        
+        # Configure Google Generative AI
+        if self.api_key:
+            genai.configure(api_key=self.api_key)
         
     async def analyze_business_concept(self, business_input: BusinessInput) -> BrandStrategy:
         """
