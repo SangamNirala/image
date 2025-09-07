@@ -53,9 +53,20 @@ class GeminiVisualEngine:
         ]
         
     def set_brand_consistency(self, brand_strategy: BrandStrategy, seed: Optional[str] = None):
-        """Set consistency parameters for the brand"""
-        self.consistency_seed = seed or brand_strategy.id
-        self.brand_dna = self._extract_brand_dna(brand_strategy)
+        """🧬 PHASE 3: Set advanced consistency parameters with visual DNA extraction"""
+        self.consistency_seed = seed or self._generate_brand_seed(brand_strategy)
+        self.brand_dna = self._extract_advanced_brand_dna(brand_strategy)
+        self.visual_memory[brand_strategy.id] = {
+            'dna': self.brand_dna,
+            'seed': self.consistency_seed,
+            'generation_count': 0,
+            'consistency_scores': []
+        }
+        
+    def _generate_brand_seed(self, brand_strategy: BrandStrategy) -> str:
+        """🔑 Generate unique consistency seed based on brand characteristics"""
+        brand_fingerprint = f"{brand_strategy.business_name}_{brand_strategy.industry}_{';'.join(brand_strategy.color_palette[:3])}"
+        return hashlib.md5(brand_fingerprint.encode()).hexdigest()[:16]
     
     async def generate_logo_suite(self, brand_strategy: BrandStrategy, project_id: str) -> List[GeneratedAsset]:
         """Generate complete logo suite with variations"""
