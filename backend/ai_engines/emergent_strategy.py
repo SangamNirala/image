@@ -40,7 +40,12 @@ class BrandStrategyEngine:
         strategy_prompt = self._build_advanced_strategy_prompt(business_input, analysis)
         
         try:
-            response = await self.model.generate_content_async(strategy_prompt)
+            response = await asyncio.get_event_loop().run_in_executor(None,
+                lambda: self.client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=strategy_prompt
+                )
+            )
             
             # Extract and parse JSON response
             strategy_text = response.text.strip()
