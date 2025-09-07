@@ -60,12 +60,9 @@ export_engine = ExportEngine()
 # Legacy API Routes for backward compatibility
 # These routes maintain the existing API while using the new architecture
 
-# AI Engines
-class BrandStrategyEngine:
-    def __init__(self):
-        self.model = genai.GenerativeModel('gemini-2.5-flash')
-    
-    async def analyze_brand_strategy(self, business_input: BusinessInput) -> BrandStrategy:
+# Legacy API Routes - maintaining backward compatibility
+@api_router.post("/projects", response_model=Dict[str, Any])
+async def create_brand_project_legacy(business_input: BusinessInput):
         """Generate comprehensive brand strategy using Gemini"""
         
         strategy_prompt = f"""
