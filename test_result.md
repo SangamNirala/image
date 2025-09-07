@@ -315,8 +315,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Fix Google AI SDK migration from deprecated google-generativeai to google-genai"
-    - "Fix base64 image data URL encoding issue"
+    - "Implement Phase 2 Advanced Brand Strategy Engine"
     - "Fix brand strategy display issue"
     - "Fix UI state management and tab navigation"
   stuck_tasks: []
