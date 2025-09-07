@@ -112,7 +112,7 @@ async def generate_brand_strategy(project_id: str):
         project = BrandProject(**project_data)
         
         # Generate brand strategy
-        brand_strategy = await strategy_engine.analyze_brand_strategy(project.business_input)
+        brand_strategy = await strategy_engine.analyze_business_concept(project.business_input)
         
         # Update project
         project.brand_strategy = brand_strategy
