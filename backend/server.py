@@ -288,11 +288,21 @@ async def generate_complete_package(project_id: str):
         for asset_type, context in asset_types:
             try:
                 if asset_type == "logo":
-                    image_data = await visual_engine.generate_logo(project.brand_strategy)
-                else:
-                    image_data = await visual_engine.generate_marketing_asset(
-                        project.brand_strategy, asset_type, context
+                    asset = await visual_engine.generate_asset(
+                        brand_strategy=project.brand_strategy,
+                        asset_type=AssetType.LOGO,
+                        additional_context=context
                     )
+                    image_data = asset.asset_url.split(",")[1]  # Extract base64 from data URL
+                else:
+                    # Map string asset_type to AssetType enum
+                    asset_type_enum = getattr(AssetType, asset_type.upper(), AssetType.FLYER)
+                    asset = await visual_engine.generate_asset(
+                        brand_strategy=project.brand_strategy,
+                        asset_type=asset_type_enum,
+                        additional_context=context
+                    )
+                    image_data = asset.asset_url.split(",")[1]  # Extract base64 from data URL
                 
                 # Create asset record
                 asset = GeneratedAsset(
