@@ -11,7 +11,7 @@ import time
 from datetime import datetime
 from models.brand_strategy import BrandStrategy
 from models.visual_assets import GeneratedAsset, AssetVariation
-import google.generativeai as genai
+from google import genai
 import os
 from dataclasses import dataclass, field
 
