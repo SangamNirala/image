@@ -389,29 +389,32 @@ class EmergentStrategyEngine:
         return self._parse_json_response(response, "consistency_rules")
     
     async def _call_emergent_ai(self, prompt: str) -> str:
-        """Make API call to Emergent AI"""
+        """Make API call to Google Gemini"""
         try:
-            from emergentintegrations import OpenAIClient
+            if not self.api_key:
+                raise ValueError("Google API key not configured")
             
-            client = OpenAIClient(api_key=self.api_key)
+            # Create the model
+            model = genai.GenerativeModel('gemini-pro')
             
-            response = await client.chat.completions.create(
-                model="gpt-4",
-                messages=[
-                    {
-                        "role": "system", 
-                        "content": "You are an expert brand strategist with 20+ years of experience creating successful brand identities for companies ranging from startups to Fortune 500. You think strategically, create distinctive brand personalities, and provide actionable guidance. Always respond with valid JSON when requested."
-                    },
-                    {"role": "user", "content": prompt}
-                ],
-                max_tokens=2000,
-                temperature=0.7
+            # Prepare the full prompt with system context
+            system_context = "You are an expert brand strategist with 20+ years of experience creating successful brand identities for companies ranging from startups to Fortune 500. You think strategically, create distinctive brand personalities, and provide actionable guidance. Always respond with valid JSON when requested."
+            
+            full_prompt = f"{system_context}\n\n{prompt}"
+            
+            # Generate response
+            response = await model.generate_content_async(
+                full_prompt,
+                generation_config=genai.types.GenerationConfig(
+                    max_output_tokens=2000,
+                    temperature=0.7,
+                )
             )
             
-            return response.choices[0].message.content
+            return response.text
             
         except Exception as e:
-            self.logger.error(f"Error calling Emergent AI: {str(e)}")
+            self.logger.error(f"Error calling Google Gemini: {str(e)}")
             raise
     
     def _parse_json_response(self, response: str, component_name: str) -> Dict[str, Any]:
