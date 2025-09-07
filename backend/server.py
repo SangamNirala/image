@@ -45,7 +45,7 @@ app = FastAPI(title="BrandForge AI", version="1.0.0")
 api_router = APIRouter(prefix="/api")
 
 # Initialize AI Engines
-brand_strategy_engine = BrandStrategyEngine()
+brand_strategy_engine = AdvancedBrandStrategyEngine()
 visual_engine = GeminiVisualEngine()
 consistency_manager = ConsistencyManager()
 export_engine = ProfessionalExportEngine()
