@@ -301,43 +301,125 @@ Focus on actionable insights for brand differentiation and positioning.
             logging.error(f"Error in competitive analysis: {str(e)}")
             return self._get_fallback_competitive_analysis()
     
-    async def _develop_brand_personality(self, business_input: BusinessInput, market_analysis: Dict, competitive_analysis: Dict) -> Dict[str, Any]:
-        """Develop sophisticated brand personality based on analysis"""
+    async def develop_brand_personality(self, business_input: BusinessInput, market_analysis: Dict, competitive_analysis: Dict) -> Dict[str, Any]:
+        """Layer 3: Advanced Brand Personality & Archetype Development"""
         
-        personality_prompt = f"""
-        As a brand psychology expert, develop a sophisticated brand personality:
-        
-        Business Context:
-        - Name: {business_input.business_name}
-        - Industry: {business_input.industry}
-        - Values: {', '.join(business_input.business_values)}
-        
-        Market Context: {market_analysis.get('positioning_recommendations', 'Standard positioning')}
-        Competitive Context: {competitive_analysis.get('positioning_strategy', 'Standard strategy')}
-        
-        Develop brand personality in JSON format:
-        {{
-            "core_personality": {{
-                "primary_traits": ["trait1", "trait2", "trait3", "trait4", "trait5"],
-                "brand_archetype": "archetype_name",
-                "personality_description": "detailed_description"
-            }},
-            "emotional_drivers": ["driver1", "driver2", "driver3"],
-            "brand_voice_attributes": ["attribute1", "attribute2", "attribute3"],
-            "relationship_style": "how_brand_relates_to_customers"
-        }}
+        brand_personality_prompt = f"""
+You are a brand psychology expert specializing in brand archetypes and personality development.
+
+BUSINESS CONTEXT: {business_input.business_description}
+MARKET INSIGHTS: {market_analysis.get('positioning_recommendations', {}).get('optimal_position', 'Standard positioning')}
+COMPETITIVE LANDSCAPE: {competitive_analysis.get('differentiation_strategy', {}).get('positioning_against_competition', 'Standard strategy')}
+INDUSTRY: {business_input.industry}
+TARGET AUDIENCE: {business_input.target_audience}
+BUSINESS VALUES: {', '.join(business_input.business_values)}
+
+Develop comprehensive brand personality:
+
+1. BRAND ARCHETYPE SELECTION
+   - Primary archetype (Hero, Sage, Innovator, etc.)
+   - Secondary archetype influences
+   - Archetype justification based on market position
+
+2. PERSONALITY TRAITS MATRIX
+   - 5 core personality traits with detailed explanations
+   - Personality expression across touchpoints
+   - Emotional connection strategies
+
+3. BRAND VOICE & TONE
+   - Communication style and voice
+   - Tone variations for different contexts
+   - Language patterns and vocabulary
+
+4. BRAND VALUES & BELIEFS
+   - Core brand values alignment
+   - Brand purpose and mission
+   - Belief system and worldview
+
+5. RELATIONSHIP DYNAMICS
+   - How brand relates to customers
+   - Brand-customer relationship model
+   - Trust and credibility building
+
+6. EMOTIONAL POSITIONING
+   - Primary emotions to evoke
+   - Emotional journey mapping
+   - Feeling-based differentiation
+
+Respond in this exact JSON format:
+{{
+    "brand_archetype": {{
+        "primary_archetype": "archetype name",
+        "secondary_influences": ["influence1", "influence2"],
+        "archetype_justification": "why this archetype fits the market position and business goals",
+        "archetype_characteristics": ["characteristic1", "characteristic2", "characteristic3"]
+    }},
+    "personality_traits": {{
+        "core_traits": [
+            {{"trait": "trait1", "description": "detailed explanation", "expression": "how it shows up"}},
+            {{"trait": "trait2", "description": "detailed explanation", "expression": "how it shows up"}},
+            {{"trait": "trait3", "description": "detailed explanation", "expression": "how it shows up"}},
+            {{"trait": "trait4", "description": "detailed explanation", "expression": "how it shows up"}},
+            {{"trait": "trait5", "description": "detailed explanation", "expression": "how it shows up"}}
+        ],
+        "personality_summary": "cohesive personality description"
+    }},
+    "brand_voice": {{
+        "communication_style": "primary communication approach",
+        "tone_variations": {{
+            "formal_contexts": "tone for formal situations",
+            "casual_contexts": "tone for casual interactions",
+            "crisis_contexts": "tone during challenges"
+        }},
+        "language_patterns": ["pattern1", "pattern2", "pattern3"],
+        "vocabulary_preferences": ["preference1", "preference2"]
+    }},
+    "brand_values_beliefs": {{
+        "core_values": ["value1", "value2", "value3", "value4", "value5"],
+        "brand_purpose": "why the brand exists beyond profit",
+        "mission_statement": "what the brand aims to achieve",
+        "belief_system": ["belief1", "belief2", "belief3"],
+        "worldview": "how the brand sees the world"
+    }},
+    "relationship_dynamics": {{
+        "customer_relationship_model": "how brand relates to customers",
+        "trust_building_approach": "how trust is established",
+        "credibility_factors": ["factor1", "factor2", "factor3"],
+        "relationship_goals": ["goal1", "goal2"]
+    }},
+    "emotional_positioning": {{
+        "primary_emotions": ["emotion1", "emotion2", "emotion3"],
+        "emotional_journey": {{
+            "awareness": "emotion at first contact",
+            "consideration": "emotion during evaluation",
+            "purchase": "emotion at decision",
+            "loyalty": "emotion as loyal customer"
+        }},
+        "feeling_differentiation": "unique emotional position vs competitors"
+    }},
+    "confidence_score": 0.92
+}}
+
+Ensure personality aligns with market opportunity and competitive positioning.
         """
         
         try:
             response = await asyncio.get_event_loop().run_in_executor(None,
                 lambda: self.client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=personality_prompt
+                    model=self.gemini_model,
+                    contents=brand_personality_prompt
                 )
             )
-            return json.loads(response.text.strip().replace('```json', '').replace('```', '').strip())
-        except:
-            return {"core_personality": {"primary_traits": ["professional", "reliable", "innovative"]}}
+            
+            response_text = response.text.strip()
+            if response_text.startswith('```json'):
+                response_text = response_text.replace('```json', '').replace('```', '').strip()
+            
+            return json.loads(response_text)
+            
+        except Exception as e:
+            logging.error(f"Error in brand personality development: {str(e)}")
+            return self._get_fallback_personality_analysis()
     
     def _build_advanced_strategy_prompt(self, business_input: BusinessInput, analysis: Dict[str, Any]) -> str:
         """Build comprehensive strategy generation prompt"""
