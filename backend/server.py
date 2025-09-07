@@ -82,10 +82,16 @@ async def create_brand_project(business_input: BusinessInput):
     try:
         project = BrandProject(business_input=business_input)
         
-        # Store in database
+        # Store in database - convert to dict and handle enums
         project_dict = project.dict()
+        
+        # Convert datetime objects to ISO format strings
         project_dict['created_at'] = project_dict['created_at'].isoformat()
         project_dict['updated_at'] = project_dict['updated_at'].isoformat()
+        project_dict['last_accessed'] = project_dict['last_accessed'].isoformat()
+        
+        # Convert enum to string value
+        project_dict['status'] = project_dict['status'].value if hasattr(project_dict['status'], 'value') else project_dict['status']
         
         await db.brand_projects.insert_one(project_dict)
         
