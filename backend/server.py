@@ -30,8 +30,8 @@ from ai_engines.export_engine import ProfessionalExportEngine
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# Configure Gemini API
-genai.configure(api_key=os.environ['GEMINI_API_KEY'])
+# Initialize Gemini client
+gemini_client = genai.Client(api_key=os.environ['GEMINI_API_KEY'])
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
