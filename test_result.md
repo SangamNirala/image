@@ -246,6 +246,18 @@ backend:
         agent: "testing"
         comment: "PHASE 1 ARCHITECTURE TESTING COMPLETE: New advanced architecture tested comprehensively with 83.3% success rate. Core functionality working: ✅ Health Check, ✅ Advanced Project Creation, ✅ Advanced Strategy Generation (Emergent Engine), ✅ Visual Asset Generation (Gemini Engine), ✅ Marketing Asset Generation, ✅ Consistency Management, ✅ Analytics. Fixed MongoDB document size limits and export parameter formats. Phase 1 foundation is solid and ready for Phase 2."
 
+  - task: "Fix base64 image data URL encoding issue"
+    implemented: true
+    working: "needs_testing" 
+    file: "/app/backend/ai_engines/gemini_visual.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "needs_testing"
+        agent: "main"
+        comment: "Enhanced _extract_image_data method to properly handle binary data from Gemini API and convert to base64 strings. Should fix net::ERR_INVALID_URL errors with malformed data URLs containing Python byte notation."
+
 frontend:
   - task: "Fix brand strategy display issue"
     implemented: true
