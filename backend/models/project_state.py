@@ -10,7 +10,8 @@ class BrandProject(BaseModel):
     business_input: BusinessInput
     brand_strategy: Optional[BrandStrategy] = None
     generated_assets: List[GeneratedAsset] = []
-    status: str = "created"  # created, strategy_generated, assets_generated, completed
+    advanced_analysis: Optional[Dict[str, Any]] = None  # Phase 2: Advanced multi-layer analysis
+    status: str = "created"  # created, strategy_generated, advanced_analysis_complete, assets_generated, completed
     consistency_seed: Optional[str] = None  # For maintaining visual consistency
     export_ready: bool = False
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
