@@ -622,6 +622,300 @@ async def get_project_analytics(project_id: str):
         raise HTTPException(status_code=500, detail=f"Failed to generate analytics: {str(e)}")
 
 
+# ========== PHASE 3.2 - REVOLUTIONARY CONSISTENCY MANAGEMENT ENDPOINTS ==========
+
+@api_router.post("/projects/{project_id}/consistency/advanced-validation")
+async def advanced_consistency_validation(
+    project_id: str,
+    asset_id: str = Query(..., description="Asset ID to validate"),
+    target_consistency: float = Query(0.85, description="Target consistency score")
+):
+    """🔍 Phase 3.2: Advanced multi-dimensional consistency validation with intelligent refinement"""
+    
+    try:
+        logging.info(f"🔍 Phase 3.2: Advanced consistency validation for project {project_id}, asset {asset_id}")
+        
+        # Get project and validate
+        project = await get_brand_project(project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+            
+        if not project.brand_strategy:
+            raise HTTPException(status_code=400, detail="Brand strategy required for consistency validation")
+        
+        # Find the asset to validate
+        target_asset = None
+        for asset in project.generated_assets:
+            if asset.id == asset_id:
+                target_asset = asset
+                break
+                
+        if not target_asset:
+            raise HTTPException(status_code=404, detail="Asset not found")
+        
+        # Get other assets for comparison (excluding the target asset)
+        base_assets = [asset for asset in project.generated_assets if asset.id != asset_id]
+        
+        # Perform advanced consistency validation and refinement
+        validation_result = consistency_manager.validate_and_refine_asset(
+            generated_asset=target_asset,
+            base_assets=base_assets,
+            brand_strategy=project.brand_strategy,
+            target_consistency=target_consistency
+        )
+        
+        # Update project if asset was refined
+        if validation_result.get('refinement_result', {}).get('improvement_achieved', False):
+            # Update the asset in the project
+            for i, asset in enumerate(project.generated_assets):
+                if asset.id == asset_id:
+                    project.generated_assets[i] = validation_result['validated_asset']
+                    break
+                    
+            # Save updated project
+            update_result = await projects_collection.update_one(
+                {"_id": ObjectId(project_id)},
+                {"$set": {"generated_assets": [asset.dict() for asset in project.generated_assets]}}
+            )
+            
+            if update_result.modified_count == 0:
+                logging.warning(f"⚠️ Failed to update refined asset in project {project_id}")
+        
+        return {
+            "project_id": project_id,
+            "asset_id": asset_id,
+            "validation_result": validation_result,
+            "phase": "3.2_advanced_validation",
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"❌ Phase 3.2 advanced consistency validation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Advanced consistency validation failed: {str(e)}")
+
+
+@api_router.get("/projects/{project_id}/consistency/visual-dna")
+async def extract_visual_dna(project_id: str):
+    """🧬 Phase 3.2: Extract comprehensive visual DNA from project assets"""
+    
+    try:
+        logging.info(f"🧬 Phase 3.2: Extracting visual DNA for project {project_id}")
+        
+        # Get project and validate
+        project = await get_brand_project(project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+            
+        if not project.generated_assets:
+            raise HTTPException(status_code=400, detail="No assets available for visual DNA extraction")
+        
+        # Extract comprehensive visual DNA
+        visual_dna = consistency_manager.extract_comprehensive_visual_dna(project.generated_assets)
+        
+        return {
+            "project_id": project_id,
+            "visual_dna": {
+                "color_dna": visual_dna.color_dna,
+                "color_harmony_rules": visual_dna.color_harmony_rules,
+                "color_psychology_mapping": visual_dna.color_psychology_mapping,
+                "shape_language": visual_dna.shape_language,
+                "composition_rules": visual_dna.composition_rules,
+                "spatial_relationships": visual_dna.spatial_relationships,
+                "typography_dna": visual_dna.typography_dna,
+                "hierarchy_systems": visual_dna.hierarchy_systems,
+                "text_styling_rules": visual_dna.text_styling_rules,
+                "aesthetic_signature": visual_dna.aesthetic_signature,
+                "visual_personality": visual_dna.visual_personality,
+                "design_system_rules": visual_dna.design_system_rules,
+                "brand_expression_rules": visual_dna.brand_expression_rules,
+                "emotional_tone_mapping": visual_dna.emotional_tone_mapping,
+                "industry_appropriateness": visual_dna.industry_appropriateness,
+                "consistency_seed": visual_dna.consistency_seed,
+                "extraction_confidence": visual_dna.extraction_confidence
+            },
+            "asset_count": len(project.generated_assets),
+            "phase": "3.2_visual_dna_extraction",
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"❌ Phase 3.2 visual DNA extraction failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Visual DNA extraction failed: {str(e)}")
+
+
+@api_router.post("/projects/{project_id}/consistency/intelligent-constraints")
+async def generate_intelligent_constraints(
+    project_id: str,
+    asset_type: str = Query(..., description="Type of asset to generate constraints for")
+):
+    """🧠 Phase 3.2: Generate intelligent consistency constraints for new asset creation"""
+    
+    try:
+        logging.info(f"🧠 Phase 3.2: Generating intelligent constraints for {asset_type} in project {project_id}")
+        
+        # Get project and validate
+        project = await get_brand_project(project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+            
+        if not project.brand_strategy:
+            raise HTTPException(status_code=400, detail="Brand strategy required for constraint generation")
+        
+        # Generate intelligent consistency constraints
+        constraints_result = consistency_manager.maintain_visual_consistency(
+            base_assets=project.generated_assets,
+            new_asset_type=asset_type,
+            brand_strategy=project.brand_strategy
+        )
+        
+        return {
+            "project_id": project_id,
+            "asset_type": asset_type,
+            "intelligent_constraints": constraints_result,
+            "base_assets_count": len(project.generated_assets),
+            "phase": "3.2_intelligent_constraints",
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"❌ Phase 3.2 intelligent constraints generation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Intelligent constraints generation failed: {str(e)}")
+
+
+@api_router.get("/projects/{project_id}/consistency/brand-memory")
+async def get_brand_memory_insights(project_id: str):
+    """🧠 Phase 3.2: Get brand memory and learning insights"""
+    
+    try:
+        logging.info(f"🧠 Phase 3.2: Getting brand memory insights for project {project_id}")
+        
+        # Get project and validate
+        project = await get_brand_project(project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Get consistency history
+        consistency_history = consistency_manager.get_consistency_history()
+        
+        # Get insights for different asset types
+        asset_types = list(set([asset.asset_type for asset in project.generated_assets]))
+        memory_insights = {}
+        
+        for asset_type in asset_types:
+            insights = consistency_manager.brand_memory.get_optimization_insights(asset_type)
+            memory_insights[asset_type] = insights
+        
+        return {
+            "project_id": project_id,
+            "consistency_history": consistency_history,
+            "memory_insights": memory_insights,
+            "learning_stats": {
+                "total_learning_entries": len(consistency_manager.brand_memory.learning_history),
+                "successful_patterns": len(consistency_manager.brand_memory.successful_combinations),
+                "improvement_opportunities": len(consistency_manager.brand_memory.failure_patterns),
+                "knowledge_graph_nodes": len(consistency_manager.brand_memory.brand_knowledge_graph)
+            },
+            "phase": "3.2_brand_memory",
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"❌ Phase 3.2 brand memory insights failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Brand memory insights failed: {str(e)}")
+
+
+@api_router.post("/projects/{project_id}/consistency/asset-refinement")
+async def intelligent_asset_refinement(
+    project_id: str,
+    asset_id: str = Query(..., description="Asset ID to refine"),
+    refinement_iterations: int = Query(3, description="Number of refinement iterations")
+):
+    """🔧 Phase 3.2: Intelligent asset refinement with iterative improvement"""
+    
+    try:
+        logging.info(f"🔧 Phase 3.2: Intelligent asset refinement for asset {asset_id} in project {project_id}")
+        
+        # Get project and validate
+        project = await get_brand_project(project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+            
+        if not project.brand_strategy:
+            raise HTTPException(status_code=400, detail="Brand strategy required for asset refinement")
+        
+        # Find the asset to refine
+        target_asset = None
+        for asset in project.generated_assets:
+            if asset.id == asset_id:
+                target_asset = asset
+                break
+                
+        if not target_asset:
+            raise HTTPException(status_code=404, detail="Asset not found")
+        
+        # Get other assets for consistency analysis
+        base_assets = [asset for asset in project.generated_assets if asset.id != asset_id]
+        
+        # Extract visual DNA from base assets
+        visual_dna = consistency_manager.extract_comprehensive_visual_dna(base_assets)
+        
+        # Perform initial consistency analysis
+        consistency_analysis = consistency_manager.validate_comprehensive_consistency(
+            new_asset=target_asset,
+            base_assets=base_assets,
+            brand_strategy=project.brand_strategy
+        )
+        
+        # Execute intelligent refinement
+        refinement_result = consistency_manager.execute_intelligent_refinement(
+            asset=target_asset,
+            consistency_analysis=consistency_analysis,
+            visual_dna=visual_dna,
+            refinement_iterations=refinement_iterations
+        )
+        
+        # Update project if refinement was successful
+        if refinement_result.get('improvement_achieved', False):
+            # Update the asset in the project
+            for i, asset in enumerate(project.generated_assets):
+                if asset.id == asset_id:
+                    project.generated_assets[i] = refinement_result['refined_asset']
+                    break
+                    
+            # Save updated project
+            update_result = await projects_collection.update_one(
+                {"_id": ObjectId(project_id)},
+                {"$set": {"generated_assets": [asset.dict() for asset in project.generated_assets]}}
+            )
+            
+            if update_result.modified_count == 0:
+                logging.warning(f"⚠️ Failed to update refined asset in project {project_id}")
+        
+        return {
+            "project_id": project_id,
+            "asset_id": asset_id,
+            "refinement_result": refinement_result,
+            "initial_consistency_analysis": consistency_analysis,
+            "visual_dna_confidence": visual_dna.extraction_confidence,
+            "phase": "3.2_intelligent_refinement",
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"❌ Phase 3.2 intelligent asset refinement failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Intelligent asset refinement failed: {str(e)}")
+
+
 # Health check endpoint
 @api_router.get("/health")
 async def health_check():
