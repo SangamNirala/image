@@ -998,3 +998,38 @@ class GeminiVisualEngine:
                 "needs_regeneration": True
             }
         )
+
+    # Legacy method for backward compatibility
+    async def generate_single_asset(
+        self, 
+        project_id: str, 
+        asset_type: str, 
+        brand_strategy: BrandStrategy,
+        style_variant: str = "primary",
+        custom_requirements: Optional[str] = None
+    ) -> GeneratedAsset:
+        """Legacy method - redirects to new advanced generation"""
+        return await self.generate_with_consistency(
+            project_id=project_id,
+            asset_type=asset_type,
+            brand_strategy=brand_strategy,
+            quality_tier="premium",
+            prompt=custom_requirements
+        )
+    
+    # Legacy method for backward compatibility  
+    async def generate_marketing_asset(
+        self,
+        project_id: str,
+        asset_type: str,
+        brand_strategy: BrandStrategy,
+        custom_requirements: Optional[str] = None
+    ) -> GeneratedAsset:
+        """Legacy method - redirects to new advanced generation"""
+        return await self.generate_with_consistency(
+            project_id=project_id,
+            asset_type=asset_type,
+            brand_strategy=brand_strategy,
+            quality_tier="premium",
+            prompt=custom_requirements or f"Create a professional {asset_type} for {brand_strategy.business_name}"
+        )
