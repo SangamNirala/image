@@ -12,6 +12,7 @@ import os
 import logging
 import json
 import base64
+import google.generativeai as genai
 from pathlib import Path
 from typing import Dict, Any, Optional
 from datetime import datetime, timezone
