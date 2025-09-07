@@ -414,6 +414,100 @@ async def generate_complete_brand_package(project_id: str, package_type: str = "
     except Exception as e:
         logging.error(f"Error generating complete package: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to generate complete package: {str(e)}")
+@api_router.post("/projects/{project_id}/revolutionary-visual-identity", response_model=Dict[str, Any])
+async def generate_revolutionary_visual_identity(project_id: str):
+    """🚀 PHASE 3: Generate complete revolutionary visual identity system"""
+    try:
+        # Get project and validate
+        project_doc = await db.brand_projects.find_one({"id": project_id})
+        if not project_doc:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Convert to project object
+        project_doc['created_at'] = datetime.fromisoformat(project_doc['created_at'])
+        if project_doc.get('updated_at'):
+            project_doc['updated_at'] = datetime.fromisoformat(project_doc['updated_at'])
+        if project_doc.get('brand_strategy'):
+            project_doc['brand_strategy']['created_at'] = datetime.fromisoformat(project_doc['brand_strategy']['created_at'])
+        
+        project = BrandProject(**project_doc)
+        
+        if not project.brand_strategy:
+            raise HTTPException(status_code=400, detail="Brand strategy must be generated first")
+        
+        # Initialize revolutionary visual engine
+        revolutionary_visual_engine = GeminiVisualEngine()
+        
+        # Generate complete revolutionary visual identity system
+        visual_identity_system = await revolutionary_visual_engine.generate_complete_visual_identity(
+            project.brand_strategy, project_id
+        )
+        
+        # Store all generated assets in database
+        all_generated_assets = []
+        
+        # Process logo suite
+        logo_suite = visual_identity_system["visual_identity_suite"]["logo_suite"]
+        all_generated_assets.append(logo_suite["primary"])
+        all_generated_assets.extend(logo_suite["variations"])
+        
+        # Process all other visual identity components
+        for category_name, category_assets in visual_identity_system["visual_identity_suite"].items():
+            if category_name != "logo_suite" and isinstance(category_assets, list):
+                all_generated_assets.extend(category_assets)
+        
+        # Store assets in database
+        for asset in all_generated_assets:
+            asset_dict = asset.dict()
+            asset_dict['created_at'] = asset_dict['created_at'].isoformat()
+            
+            # Store in database with upsert
+            await db.generated_assets.update_one(
+                {"id": asset.id, "project_id": project_id},
+                {"$set": asset_dict},
+                upsert=True
+            )
+        
+        # Update project status
+        await db.brand_projects.update_one(
+            {"id": project_id},
+            {
+                "$set": {
+                    "status": "visual_identity_complete",
+                    "updated_at": datetime.utcnow().isoformat(),
+                    "revolutionary_identity_generated": True,
+                    "phase_3_complete": True
+                }
+            }
+        )
+        
+        # Return comprehensive results
+        return {
+            "project_id": project_id,
+            "status": "revolutionary_visual_identity_complete",
+            "visual_identity_system": visual_identity_system,
+            "total_generated_assets": len(all_generated_assets),
+            "asset_breakdown": visual_identity_system.get("asset_breakdown", {}),
+            "system_consistency": visual_identity_system.get("system_consistency", {}),
+            "generation_metadata": visual_identity_system.get("generation_metadata", {}),
+            "phase_3_capabilities": {
+                "advanced_logo_suite": True,
+                "business_card_designs": True, 
+                "letterhead_templates": True,
+                "social_media_templates": True,
+                "marketing_collateral": True,
+                "brand_patterns": True,
+                "realistic_mockups": True,
+                "consistency_management": True,
+                "quality_assurance": True
+            }
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"Error generating revolutionary visual identity: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate revolutionary visual identity: {str(e)}")
 
 @api_router.post("/projects/{project_id}/export")
 async def export_brand_package(project_id: str, formats: List[str] = ["png", "pdf"], package_type: str = "professional"):
