@@ -68,11 +68,11 @@ class BrandForgeAPITester:
     def test_create_project(self):
         """Test project creation"""
         test_data = {
-            "business_name": "RetryTest Solutions",
-            "business_description": "Testing enhanced retry logic for asset generation",
+            "business_name": "TestFlow Solutions", 
+            "business_description": "A cutting-edge AI-powered platform that helps businesses generate complete brand strategies and visual assets automatically.",
             "industry": "Technology",
-            "target_audience": "Test users",
-            "business_values": ["reliability", "quality"],
+            "target_audience": "Tech entrepreneurs, startup founders, marketing teams, and small business owners who need professional branding quickly and efficiently.",
+            "business_values": ["innovation", "efficiency", "quality", "reliability", "user-centric"],
             "preferred_style": "modern",
             "preferred_colors": "flexible"
         }
