@@ -14,7 +14,7 @@ class GeminiVisualEngine:
     """Advanced visual asset generation using Gemini with consistency management"""
     
     def __init__(self):
-        self.model = genai.GenerativeModel('models/gemini-2.5-flash-image-preview')
+        self.client = genai.Client(api_key=os.environ.get('GEMINI_API_KEY'))
         self.consistency_seed = None
         self.brand_dna = None
         
