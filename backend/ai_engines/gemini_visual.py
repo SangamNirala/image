@@ -8,6 +8,7 @@ import base64
 import json
 import asyncio
 import hashlib
+import os
 from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime, timezone
 from PIL import Image, ImageDraw, ImageFont
