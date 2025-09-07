@@ -22,7 +22,7 @@ import asyncio
 from models.brand_strategy import BusinessInput, BrandStrategy
 from models.visual_assets import GeneratedAsset, AssetGenerationRequest
 from models.project_state import BrandProject, ProjectProgress, ProjectAnalytics
-from ai_engines.emergent_strategy import BrandStrategyEngine
+from ai_engines.emergent_strategy import AdvancedBrandStrategyEngine
 from ai_engines.gemini_visual import GeminiVisualEngine
 from ai_engines.consistency_manager import ConsistencyManager
 from ai_engines.export_engine import ProfessionalExportEngine
