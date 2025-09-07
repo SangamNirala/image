@@ -738,36 +738,199 @@ class GeminiVisualEngine:
                 "Validate color palette usage and design style alignment"
             ]
     
-    def _extract_image_data(self, response) -> Optional[str]:
-        """Extract base64 image data from Gemini response"""
+    async def _generate_business_card_design(self, project_id: str, brand_strategy: BrandStrategy, variant: str, primary_logo: GeneratedAsset) -> GeneratedAsset:
+        """Generate advanced business card designs"""
+        prompt = f"""
+        Create a {variant} business card design for {brand_strategy.business_name}.
         
-        try:
-            if hasattr(response, 'candidates') and response.candidates:
-                for candidate in response.candidates:
-                    if hasattr(candidate, 'content') and candidate.content:
-                        for part in candidate.content.parts:
-                            if hasattr(part, 'inline_data') and part.inline_data:
-                                # Get the raw data from Gemini
-                                raw_data = part.inline_data.data
-                                
-                                # If it's already a string (base64), return it
-                                if isinstance(raw_data, str):
-                                    return raw_data
-                                
-                                # If it's bytes, encode to base64
-                                if isinstance(raw_data, bytes):
-                                    return base64.b64encode(raw_data).decode('utf-8')
-                                
-                                # If it's something else, try to convert
-                                try:
-                                    return base64.b64encode(raw_data).decode('utf-8')
-                                except:
-                                    # Try converting to string first
-                                    return str(raw_data)
-            return None
-        except Exception as e:
-            logging.error(f"Error extracting image data: {str(e)}")
-            return None
+        Design Requirements:
+        - Style: {variant} business card layout
+        - Company name prominently featured
+        - Professional layout with visual hierarchy
+        - Brand colors: {', '.join(brand_strategy.color_palette)}
+        - Consistent with established brand identity
+        - Standard business card proportions (3.5" x 2")
+        - Modern, professional aesthetic
+        
+        Brand Consistency:
+        - Reflect brand personality: {', '.join(brand_strategy.brand_personality.get('primary_traits', []))}
+        - Visual style: {brand_strategy.visual_direction.get('design_style', 'modern')}
+        - Typography consistent with brand guidelines
+        """
+        
+        return await self.generate_with_consistency(
+            project_id=project_id,
+            asset_type=f"business_card_{variant}",
+            brand_strategy=brand_strategy,
+            quality_tier="premium",
+            prompt=prompt
+        )
+    
+    async def _generate_letterhead_template(self, project_id: str, brand_strategy: BrandStrategy, variant: str, primary_logo: GeneratedAsset) -> GeneratedAsset:
+        """Generate advanced letterhead templates"""
+        prompt = f"""
+        Create a {variant} letterhead design for {brand_strategy.business_name}.
+        
+        Design Requirements:
+        - Style: {variant} business letterhead
+        - Professional document header layout
+        - Company branding and logo placement
+        - Brand colors: {', '.join(brand_strategy.color_palette)}
+        - Clean, professional layout suitable for business correspondence
+        - Standard letter format (8.5" x 11")
+        
+        Brand Consistency:
+        - Visual style: {brand_strategy.visual_direction.get('design_style', 'professional')}
+        - Personality: {', '.join(brand_strategy.brand_personality.get('primary_traits', []))}
+        """
+        
+        return await self.generate_with_consistency(
+            project_id=project_id,
+            asset_type=f"letterhead_{variant}",
+            brand_strategy=brand_strategy,
+            quality_tier="premium",
+            prompt=prompt
+        )
+    
+    async def _generate_social_media_template(self, project_id: str, brand_strategy: BrandStrategy, format_type: str, primary_logo: GeneratedAsset) -> GeneratedAsset:
+        """Generate social media templates"""
+        format_specs = {
+            'square': 'Square format (1080x1080px) for Instagram posts',
+            'story': 'Vertical story format (1080x1920px) for Instagram/Facebook stories',
+            'cover': 'Cover image format for Facebook/LinkedIn pages',
+            'linkedin': 'LinkedIn post format optimized for professional networking'
+        }
+        
+        prompt = f"""
+        Create a social media template for {brand_strategy.business_name}.
+        
+        Format: {format_specs.get(format_type, 'Social media format')}
+        
+        Design Requirements:
+        - Brand colors: {', '.join(brand_strategy.color_palette)}
+        - Space for text overlay and content
+        - Engaging visual design that stands out in feeds
+        - Professional yet appealing aesthetic
+        - Brand personality: {', '.join(brand_strategy.brand_personality.get('primary_traits', []))}
+        
+        Style: {brand_strategy.visual_direction.get('visual_mood', 'engaging professional')}
+        """
+        
+        return await self.generate_with_consistency(
+            project_id=project_id,
+            asset_type=f"social_media_{format_type}",
+            brand_strategy=brand_strategy,
+            quality_tier="premium",
+            prompt=prompt
+        )
+    
+    async def _generate_marketing_collateral(self, project_id: str, brand_strategy: BrandStrategy, marketing_type: str, primary_logo: GeneratedAsset) -> GeneratedAsset:
+        """Generate marketing collateral"""
+        marketing_specs = {
+            'flyer_promotional': 'Eye-catching promotional flyer design',
+            'flyer_informational': 'Clean informational flyer layout',
+            'banner_web': 'Horizontal web banner design',
+            'banner_print': 'Print-ready banner design'
+        }
+        
+        prompt = f"""
+        Create a {marketing_specs.get(marketing_type, marketing_type)} for {brand_strategy.business_name}.
+        
+        Design Requirements:
+        - Brand colors: {', '.join(brand_strategy.color_palette)}
+        - Professional yet engaging layout
+        - Clear hierarchy for information
+        - Brand consistent design elements
+        - Suitable for business promotional use
+        
+        Brand Alignment:
+        - Style: {brand_strategy.visual_direction.get('design_style', 'professional engaging')}
+        - Personality: {', '.join(brand_strategy.brand_personality.get('primary_traits', []))}
+        """
+        
+        return await self.generate_with_consistency(
+            project_id=project_id,
+            asset_type=marketing_type,
+            brand_strategy=brand_strategy,
+            quality_tier="premium",
+            prompt=prompt
+        )
+    
+    async def _generate_brand_pattern(self, project_id: str, brand_strategy: BrandStrategy, primary_logo: GeneratedAsset) -> GeneratedAsset:
+        """Generate brand pattern/texture library"""
+        prompt = f"""
+        Create a brand pattern design for {brand_strategy.business_name}.
+        
+        Pattern Requirements:
+        - Subtle repeating pattern using brand colors
+        - Colors: {', '.join(brand_strategy.color_palette)}
+        - Can be used as background texture
+        - Professional and versatile
+        - Reflects brand personality: {', '.join(brand_strategy.brand_personality.get('primary_traits', []))}
+        
+        Style: Elegant pattern that enhances brand materials without overwhelming content
+        """
+        
+        return await self.generate_with_consistency(
+            project_id=project_id,
+            asset_type="brand_pattern",
+            brand_strategy=brand_strategy,
+            quality_tier="premium",
+            prompt=prompt
+        )
+    
+    async def _generate_realistic_mockup(self, project_id: str, brand_strategy: BrandStrategy, mockup_type: str, primary_logo: GeneratedAsset) -> GeneratedAsset:
+        """Generate realistic mockups"""
+        mockup_specs = {
+            'business_cards': 'Realistic business card mockup showing cards in professional setting',
+            'letterhead': 'Professional letterhead mockup on desk with office environment'
+        }
+        
+        prompt = f"""
+        Create a realistic mockup showing {mockup_specs.get(mockup_type, mockup_type)} for {brand_strategy.business_name}.
+        
+        Mockup Requirements:
+        - Professional photography style
+        - Realistic lighting and shadows
+        - High-quality presentation
+        - Suitable for portfolio and client presentation
+        - Clean, professional environment
+        
+        Brand Integration:
+        - Brand colors visible: {', '.join(brand_strategy.color_palette[:2])}
+        - Professional business context
+        """
+        
+        return await self.generate_with_consistency(
+            project_id=project_id,
+            asset_type=f"mockup_{mockup_type}",
+            brand_strategy=brand_strategy,
+            quality_tier="premium",
+            prompt=prompt
+        )
+    
+    def _calculate_system_consistency(self, all_assets: List[GeneratedAsset]) -> Dict[str, Any]:
+        """Calculate consistency across entire visual identity system"""
+        if not all_assets:
+            return {"overall_score": 1.0, "assessment": "no_assets"}
+        
+        # Calculate average brand alignment scores
+        alignment_scores = [asset.metadata.get('brand_alignment_score', 0.9) for asset in all_assets]
+        overall_score = sum(alignment_scores) / len(alignment_scores)
+        
+        # Count quality indicators
+        premium_count = sum(1 for asset in all_assets if asset.metadata.get('quality_tier') == 'premium')
+        consistency_maintained = sum(1 for asset in all_assets if asset.metadata.get('consistency_enforced'))
+        
+        return {
+            "overall_score": round(overall_score, 3),
+            "total_assets": len(all_assets),
+            "premium_quality_ratio": round(premium_count / len(all_assets), 2),
+            "consistency_enforcement_ratio": round(consistency_maintained / len(all_assets), 2),
+            "quality_assessment": "excellent" if overall_score >= 0.95 else 
+                                 "very_good" if overall_score >= 0.90 else 
+                                 "good" if overall_score >= 0.85 else "needs_improvement"
+        }
     
     def _generate_placeholder_image(self, asset_type: str) -> str:
         """Generate a placeholder image when generation fails"""
