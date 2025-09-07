@@ -98,7 +98,7 @@ function App() {
       setIsGenerating(true);
       setProgress(30);
       
-      const response = await axios.post(`${API}/projects/${currentProject.id}/strategy`);
+      const response = await axios.post(`${API}/projects/${currentProject.project_id}/strategy`);
       setBrandStrategy(response.data);
       setProgress(50);
       
