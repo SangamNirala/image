@@ -207,7 +207,10 @@ test_plan:
   current_focus:
     - "Fix brand strategy display issue"
     - "Fix UI state management and tab navigation"
-  stuck_tasks: []
+    - "Fix complete brand package generation to return all 6 assets"
+    - "Fix Phase 1 export engine parameter format"
+  stuck_tasks:
+    - "Fix complete brand package generation to return all 6 assets"
   test_all: false
   test_priority: "high_first"
 
