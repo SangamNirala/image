@@ -191,56 +191,7 @@ class GeminiVisualEngine:
         
         return self._create_enhanced_placeholder_asset(project_id, asset_type, "Max retries exceeded")
     
-    async def generate_single_asset(
-        self, 
-        project_id: str, 
-        asset_type: str, 
-        brand_strategy: BrandStrategy,
-        style_variant: str = "primary",
-        custom_requirements: Optional[str] = None
-    ) -> GeneratedAsset:
-        """Generate a single visual asset with brand consistency"""
-        
-        prompt = self._build_asset_prompt(asset_type, brand_strategy, style_variant, custom_requirements)
-        
-        try:
-            # Generate with Gemini
-            loop = asyncio.get_event_loop()
-            response = await loop.run_in_executor(None, 
-                lambda: self.client.models.generate_content(
-                    model="gemini-2.5-flash-image-preview",
-                    contents=prompt
-                )
-            )
-            
-            # Extract image data
-            image_data = self._extract_image_data(response)
-            
-            if not image_data:
-                # Generate placeholder if generation fails
-                image_data = self._generate_placeholder_image(asset_type)
-            
-            # Create asset object
-            asset = GeneratedAsset(
-                project_id=project_id,
-                asset_type=asset_type,
-                asset_url=f"data:image/png;base64,{image_data}",
-                metadata={
-                    "style_variant": style_variant,
-                    "consistency_seed": self.consistency_seed,
-                    "generation_method": "gemini",
-                    "brand_alignment_score": 0.95,
-                    "custom_requirements": custom_requirements
-                }
-            )
-            
-            return asset
-            
-        except Exception as e:
-            logging.error(f"Error generating {asset_type}: {str(e)}")
-            # Return placeholder asset
-            return self._create_placeholder_asset(project_id, asset_type, str(e))
-    
+
     async def generate_logo_variant(
         self,
         project_id: str,
