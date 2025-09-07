@@ -111,7 +111,7 @@ class BrandForgeAPITester:
             "POST",
             f"projects/{self.project_id}/strategy",
             200,
-            timeout=60  # AI generation takes longer
+            timeout=120  # Increased timeout for AI generation
         )
         
         if success:
