@@ -486,6 +486,239 @@ class GeminiVisualEngine:
         
         return f"{typography_style} typography that reflects {brand_personality} personality"
     
+    def _build_business_card_prompt(self, brand_strategy: BrandStrategy, style_variant: str = "standard") -> str:
+        """🃏 Build comprehensive business card generation prompt"""
+        
+        brand_archetype = brand_strategy.brand_personality.get('brand_archetype', 'Professional')
+        primary_traits = brand_strategy.brand_personality.get('primary_traits', [])
+        visual_philosophy = brand_strategy.visual_direction.get('visual_philosophy', 'Clean and impactful')
+        
+        return f"""
+        Create a professional business card design with these specifications:
+        
+        🧠 BRAND INTELLIGENCE:
+        - Business: {brand_strategy.business_name}
+        - Industry: Professional services
+        - Brand Archetype: {brand_archetype}
+        - Personality Traits: {', '.join(primary_traits)}
+        - Visual Philosophy: {visual_philosophy}
+        
+        🎨 DESIGN REQUIREMENTS:
+        - Style Variant: {style_variant}
+        - Design Style: {self._extract_design_style(brand_strategy)}
+        - Color Scheme: {self._get_color_psychology(brand_strategy)}
+        - Typography: {self._get_typography_guidance(brand_strategy)}
+        
+        🔧 BUSINESS CARD SPECIFICATIONS:
+        - Format: Standard business card dimensions (3.5" x 2")
+        - Layout: Professional, clean, easy to read
+        - Content Areas: Company name, contact information, logo space
+        - Print Ready: High contrast, clear typography
+        - Professional Quality: Premium appearance
+        
+        🧬 CONSISTENCY REQUIREMENTS:
+        - Brand DNA: {self.brand_dna or 'Establish consistent visual identity'}
+        - Logo Integration: Space for company logo
+        - Color Harmony: Consistent with brand colors
+        - Style Cohesion: Matches overall brand aesthetic
+        
+        📤 OUTPUT REQUIREMENTS:
+        - Resolution: Print-ready quality (300 DPI equivalent)
+        - Format: Clean, professional business card design
+        - Layout: Well-organized information hierarchy
+        - Visual Impact: Memorable yet professional
+        
+        Create a business card that represents the brand professionally and memorably.
+        """
+    
+    def _build_letterhead_prompt(self, brand_strategy: BrandStrategy, style_variant: str = "formal") -> str:
+        """📄 Build comprehensive letterhead generation prompt"""
+        
+        brand_archetype = brand_strategy.brand_personality.get('brand_archetype', 'Professional')
+        primary_traits = brand_strategy.brand_personality.get('primary_traits', [])
+        visual_philosophy = brand_strategy.visual_direction.get('visual_philosophy', 'Clean and impactful')
+        
+        return f"""
+        Create a professional letterhead design with these specifications:
+        
+        🧠 BRAND INTELLIGENCE:
+        - Business: {brand_strategy.business_name}
+        - Industry: Professional services
+        - Brand Archetype: {brand_archetype}
+        - Personality Traits: {', '.join(primary_traits)}
+        - Visual Philosophy: {visual_philosophy}
+        
+        🎨 DESIGN REQUIREMENTS:
+        - Style Variant: {style_variant}
+        - Design Style: {self._extract_design_style(brand_strategy)}
+        - Color Scheme: {self._get_color_psychology(brand_strategy)}
+        - Typography: {self._get_typography_guidance(brand_strategy)}
+        
+        🔧 LETTERHEAD SPECIFICATIONS:
+        - Format: Standard letter size (8.5" x 11")
+        - Header Area: Company branding, logo, contact information
+        - Writing Space: Clean area for letter content
+        - Footer: Optional subtle branding elements
+        - Professional Quality: Formal business correspondence ready
+        
+        🧬 CONSISTENCY REQUIREMENTS:
+        - Brand DNA: {self.brand_dna or 'Establish consistent visual identity'}
+        - Logo Integration: Prominent but not overwhelming
+        - Color Harmony: Consistent with brand colors
+        - Style Cohesion: Matches overall brand aesthetic
+        
+        📤 OUTPUT REQUIREMENTS:
+        - Resolution: Print-ready quality (300 DPI equivalent)
+        - Format: Professional letterhead template
+        - Layout: Clear hierarchy with ample writing space
+        - Visual Impact: Authoritative and trustworthy
+        
+        Create a letterhead that conveys professionalism and brand authority.
+        """
+    
+    def _build_social_media_prompt(self, brand_strategy: BrandStrategy, platform_variant: str = "post") -> str:
+        """📱 Build comprehensive social media asset generation prompt"""
+        
+        brand_archetype = brand_strategy.brand_personality.get('brand_archetype', 'Professional')
+        primary_traits = brand_strategy.brand_personality.get('primary_traits', [])
+        visual_philosophy = brand_strategy.visual_direction.get('visual_philosophy', 'Clean and impactful')
+        
+        # Platform-specific dimensions and requirements
+        platform_specs = {
+            "post": "Square format (1080x1080), optimized for Instagram/Facebook posts",
+            "story": "Vertical format (1080x1920), optimized for Instagram/Facebook stories", 
+            "cover": "Banner format (820x312), optimized for Facebook cover photos",
+            "linkedin": "Professional format (1200x627), optimized for LinkedIn posts"
+        }
+        
+        return f"""
+        Create a professional social media asset with these specifications:
+        
+        🧠 BRAND INTELLIGENCE:
+        - Business: {brand_strategy.business_name}
+        - Industry: Professional services
+        - Brand Archetype: {brand_archetype}
+        - Personality Traits: {', '.join(primary_traits)}
+        - Visual Philosophy: {visual_philosophy}
+        
+        🎨 DESIGN REQUIREMENTS:
+        - Platform Variant: {platform_variant}
+        - Design Style: {self._extract_design_style(brand_strategy)}
+        - Color Scheme: {self._get_color_psychology(brand_strategy)}
+        - Typography: {self._get_typography_guidance(brand_strategy)}
+        
+        🔧 SOCIAL MEDIA SPECIFICATIONS:
+        - Format: {platform_specs.get(platform_variant, platform_specs["post"])}
+        - Content: Engaging visual with space for text overlay
+        - Brand Integration: Logo or brand element placement
+        - Social Ready: Eye-catching, shareable design
+        - Digital Optimized: High contrast for mobile viewing
+        
+        🧬 CONSISTENCY REQUIREMENTS:
+        - Brand DNA: {self.brand_dna or 'Establish consistent visual identity'}
+        - Visual Cohesion: Matches brand aesthetic
+        - Color Harmony: Consistent with brand colors
+        - Style Alignment: Professional yet engaging
+        
+        📤 OUTPUT REQUIREMENTS:
+        - Resolution: High-quality digital (72-150 DPI)
+        - Format: Social media optimized design
+        - Layout: Clean, engaging, brand-aligned
+        - Visual Impact: Scroll-stopping while professional
+        
+        Create a social media asset that builds brand recognition and engagement.
+        """
+    
+    def _build_flyer_prompt(self, brand_strategy: BrandStrategy, style_variant: str = "promotional") -> str:
+        """📄 Build comprehensive flyer generation prompt"""
+        
+        brand_archetype = brand_strategy.brand_personality.get('brand_archetype', 'Professional')
+        primary_traits = brand_strategy.brand_personality.get('primary_traits', [])
+        visual_philosophy = brand_strategy.visual_direction.get('visual_philosophy', 'Clean and impactful')
+        
+        return f"""
+        Create a professional flyer design with these specifications:
+        
+        🧠 BRAND INTELLIGENCE:
+        - Business: {brand_strategy.business_name}
+        - Industry: Professional services
+        - Brand Archetype: {brand_archetype}
+        - Personality Traits: {', '.join(primary_traits)}
+        - Visual Philosophy: {visual_philosophy}
+        
+        🎨 DESIGN REQUIREMENTS:
+        - Style Variant: {style_variant}
+        - Design Style: {self._extract_design_style(brand_strategy)}
+        - Color Scheme: {self._get_color_psychology(brand_strategy)}
+        - Typography: {self._get_typography_guidance(brand_strategy)}
+        
+        🔧 FLYER SPECIFICATIONS:
+        - Format: Standard flyer size (8.5" x 11" or A4)
+        - Layout: Eye-catching header, main content area, call-to-action
+        - Content Areas: Title, key information, contact details
+        - Print/Digital Ready: High contrast, clear messaging
+        - Marketing Focus: Promotional and informative
+        
+        🧬 CONSISTENCY REQUIREMENTS:
+        - Brand DNA: {self.brand_dna or 'Establish consistent visual identity'}
+        - Logo Integration: Prominent brand presence
+        - Color Harmony: Consistent with brand colors
+        - Style Cohesion: Matches overall brand aesthetic
+        
+        📤 OUTPUT REQUIREMENTS:
+        - Resolution: Print-ready quality (300 DPI equivalent)
+        - Format: Professional flyer design
+        - Layout: Clear information hierarchy
+        - Visual Impact: Attention-grabbing yet professional
+        
+        Create a flyer that effectively communicates the brand message and drives action.
+        """
+    
+    def _build_banner_prompt(self, brand_strategy: BrandStrategy, style_variant: str = "web") -> str:
+        """🏪 Build comprehensive banner generation prompt"""
+        
+        brand_archetype = brand_strategy.brand_personality.get('brand_archetype', 'Professional')
+        primary_traits = brand_strategy.brand_personality.get('primary_traits', [])
+        visual_philosophy = brand_strategy.visual_direction.get('visual_philosophy', 'Clean and impactful')
+        
+        return f"""
+        Create a professional banner design with these specifications:
+        
+        🧠 BRAND INTELLIGENCE:
+        - Business: {brand_strategy.business_name}
+        - Industry: Professional services
+        - Brand Archetype: {brand_archetype}
+        - Personality Traits: {', '.join(primary_traits)}
+        - Visual Philosophy: {visual_philosophy}
+        
+        🎨 DESIGN REQUIREMENTS:
+        - Style Variant: {style_variant}
+        - Design Style: {self._extract_design_style(brand_strategy)}
+        - Color Scheme: {self._get_color_psychology(brand_strategy)}
+        - Typography: {self._get_typography_guidance(brand_strategy)}
+        
+        🔧 BANNER SPECIFICATIONS:
+        - Format: Wide banner format (typical web banner dimensions)
+        - Layout: Horizontal design with key messaging
+        - Content Areas: Main headline, supporting text, branding
+        - Versatile Use: Web, print, display ready
+        - Professional Quality: High-impact visual communication
+        
+        🧬 CONSISTENCY REQUIREMENTS:
+        - Brand DNA: {self.brand_dna or 'Establish consistent visual identity'}
+        - Logo Integration: Clear brand identification
+        - Color Harmony: Consistent with brand colors
+        - Style Cohesion: Matches overall brand aesthetic
+        
+        📤 OUTPUT REQUIREMENTS:
+        - Resolution: High-quality (300 DPI for print, 72-150 DPI for web)
+        - Format: Professional banner design
+        - Layout: Clear, impactful messaging
+        - Visual Impact: Memorable and authoritative
+        
+        Create a banner that effectively represents the brand and communicates key messages.
+        """
+    
     def _extract_advanced_brand_dna(self, brand_strategy: BrandStrategy) -> Dict[str, Any]:
         """🧬 PHASE 3: Extract sophisticated visual DNA for consistency management"""
         
