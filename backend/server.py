@@ -52,6 +52,24 @@ visual_engine = GeminiVisualEngine()
 consistency_manager = ConsistencyManager()
 export_engine = ProfessionalExportEngine()
 
+# Helper function for getting brand projects
+async def get_brand_project(project_id: str):
+    """Helper function to get and convert brand project from database"""
+    project_doc = await db.brand_projects.find_one({"id": project_id})
+    if not project_doc:
+        return None
+    
+    # Convert back to Pydantic model
+    project_doc['created_at'] = datetime.fromisoformat(project_doc['created_at'])
+    if project_doc.get('updated_at'):
+        project_doc['updated_at'] = datetime.fromisoformat(project_doc['updated_at'])
+    if project_doc.get('brand_strategy'):
+        project_doc['brand_strategy']['created_at'] = datetime.fromisoformat(project_doc['brand_strategy']['created_at'])
+    for asset in project_doc.get('generated_assets', []):
+        asset['created_at'] = datetime.fromisoformat(asset['created_at'])
+    
+    return BrandProject(**project_doc)
+
 # Route handlers using the new advanced AI engines
 
 @api_router.post("/projects", response_model=Dict[str, Any])
