@@ -339,8 +339,8 @@ async def generate_complete_brand_package(project_id: str, package_type: str = "
         logging.error(f"Error generating complete package: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to generate complete package: {str(e)}")
 
-@api_router.post("/projects/{project_id}/export", response_model=Dict[str, Any])
-async def export_brand_package(project_id: str, package_type: str = "professional", formats: List[str] = ["png", "pdf"]):
+@api_router.post("/projects/{project_id}/export")
+async def export_brand_package(project_id: str, formats: List[str] = ["png", "pdf"], package_type: str = "professional"):
     """Export complete brand package using professional export engine"""
     try:
         # Get project
