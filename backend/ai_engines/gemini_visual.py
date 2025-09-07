@@ -323,7 +323,23 @@ class GeminiVisualEngine:
                     if hasattr(candidate, 'content') and candidate.content:
                         for part in candidate.content.parts:
                             if hasattr(part, 'inline_data') and part.inline_data:
-                                return part.inline_data.data
+                                # Get the raw data from Gemini
+                                raw_data = part.inline_data.data
+                                
+                                # If it's already a string (base64), return it
+                                if isinstance(raw_data, str):
+                                    return raw_data
+                                
+                                # If it's bytes, encode to base64
+                                if isinstance(raw_data, bytes):
+                                    return base64.b64encode(raw_data).decode('utf-8')
+                                
+                                # If it's something else, try to convert
+                                try:
+                                    return base64.b64encode(raw_data).decode('utf-8')
+                                except:
+                                    # Try converting to string first
+                                    return str(raw_data)
             return None
         except Exception as e:
             logging.error(f"Error extracting image data: {str(e)}")
