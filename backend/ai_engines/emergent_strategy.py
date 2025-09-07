@@ -421,62 +421,256 @@ Ensure personality aligns with market opportunity and competitive positioning.
             logging.error(f"Error in brand personality development: {str(e)}")
             return self._get_fallback_personality_analysis()
     
-    def _build_advanced_strategy_prompt(self, business_input: BusinessInput, analysis: Dict[str, Any]) -> str:
-        """Build comprehensive strategy generation prompt"""
+    async def create_visual_brief(self, personality_analysis: Dict, market_analysis: Dict, business_input: BusinessInput) -> Dict[str, Any]:
+        """Layer 4: Advanced Visual Direction & Creative Brief Development"""
         
-        return f"""
-        You are an expert brand strategist with 20+ years of experience. Create a comprehensive brand strategy.
-        
-        BUSINESS INFORMATION:
-        - Name: {business_input.business_name}
-        - Description: {business_input.business_description}
-        - Industry: {business_input.industry}
-        - Target Audience: {business_input.target_audience}
-        - Values: {', '.join(business_input.business_values)}
-        - Style Preference: {business_input.preferred_style}
-        - Color Preference: {business_input.preferred_colors}
-        
-        STRATEGIC ANALYSIS:
-        Market Position: {analysis.get('market_analysis', {}).get('positioning_recommendations', 'Standard')}
-        Competitive Strategy: {analysis.get('competitive_analysis', {}).get('positioning_strategy', 'Standard')}
-        Brand Personality: {analysis.get('personality_analysis', {}).get('core_personality', {})}
-        
-        Generate a detailed brand strategy with this exact JSON structure:
-        {{
-            "brand_personality": {{
-                "primary_traits": ["trait1", "trait2", "trait3", "trait4", "trait5"],
-                "brand_archetype": "archetype_name",
-                "tone_of_voice": "detailed_tone_description",
-                "brand_essence": "one_sentence_brand_essence",
-                "emotional_drivers": ["driver1", "driver2", "driver3"]
-            }},
-            "visual_direction": {{
-                "design_style": "detailed_style_description",
-                "visual_mood": "mood_and_feeling_description",
-                "typography_style": "typography_recommendations",
-                "imagery_style": "imagery_and_photography_style",
-                "logo_direction": "detailed_logo_design_guidance",
-                "layout_principles": "layout_and_composition_guidelines"
-            }},
-            "color_palette": ["#primary_color", "#secondary_color", "#accent1", "#accent2", "#neutral"],
-            "messaging_framework": {{
-                "tagline": "compelling_memorable_tagline",
-                "key_messages": ["message1", "message2", "message3"],
-                "brand_promise": "clear_brand_promise",
-                "unique_value_proposition": "distinctive_uvp",
-                "brand_story": "compelling_brand_narrative"
-            }},
-            "consistency_rules": {{
-                "logo_usage": "detailed_logo_usage_guidelines",
-                "color_usage": "color_application_and_combination_rules",
-                "typography_rules": "typography_hierarchy_and_usage",
-                "visual_consistency": "visual_consistency_requirements",
-                "brand_voice_consistency": "voice_and_tone_consistency_rules"
-            }}
-        }}
-        
-        Make the strategy sophisticated, cohesive, and perfectly aligned with the business goals and market position.
+        visual_brief_prompt = f"""
+You are a creative director with expertise in visual brand identity and design strategy.
+
+BRAND PERSONALITY: {personality_analysis.get('brand_archetype', {}).get('primary_archetype', 'Innovator')}
+PERSONALITY TRAITS: {[trait.get('trait', '') for trait in personality_analysis.get('personality_traits', {}).get('core_traits', [])]}
+MARKET POSITION: {market_analysis.get('positioning_recommendations', {}).get('optimal_position', 'Standard positioning')}
+BUSINESS CONTEXT: {business_input.business_description}
+INDUSTRY: {business_input.industry}
+STYLE PREFERENCE: {business_input.preferred_style}
+COLOR PREFERENCE: {business_input.preferred_colors}
+
+Create comprehensive visual direction and creative brief:
+
+1. VISUAL STRATEGY FOUNDATION
+   - Overall visual approach and philosophy
+   - Visual personality expression
+   - Brand visual goals and objectives
+
+2. DESIGN SYSTEM ARCHITECTURE
+   - Primary design principles
+   - Visual hierarchy and structure
+   - Design system components
+
+3. COLOR STRATEGY & PSYCHOLOGY
+   - Strategic color palette with psychology
+   - Color usage guidelines and meanings
+   - Emotional impact of color choices
+
+4. TYPOGRAPHY & COMMUNICATION
+   - Typography strategy and personality
+   - Font selection criteria and rationale
+   - Typographic hierarchy and applications
+
+5. IMAGERY & VISUAL CONTENT
+   - Photography and illustration style
+   - Visual content strategy
+   - Mood and aesthetic direction
+
+6. LOGO & IDENTITY SYSTEMS
+   - Logo design direction and requirements
+   - Identity system architecture
+   - Application and usage principles
+
+Respond in this exact JSON format:
+{{
+    "visual_strategy": {{
+        "visual_philosophy": "overarching visual philosophy and approach",
+        "visual_personality_expression": "how personality shows up visually",
+        "visual_goals": ["goal1", "goal2", "goal3"],
+        "brand_visual_positioning": "how visuals position the brand"
+    }},
+    "design_system": {{
+        "primary_design_principles": ["principle1", "principle2", "principle3"],
+        "visual_hierarchy": "hierarchy structure and approach",
+        "design_components": ["component1", "component2", "component3"],
+        "consistency_framework": "how visual consistency is maintained"
+    }},
+    "color_strategy": {{
+        "strategic_palette": [
+            {{"color": "#primary", "hex": "#hexcode", "psychology": "emotional impact", "usage": "usage guidelines"}},
+            {{"color": "#secondary", "hex": "#hexcode", "psychology": "emotional impact", "usage": "usage guidelines"}},
+            {{"color": "#accent1", "hex": "#hexcode", "psychology": "emotional impact", "usage": "usage guidelines"}},
+            {{"color": "#accent2", "hex": "#hexcode", "psychology": "emotional impact", "usage": "usage guidelines"}},
+            {{"color": "#neutral", "hex": "#hexcode", "psychology": "emotional impact", "usage": "usage guidelines"}}
+        ],
+        "color_psychology_rationale": "why these colors support the brand strategy",
+        "color_combinations": "recommended color pairings and relationships"
+    }},
+    "typography_strategy": {{
+        "typography_personality": "how typography expresses brand personality",
+        "font_selection_criteria": "what to look for in fonts",
+        "typographic_hierarchy": {{
+            "primary_heading": "font characteristics for main headlines",
+            "secondary_heading": "font characteristics for subheadings", 
+            "body_text": "font characteristics for body copy",
+            "accent_text": "font characteristics for special text"
+        }},
+        "typography_applications": "how typography is used across touchpoints"
+    }},
+    "imagery_direction": {{
+        "photography_style": "photography approach and characteristics",
+        "illustration_style": "illustration approach if applicable",
+        "visual_content_strategy": "overall approach to visual content",
+        "mood_aesthetic": "overall aesthetic and mood direction",
+        "visual_storytelling": "how visuals tell the brand story"
+    }},
+    "logo_identity_brief": {{
+        "logo_design_direction": "specific logo design requirements and direction",
+        "identity_system_requirements": "what the identity system needs to include",
+        "logo_personality_expression": "how logo should express brand personality",
+        "application_considerations": "key applications and usage scenarios",
+        "logo_effectiveness_criteria": "how to measure logo success"
+    }},
+    "confidence_score": 0.94
+}}
+
+Ensure all visual direction aligns with brand personality and market positioning.
         """
+        
+        try:
+            response = await asyncio.get_event_loop().run_in_executor(None,
+                lambda: self.client.models.generate_content(
+                    model=self.gemini_model,
+                    contents=visual_brief_prompt
+                )
+            )
+            
+            response_text = response.text.strip()
+            if response_text.startswith('```json'):
+                response_text = response_text.replace('```json', '').replace('```', '').strip()
+            
+            return json.loads(response_text)
+            
+        except Exception as e:
+            logging.error(f"Error in visual brief creation: {str(e)}")
+            return self._get_fallback_visual_brief()
+
+    async def synthesize_strategy(self, market_analysis: Dict, competitive_analysis: Dict, 
+                                personality_analysis: Dict, visual_brief: Dict, business_input: BusinessInput) -> Dict[str, Any]:
+        """Layer 5: Advanced Strategic Synthesis & Comprehensive Recommendations"""
+        
+        synthesis_prompt = f"""
+You are a senior brand strategist synthesizing comprehensive brand strategy analysis.
+
+SYNTHESIS INPUTS:
+MARKET INTELLIGENCE: {market_analysis.get('positioning_recommendations', {}).get('optimal_position', 'Standard')}
+COMPETITIVE POSITIONING: {competitive_analysis.get('differentiation_strategy', {}).get('positioning_against_competition', 'Standard')}  
+BRAND PERSONALITY: {personality_analysis.get('brand_archetype', {}).get('primary_archetype', 'Innovator')}
+VISUAL DIRECTION: {visual_brief.get('visual_strategy', {}).get('visual_philosophy', 'Modern approach')}
+BUSINESS CONTEXT: {business_input.business_description}
+
+Create comprehensive strategic synthesis and recommendations:
+
+1. STRATEGIC INSIGHTS INTEGRATION
+   - Key insights from all analysis layers
+   - Strategic themes and patterns
+   - Critical success factors
+
+2. BRAND STRATEGY SYNTHESIS
+   - Unified brand strategy framework
+   - Strategic positioning statement
+   - Brand strategy pillars
+
+3. IMPLEMENTATION ROADMAP
+   - Priority implementation phases
+   - Strategic milestones and metrics
+   - Resource requirements and timeline
+
+4. SUCCESS MEASUREMENT
+   - Key performance indicators
+   - Success metrics and benchmarks
+   - Brand health measurement framework
+
+5. STRATEGIC RECOMMENDATIONS
+   - Immediate action items
+   - Long-term strategic initiatives
+   - Risk mitigation strategies
+
+Respond in this exact JSON format:
+{{
+    "strategic_insights": {{
+        "key_insights": ["insight1", "insight2", "insight3", "insight4"],
+        "strategic_themes": ["theme1", "theme2", "theme3"],
+        "critical_success_factors": ["factor1", "factor2", "factor3"],
+        "strategic_opportunities": ["opportunity1", "opportunity2"]
+    }},
+    "brand_strategy_framework": {{
+        "unified_strategy": "comprehensive brand strategy statement",
+        "positioning_statement": "precise brand positioning",
+        "strategy_pillars": ["pillar1", "pillar2", "pillar3", "pillar4"],
+        "brand_promise": "clear brand promise to customers",
+        "unique_value_proposition": "distinctive value proposition"
+    }},
+    "implementation_roadmap": {{
+        "phase_1_immediate": {{
+            "timeline": "0-3 months",
+            "priorities": ["priority1", "priority2", "priority3"],
+            "deliverables": ["deliverable1", "deliverable2"]
+        }},
+        "phase_2_build": {{
+            "timeline": "3-9 months", 
+            "priorities": ["priority1", "priority2", "priority3"],
+            "deliverables": ["deliverable1", "deliverable2"]
+        }},
+        "phase_3_optimize": {{
+            "timeline": "9-18 months",
+            "priorities": ["priority1", "priority2"],
+            "deliverables": ["deliverable1", "deliverable2"]
+        }}
+    }},
+    "success_measurement": {{
+        "kpis": ["kpi1", "kpi2", "kpi3", "kpi4"],
+        "success_metrics": {{
+            "brand_awareness": "awareness measurement approach",
+            "brand_perception": "perception tracking method",
+            "business_impact": "business impact metrics"
+        }},
+        "measurement_frequency": "how often to measure progress"
+    }},
+    "strategic_recommendations": {{
+        "immediate_actions": ["action1", "action2", "action3"],
+        "long_term_initiatives": ["initiative1", "initiative2"],
+        "risk_mitigation": ["risk1_mitigation", "risk2_mitigation"],
+        "competitive_response": "how to respond to competitive moves"
+    }},
+    "confidence_score": 0.96
+}}
+
+Provide actionable, strategic recommendations that integrate all analysis layers.
+        """
+        
+        try:
+            response = await asyncio.get_event_loop().run_in_executor(None,
+                lambda: self.client.models.generate_content(
+                    model=self.gemini_model,
+                    contents=synthesis_prompt
+                )
+            )
+            
+            response_text = response.text.strip()
+            if response_text.startswith('```json'):
+                response_text = response_text.replace('```json', '').replace('```', '').strip()
+            
+            return json.loads(response_text)
+            
+        except Exception as e:
+            logging.error(f"Error in strategic synthesis: {str(e)}")
+            return self._get_fallback_strategic_synthesis()
+
+    def calculate_analysis_confidence(self, market_analysis: Dict, competitive_analysis: Dict, 
+                                    personality_analysis: Dict, visual_brief: Dict, strategic_synthesis: Dict) -> Dict[str, float]:
+        """Calculate confidence scores for each analysis layer"""
+        
+        return {
+            "market_analysis_confidence": market_analysis.get("confidence_score", 0.85),
+            "competitive_analysis_confidence": competitive_analysis.get("confidence_score", 0.80),
+            "personality_analysis_confidence": personality_analysis.get("confidence_score", 0.90),
+            "visual_brief_confidence": visual_brief.get("confidence_score", 0.88),
+            "strategic_synthesis_confidence": strategic_synthesis.get("confidence_score", 0.92),
+            "overall_confidence": (
+                market_analysis.get("confidence_score", 0.85) +
+                competitive_analysis.get("confidence_score", 0.80) +
+                personality_analysis.get("confidence_score", 0.90) +
+                visual_brief.get("confidence_score", 0.88) +
+                strategic_synthesis.get("confidence_score", 0.92)
+            ) / 5
+        }
     
     async def _generate_fallback_strategy(self, business_input: BusinessInput) -> BrandStrategy:
         """Generate a simplified strategy as fallback"""
