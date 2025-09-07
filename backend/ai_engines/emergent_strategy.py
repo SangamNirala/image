@@ -53,7 +53,7 @@ class AdvancedBrandStrategyEngine:
         """Multi-layer strategic analysis of business concept"""
         
         # Layer 1: Market Analysis
-        market_analysis = await self._analyze_market_position(business_input)
+        market_analysis = await self.analyze_market_position(business_input)
         
         # Layer 2: Competitive Landscape
         competitive_analysis = await self._analyze_competitive_landscape(business_input)
