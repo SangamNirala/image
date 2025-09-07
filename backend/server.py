@@ -163,13 +163,23 @@ async def generate_asset(project_id: str, asset_type: str, context: Optional[str
         if not project.brand_strategy:
             raise HTTPException(status_code=400, detail="Brand strategy not generated yet")
         
-        # Generate asset
+        # Generate asset using proper GeminiVisualEngine
         if asset_type == "logo":
-            image_data = await visual_engine.generate_logo(project.brand_strategy)
-        else:
-            image_data = await visual_engine.generate_marketing_asset(
-                project.brand_strategy, asset_type, context
+            asset = await visual_engine.generate_asset(
+                brand_strategy=project.brand_strategy,
+                asset_type=AssetType.LOGO,
+                additional_context=context
             )
+            image_data = asset.asset_url.split(",")[1]  # Extract base64 from data URL
+        else:
+            # Map string asset_type to AssetType enum
+            asset_type_enum = getattr(AssetType, asset_type.upper(), AssetType.FLYER)
+            asset = await visual_engine.generate_asset(
+                brand_strategy=project.brand_strategy,
+                asset_type=asset_type_enum,
+                additional_context=context
+            )
+            image_data = asset.asset_url.split(",")[1]  # Extract base64 from data URL
         
         # Create asset record
         asset = GeneratedAsset(
