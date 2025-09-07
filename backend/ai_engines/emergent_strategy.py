@@ -108,37 +108,99 @@ class AdvancedBrandStrategyEngine:
             # Fallback to simplified strategy
             return await self._generate_fallback_strategy(business_input)
     
-    async def _analyze_market_position(self, business_input: BusinessInput) -> Dict[str, Any]:
-        """Analyze market position and opportunities"""
+    async def analyze_market_position(self, business_input: BusinessInput) -> Dict[str, Any]:
+        """Layer 1: Advanced Market Analysis & Industry Intelligence"""
         
-        market_prompt = f"""
-        As a market research expert, analyze the market position for this business:
-        
-        Business: {business_input.business_name}
-        Industry: {business_input.industry}
-        Description: {business_input.business_description}
-        Target Audience: {business_input.target_audience}
-        
-        Provide market analysis in JSON format:
-        {{
-            "market_size": "description",
-            "market_trends": ["trend1", "trend2", "trend3"],
-            "opportunities": ["opportunity1", "opportunity2"],
-            "challenges": ["challenge1", "challenge2"],
-            "positioning_recommendations": "recommendations"
-        }}
+        market_analysis_prompt = f"""
+You are a senior market research analyst with 15+ years experience. Analyze this business:
+
+BUSINESS: {business_input.business_description}
+INDUSTRY: {business_input.industry}
+TARGET AUDIENCE: {business_input.target_audience}
+BUSINESS VALUES: {', '.join(business_input.business_values)}
+
+Provide comprehensive market analysis:
+
+1. MARKET SIZE & GROWTH POTENTIAL
+   - Total Addressable Market (TAM)
+   - Market growth trends and drivers
+   - Key market segments
+
+2. INDUSTRY DYNAMICS
+   - Major industry trends affecting this business
+   - Regulatory environment and challenges
+   - Technology disruptions and opportunities
+
+3. TARGET AUDIENCE INSIGHTS
+   - Demographics and psychographics
+   - Pain points and unmet needs
+   - Buying behavior and decision factors
+
+4. MARKET OPPORTUNITIES
+   - Underserved segments
+   - Emerging trends to capitalize on
+   - Strategic partnerships potential
+
+5. MARKET POSITIONING RECOMMENDATIONS
+   - Optimal market position
+   - Value proposition positioning
+   - Differentiation strategies
+
+Respond in this exact JSON format:
+{{
+    "market_size_analysis": {{
+        "total_addressable_market": "TAM description and size estimation",
+        "growth_trends": ["trend1", "trend2", "trend3"],
+        "market_drivers": ["driver1", "driver2", "driver3"]
+    }},
+    "industry_dynamics": {{
+        "major_trends": ["trend1", "trend2", "trend3"],
+        "regulatory_environment": "regulatory landscape description",
+        "technology_disruptions": ["disruption1", "disruption2"],
+        "industry_challenges": ["challenge1", "challenge2"]
+    }},
+    "target_audience_insights": {{
+        "demographics": "demographic profile",
+        "psychographics": "psychological and behavioral traits",
+        "pain_points": ["pain1", "pain2", "pain3"],
+        "buying_behavior": "buying patterns and decision making process",
+        "unmet_needs": ["need1", "need2", "need3"]
+    }},
+    "market_opportunities": {{
+        "underserved_segments": ["segment1", "segment2"],
+        "emerging_trends": ["trend1", "trend2", "trend3"],
+        "partnership_opportunities": ["opportunity1", "opportunity2"],
+        "market_gaps": ["gap1", "gap2"]
+    }},
+    "positioning_recommendations": {{
+        "optimal_position": "recommended market position",
+        "value_proposition_focus": "key value proposition elements",
+        "differentiation_strategy": "how to differentiate from competition",
+        "positioning_statement": "concise positioning statement"
+    }},
+    "confidence_score": 0.95
+}}
+
+Be specific, data-driven, and actionable. Focus on insights that inform brand strategy.
         """
         
         try:
             response = await asyncio.get_event_loop().run_in_executor(None,
                 lambda: self.client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=market_prompt
+                    model=self.gemini_model,
+                    contents=market_analysis_prompt
                 )
             )
-            return json.loads(response.text.strip().replace('```json', '').replace('```', '').strip())
-        except:
-            return {"market_size": "moderate", "market_trends": [], "opportunities": [], "challenges": []}
+            
+            response_text = response.text.strip()
+            if response_text.startswith('```json'):
+                response_text = response_text.replace('```json', '').replace('```', '').strip()
+            
+            return json.loads(response_text)
+            
+        except Exception as e:
+            logging.error(f"Error in market analysis: {str(e)}")
+            return self._get_fallback_market_analysis()
     
     async def _analyze_competitive_landscape(self, business_input: BusinessInput) -> Dict[str, Any]:
         """Analyze competitive landscape and differentiation opportunities"""
