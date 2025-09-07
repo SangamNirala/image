@@ -4,19 +4,53 @@ import logging
 import asyncio
 import base64
 import io
-from typing import Dict, Any, List, Optional
+import hashlib
+import time
+from typing import Dict, Any, List, Optional, Tuple
 from google import genai
 from PIL import Image
 from models.brand_strategy import BrandStrategy
 from models.visual_assets import GeneratedAsset, AssetGenerationRequest, AssetVariation
 
 class GeminiVisualEngine:
-    """Advanced visual asset generation using Gemini with consistency management"""
+    """🚀 PHASE 3: Revolutionary visual asset generation using Gemini with advanced consistency management"""
     
     def __init__(self):
         self.client = genai.Client(api_key=os.environ.get('GEMINI_API_KEY'))
         self.consistency_seed = None
         self.brand_dna = None
+        self.generation_history = []
+        self.visual_memory = {}
+        
+        # Phase 3 Advanced Configuration
+        self.quality_tiers = {
+            "premium": {
+                "model": "gemini-2.5-flash-image-preview",
+                "max_retries": 3,
+                "consistency_threshold": 0.95
+            },
+            "professional": {
+                "model": "gemini-2.5-flash-image-preview", 
+                "max_retries": 2,
+                "consistency_threshold": 0.90
+            },
+            "standard": {
+                "model": "gemini-2.5-flash-image-preview",
+                "max_retries": 1,
+                "consistency_threshold": 0.85
+            }
+        }
+        
+        # Advanced Visual Identity Components
+        self.visual_identity_suite = [
+            'logo_primary', 'logo_horizontal', 'logo_vertical', 'logo_icon_only', 
+            'logo_monochrome', 'logo_reversed', 'logo_simplified',
+            'business_card_standard', 'business_card_modern', 'business_card_minimal',
+            'letterhead_formal', 'letterhead_creative',
+            'social_media_square', 'social_media_story', 'social_media_cover', 'social_media_linkedin',
+            'flyer_promotional', 'flyer_informational', 'banner_web', 'banner_print',
+            'brand_pattern', 'icon_suite', 'mockup_business_cards', 'mockup_letterhead'
+        ]
         
     def set_brand_consistency(self, brand_strategy: BrandStrategy, seed: Optional[str] = None):
         """Set consistency parameters for the brand"""
