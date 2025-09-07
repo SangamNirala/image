@@ -93,7 +93,12 @@ class BrandStrategyEngine:
         """
         
         try:
-            response = await self.model.generate_content_async(market_prompt)
+            response = await asyncio.get_event_loop().run_in_executor(None,
+                lambda: self.client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=market_prompt
+                )
+            )
             return json.loads(response.text.strip().replace('```json', '').replace('```', '').strip())
         except:
             return {"market_size": "moderate", "market_trends": [], "opportunities": [], "challenges": []}
