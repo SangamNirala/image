@@ -2540,3 +2540,24 @@ class AdvancedConsistencyManager:
             "Quality is suitable for both print and digital applications",
             "Brand message and values are clearly communicated"
         ]
+
+
+# Legacy ConsistencyManager class for backward compatibility
+class ConsistencyManager(AdvancedConsistencyManager):
+    """Legacy ConsistencyManager for backward compatibility - delegates to AdvancedConsistencyManager"""
+    
+    def __init__(self):
+        super().__init__()
+        logging.info("🔄 Legacy ConsistencyManager initialized - delegating to Phase 3.2 AdvancedConsistencyManager")
+    
+    def maintain_visual_consistency(
+        self, 
+        base_assets: List[GeneratedAsset], 
+        new_asset_type: str, 
+        brand_strategy: BrandStrategy
+    ) -> Dict[str, Any]:
+        """Legacy method - delegates to Phase 3.2 system"""
+        
+        # For legacy compatibility, use the basic constraints format
+        result = super().legacy_maintain_visual_consistency(base_assets, new_asset_type, brand_strategy)
+        return result
