@@ -148,7 +148,7 @@ class BrandForgeAPITester:
         return success
 
     def test_generate_single_asset(self, asset_type="logo"):
-        """Test single asset generation"""
+        """Test single asset generation with base64 encoding validation"""
         if not self.project_id:
             print(f"❌ Cannot test {asset_type} generation - no project ID")
             return False
@@ -169,11 +169,38 @@ class BrandForgeAPITester:
                     print(f"❌ Missing required field: {field}")
                     return False
             
-            # Verify asset URL format
-            if response['asset_url'].startswith('data:image/png;base64,'):
-                print("   ✅ Asset URL format validated")
+            # CRITICAL: Verify base64 encoding fix
+            asset_url = response['asset_url']
+            
+            # Check data URL format
+            if not asset_url.startswith('data:image/png;base64,'):
+                print(f"❌ CRITICAL: Invalid data URL format. Expected 'data:image/png;base64,' but got: {asset_url[:50]}...")
+                return False
+            
+            # Extract base64 data
+            base64_data = asset_url.split(',')[1] if ',' in asset_url else ''
+            
+            # CRITICAL: Check for Python byte notation (the bug we're fixing)
+            if "b'" in base64_data or "\\x" in base64_data:
+                print(f"❌ CRITICAL: Python byte notation detected in base64 data: {base64_data[:100]}...")
+                return False
+            
+            # Verify substantial base64 data (not tiny placeholder)
+            if len(base64_data) < 200:
+                print(f"⚠️  WARNING: Base64 data seems small ({len(base64_data)} chars) - might be placeholder")
             else:
-                print(f"   ⚠️  Unexpected asset URL format: {response['asset_url'][:50]}...")
+                print(f"   ✅ Substantial base64 data ({len(base64_data)} chars)")
+            
+            # Validate base64 format
+            try:
+                import base64
+                base64.b64decode(base64_data)
+                print("   ✅ Valid base64 encoding format")
+            except Exception as e:
+                print(f"❌ CRITICAL: Invalid base64 format: {str(e)}")
+                return False
+            
+            print(f"   ✅ {asset_type.title()} base64 encoding fix verified")
         
         return success
 
