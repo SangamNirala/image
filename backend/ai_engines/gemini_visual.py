@@ -932,6 +932,37 @@ class GeminiVisualEngine:
                                  "good" if overall_score >= 0.85 else "needs_improvement"
         }
     
+    def _extract_image_data(self, response) -> Optional[str]:
+        """Extract base64 image data from Gemini response"""
+        
+        try:
+            if hasattr(response, 'candidates') and response.candidates:
+                for candidate in response.candidates:
+                    if hasattr(candidate, 'content') and candidate.content:
+                        for part in candidate.content.parts:
+                            if hasattr(part, 'inline_data') and part.inline_data:
+                                # Get the raw data from Gemini
+                                raw_data = part.inline_data.data
+                                
+                                # If it's already a string (base64), return it
+                                if isinstance(raw_data, str):
+                                    return raw_data
+                                
+                                # If it's bytes, encode to base64
+                                if isinstance(raw_data, bytes):
+                                    return base64.b64encode(raw_data).decode('utf-8')
+                                
+                                # If it's something else, try to convert
+                                try:
+                                    return base64.b64encode(raw_data).decode('utf-8')
+                                except:
+                                    # Try converting to string first
+                                    return str(raw_data)
+            return None
+        except Exception as e:
+            logging.error(f"Error extracting image data: {str(e)}")
+            return None
+    
     def _generate_placeholder_image(self, asset_type: str) -> str:
         """Generate a placeholder image when generation fails"""
         
