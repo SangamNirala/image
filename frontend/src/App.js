@@ -19,9 +19,28 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 function App() {
-  const [currentStep, setCurrentStep] = useState(0);
+  // Helper functions for localStorage
+  const getStoredState = (key, defaultValue) => {
+    try {
+      const stored = localStorage.getItem(key);
+      return stored ? JSON.parse(stored) : defaultValue;
+    } catch (error) {
+      console.error(`Error loading ${key} from localStorage:`, error);
+      return defaultValue;
+    }
+  };
+
+  const setStoredState = (key, value) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error(`Error saving ${key} to localStorage:`, error);
+    }
+  };
+
+  const [currentStep, setCurrentStep] = useState(() => getStoredState('brandforge_currentStep', 0));
   const [isGenerating, setIsGenerating] = useState(false);
-  const [businessInput, setBusinessInput] = useState({
+  const [businessInput, setBusinessInput] = useState(() => getStoredState('brandforge_businessInput', {
     business_name: '',
     business_description: '',
     industry: '',
@@ -29,12 +48,12 @@ function App() {
     business_values: [],
     preferred_style: 'modern',
     preferred_colors: 'flexible'
-  });
-  const [currentProject, setCurrentProject] = useState(null);
-  const [brandStrategy, setBrandStrategy] = useState(null);
-  const [generatedAssets, setGeneratedAssets] = useState([]);
-  const [progress, setProgress] = useState(0);
-  const [activeTab, setActiveTab] = useState('business-info');
+  }));
+  const [currentProject, setCurrentProject] = useState(() => getStoredState('brandforge_currentProject', null));
+  const [brandStrategy, setBrandStrategy] = useState(() => getStoredState('brandforge_brandStrategy', null));
+  const [generatedAssets, setGeneratedAssets] = useState(() => getStoredState('brandforge_generatedAssets', []));
+  const [progress, setProgress] = useState(() => getStoredState('brandforge_progress', 0));
+  const [activeTab, setActiveTab] = useState(() => getStoredState('brandforge_activeTab', 'business-info'));
 
   const steps = [
     { id: 'business-info', title: 'Business Information', icon: Target },
