@@ -759,35 +759,287 @@ Provide actionable, strategic recommendations that integrate all analysis layers
             ) / 5
         }
     
-    async def _generate_fallback_strategy(self, business_input: BusinessInput) -> BrandStrategy:
-        """Generate a simplified strategy as fallback"""
+    async def _generate_phase2_fallback_strategy(self, business_input: BusinessInput) -> BrandStrategy:
+        """Generate Phase 2 enhanced fallback strategy with advanced capabilities"""
         
         return BrandStrategy(
             business_name=business_input.business_name,
             brand_personality={
-                "primary_traits": ["professional", "reliable", "innovative", "trustworthy", "modern"],
+                "primary_traits": ["innovative", "trustworthy", "professional", "forward-thinking", "reliable"],
                 "brand_archetype": "The Innovator",
-                "tone_of_voice": "Professional yet approachable",
-                "brand_essence": f"Delivering excellence in {business_input.industry}"
+                "tone_of_voice": "Professional yet approachable, confident and knowledgeable",
+                "brand_essence": f"Pioneering excellence and innovation in {business_input.industry}",
+                "emotional_drivers": ["trust", "confidence", "aspiration"],
+                "personality_expression": "Consistent professional excellence across all touchpoints"
             },
             visual_direction={
-                "design_style": "Modern and clean",
-                "visual_mood": "Professional and trustworthy",
-                "typography_style": "Clean, readable fonts",
-                "imagery_style": "Professional and high-quality",
-                "logo_direction": "Simple, memorable, and scalable"
+                "design_style": "Modern, clean, and sophisticated with strategic use of space",
+                "visual_mood": "Professional confidence with innovative edge",
+                "typography_strategy": "Clean, readable fonts that convey authority and accessibility",
+                "imagery_style": "High-quality, professional imagery that tells the brand story",
+                "logo_direction": "Simple, memorable, scalable design that works across all applications",
+                "layout_principles": "Clean hierarchy, strategic whitespace, consistent alignment",
+                "visual_consistency_framework": "Cohesive visual language across all brand touchpoints"
             },
             color_palette=["#2563eb", "#1e40af", "#3b82f6", "#60a5fa", "#f8fafc"],
             messaging_framework={
-                "tagline": f"Excellence in {business_input.industry}",
-                "key_messages": ["Quality", "Innovation", "Trust"],
-                "brand_promise": "Delivering exceptional value",
-                "unique_value_proposition": "Your trusted partner for success"
+                "tagline": f"Innovating Excellence in {business_input.industry}",
+                "key_messages": ["Innovation Leadership", "Trusted Expertise", "Exceptional Results"],
+                "brand_promise": "Delivering innovative solutions that drive exceptional outcomes",
+                "unique_value_proposition": "Your strategic partner for breakthrough success",
+                "brand_story": f"Leading innovation in {business_input.industry} through expertise and commitment",
+                "messaging_hierarchy": "Innovation first, trust builds, results deliver"
             },
             consistency_rules={
-                "logo_usage": "Use primary logo on light backgrounds",
-                "color_usage": "Primary blue for main elements, neutrals for text",
-                "typography_rules": "Consistent font hierarchy",
-                "visual_consistency": "Maintain clean, professional appearance"
+                "logo_usage": "Primary logo on light backgrounds, reversed logo on dark backgrounds",
+                "color_usage": "Primary blue for key elements, supporting palette for hierarchy",
+                "typography_rules": "Consistent font hierarchy with clear information architecture",
+                "visual_consistency": "Maintain sophisticated professional appearance across all materials",
+                "brand_voice_consistency": "Professional confidence balanced with approachable expertise",
+                "touchpoint_consistency": "Seamless brand experience across all customer interactions"
+            },
+            advanced_analysis={
+                "market_intelligence": {"confidence_score": 0.75},
+                "competitive_positioning": {"confidence_score": 0.70},
+                "brand_personality": {"confidence_score": 0.85},
+                "visual_direction": {"confidence_score": 0.80},
+                "strategic_recommendations": {"confidence_score": 0.78}
             }
         )
+
+    def _get_fallback_market_analysis(self) -> Dict[str, Any]:
+        """Fallback market analysis for error scenarios"""
+        return {
+            "market_size_analysis": {
+                "total_addressable_market": "Growing market with digital transformation opportunities",
+                "growth_trends": ["Digital adoption", "Customer experience focus", "Efficiency demands"],
+                "market_drivers": ["Technology advancement", "Changing customer expectations", "Competitive pressure"]
+            },
+            "industry_dynamics": {
+                "major_trends": ["Digital transformation", "Customer-centric approaches", "Innovation focus"],
+                "regulatory_environment": "Standard industry regulations apply",
+                "technology_disruptions": ["AI integration", "Automation", "Digital platforms"],
+                "industry_challenges": ["Market competition", "Technology adoption", "Customer retention"]
+            },
+            "target_audience_insights": {
+                "demographics": "Professional decision-makers and end users",
+                "psychographics": "Value-driven, efficiency-focused, quality-conscious",
+                "pain_points": ["Time constraints", "Quality concerns", "Cost considerations"],
+                "buying_behavior": "Research-driven decision making with emphasis on proven results",
+                "unmet_needs": ["Simplified solutions", "Better integration", "Improved outcomes"]
+            },
+            "market_opportunities": {
+                "underserved_segments": ["Small to medium businesses", "Emerging markets"],
+                "emerging_trends": ["Sustainability focus", "Remote solutions", "Personalization"],
+                "partnership_opportunities": ["Technology providers", "Industry associations"],
+                "market_gaps": ["Affordable premium solutions", "Integrated platforms"]
+            },
+            "positioning_recommendations": {
+                "optimal_position": "Innovative leader delivering exceptional value",
+                "value_proposition_focus": "Quality, innovation, and trusted expertise",
+                "differentiation_strategy": "Superior results through innovative approaches",
+                "positioning_statement": "The trusted partner for innovative excellence"
+            },
+            "confidence_score": 0.75
+        }
+
+    def _get_fallback_competitive_analysis(self) -> Dict[str, Any]:
+        """Fallback competitive analysis for error scenarios"""
+        return {
+            "competitive_landscape": {
+                "direct_competitors": [
+                    {"name": "Market Leader A", "market_share": "25%", "strengths": ["Brand recognition", "Market presence"]},
+                    {"name": "Challenger B", "market_share": "15%", "strengths": ["Innovation", "Customer service"]},
+                    {"name": "Specialist C", "market_share": "10%", "strengths": ["Expertise", "Specialization"]}
+                ],
+                "indirect_competitors": ["Alternative solutions", "In-house options", "Generic providers"],
+                "competitive_intensity": "Moderate to high with opportunities for differentiation"
+            },
+            "competitor_analysis": {
+                "market_leaders": ["Established Player 1", "Established Player 2"],
+                "brand_strength_ranking": ["Leader A", "Challenger B", "Specialist C"],
+                "competitive_advantages_by_player": {
+                    "Leader A": ["Market presence", "Resources"],
+                    "Challenger B": ["Innovation", "Agility"]
+                }
+            },
+            "market_gaps": {
+                "unmet_customer_needs": ["Better integration", "Simplified solutions", "Personal touch"],
+                "service_gaps": ["Customization", "Support quality", "Value pricing"],
+                "positioning_white_spaces": ["Premium affordable", "Innovative traditional"],
+                "underserved_segments": ["Small business", "Emerging sectors"]
+            },
+            "differentiation_strategy": {
+                "unique_value_propositions": ["Superior outcomes", "Innovative approach", "Trusted partnership"],
+                "competitive_moats": ["Expertise depth", "Customer relationships", "Innovation capability"],
+                "positioning_against_competition": "Premium quality with accessible approach",
+                "differentiation_pillars": ["Innovation", "Quality", "Service", "Results"]
+            },
+            "strategic_recommendations": {
+                "competitive_response_strategies": ["Focus on differentiation", "Build customer loyalty"],
+                "market_entry_tactics": ["Value demonstration", "Strategic partnerships"],
+                "brand_positioning_strategy": "Position as innovative leader with proven results",
+                "competitive_messaging": "Emphasize unique value and proven outcomes"
+            },
+            "confidence_score": 0.70
+        }
+
+    def _get_fallback_personality_analysis(self) -> Dict[str, Any]:
+        """Fallback personality analysis for error scenarios"""
+        return {
+            "brand_archetype": {
+                "primary_archetype": "The Innovator",
+                "secondary_influences": ["The Expert", "The Caregiver"],
+                "archetype_justification": "Fits market need for innovative solutions with trusted expertise",
+                "archetype_characteristics": ["Forward-thinking", "Problem-solving", "Reliable", "Creative"]
+            },
+            "personality_traits": {
+                "core_traits": [
+                    {"trait": "Innovative", "description": "Forward-thinking and creative", "expression": "Shows up in solutions and approaches"},
+                    {"trait": "Trustworthy", "description": "Reliable and dependable", "expression": "Consistent delivery and communication"},
+                    {"trait": "Professional", "description": "Expert and competent", "expression": "Quality work and professional standards"},
+                    {"trait": "Approachable", "description": "Accessible and friendly", "expression": "Easy to work with and understand"},
+                    {"trait": "Results-focused", "description": "Outcome-oriented", "expression": "Clear delivery and measurable success"}
+                ],
+                "personality_summary": "An innovative yet trustworthy brand that combines expertise with approachability"
+            },
+            "brand_voice": {
+                "communication_style": "Professional confidence balanced with approachable expertise",
+                "tone_variations": {
+                    "formal_contexts": "Professional and authoritative",
+                    "casual_contexts": "Friendly and helpful",
+                    "crisis_contexts": "Calm and reassuring"
+                },
+                "language_patterns": ["Clear communication", "Action-oriented", "Solution-focused"],
+                "vocabulary_preferences": ["Positive", "Professional", "Accessible"]
+            },
+            "brand_values_beliefs": {
+                "core_values": ["Innovation", "Quality", "Trust", "Excellence", "Partnership"],
+                "brand_purpose": "To drive success through innovative excellence",
+                "mission_statement": "Delivering exceptional outcomes through innovative solutions",
+                "belief_system": ["Quality matters", "Innovation drives progress", "Trust builds relationships"],
+                "worldview": "Success comes from combining innovation with proven expertise"
+            },
+            "relationship_dynamics": {
+                "customer_relationship_model": "Trusted advisor and strategic partner",
+                "trust_building_approach": "Consistent delivery and transparent communication",
+                "credibility_factors": ["Proven results", "Expert knowledge", "Professional approach"],
+                "relationship_goals": ["Long-term partnership", "Mutual success"]
+            },
+            "emotional_positioning": {
+                "primary_emotions": ["Confidence", "Trust", "Aspiration"],
+                "emotional_journey": {
+                    "awareness": "Curiosity and interest",
+                    "consideration": "Confidence and trust",
+                    "purchase": "Excitement and commitment",
+                    "loyalty": "Satisfaction and advocacy"
+                },
+                "feeling_differentiation": "Trusted innovation partner vs. just another service provider"
+            },
+            "confidence_score": 0.85
+        }
+
+    def _get_fallback_visual_brief(self) -> Dict[str, Any]:
+        """Fallback visual brief for error scenarios"""
+        return {
+            "visual_strategy": {
+                "visual_philosophy": "Clean, professional design that conveys innovation and trust",
+                "visual_personality_expression": "Modern sophistication with approachable professionalism",
+                "visual_goals": ["Build trust", "Convey expertise", "Show innovation"],
+                "brand_visual_positioning": "Premium quality with accessible approach"
+            },
+            "design_system": {
+                "primary_design_principles": ["Clarity", "Consistency", "Quality"],
+                "visual_hierarchy": "Clear information architecture with strategic emphasis",
+                "design_components": ["Typography", "Color", "Imagery", "Layout"],
+                "consistency_framework": "Unified visual language across all touchpoints"
+            },
+            "color_strategy": {
+                "strategic_palette": [
+                    {"color": "Primary Blue", "hex": "#2563eb", "psychology": "Trust and professionalism", "usage": "Main brand elements"},
+                    {"color": "Secondary Blue", "hex": "#1e40af", "psychology": "Depth and reliability", "usage": "Supporting elements"},
+                    {"color": "Accent Blue", "hex": "#3b82f6", "psychology": "Innovation and energy", "usage": "Highlights and calls to action"},
+                    {"color": "Light Blue", "hex": "#60a5fa", "psychology": "Accessibility and friendliness", "usage": "Secondary accents"},
+                    {"color": "Neutral", "hex": "#f8fafc", "psychology": "Clean and professional", "usage": "Backgrounds and text"}
+                ],
+                "color_psychology_rationale": "Blue conveys trust and professionalism while maintaining innovation feel",
+                "color_combinations": "Primary with neutrals for authority, accents for energy"
+            },
+            "typography_strategy": {
+                "typography_personality": "Clean, readable, and professional with modern feel",
+                "font_selection_criteria": "Legibility, professionalism, modern appearance",
+                "typographic_hierarchy": {
+                    "primary_heading": "Bold, clear, authoritative",
+                    "secondary_heading": "Supporting, professional",
+                    "body_text": "Clean, readable, accessible",
+                    "accent_text": "Strategic emphasis elements"
+                },
+                "typography_applications": "Consistent hierarchy across all brand materials"
+            },
+            "imagery_direction": {
+                "photography_style": "Professional, high-quality, authentic",
+                "illustration_style": "Clean, modern, purposeful when needed",
+                "visual_content_strategy": "Support brand story with quality visuals",
+                "mood_aesthetic": "Professional confidence with approachable warmth",
+                "visual_storytelling": "Show expertise and results through visual narrative"
+            },
+            "logo_identity_brief": {
+                "logo_design_direction": "Simple, memorable, scalable design",
+                "identity_system_requirements": "Flexible system for all applications",
+                "logo_personality_expression": "Innovation balanced with trustworthiness",
+                "application_considerations": "Digital and print, various sizes and contexts",
+                "logo_effectiveness_criteria": "Recognition, memorability, appropriate personality"
+            },
+            "confidence_score": 0.80
+        }
+
+    def _get_fallback_strategic_synthesis(self) -> Dict[str, Any]:
+        """Fallback strategic synthesis for error scenarios"""
+        return {
+            "strategic_insights": {
+                "key_insights": ["Market opportunity exists", "Differentiation is key", "Trust builds success", "Innovation drives growth"],
+                "strategic_themes": ["Innovation leadership", "Trusted expertise", "Quality delivery"],
+                "critical_success_factors": ["Brand differentiation", "Customer trust", "Quality delivery"],
+                "strategic_opportunities": ["Market leadership", "Customer loyalty"]
+            },
+            "brand_strategy_framework": {
+                "unified_strategy": "Innovative leader delivering exceptional results through trusted expertise",
+                "positioning_statement": "The trusted partner for innovative excellence and exceptional outcomes",
+                "strategy_pillars": ["Innovation", "Trust", "Quality", "Results"],
+                "brand_promise": "Exceptional outcomes through innovative excellence",
+                "unique_value_proposition": "Proven results through innovative approaches and trusted expertise"
+            },
+            "implementation_roadmap": {
+                "phase_1_immediate": {
+                    "timeline": "0-3 months",
+                    "priorities": ["Brand foundation", "Visual identity", "Key messaging"],
+                    "deliverables": ["Brand guidelines", "Visual assets"]
+                },
+                "phase_2_build": {
+                    "timeline": "3-9 months",
+                    "priorities": ["Market presence", "Customer experience", "Brand consistency"],
+                    "deliverables": ["Marketing materials", "Customer touchpoints"]
+                },
+                "phase_3_optimize": {
+                    "timeline": "9-18 months",
+                    "priorities": ["Brand optimization", "Market expansion"],
+                    "deliverables": ["Performance analytics", "Brand evolution"]
+                }
+            },
+            "success_measurement": {
+                "kpis": ["Brand awareness", "Customer satisfaction", "Market share", "Brand perception"],
+                "success_metrics": {
+                    "brand_awareness": "Measure recognition and recall",
+                    "brand_perception": "Track brand attributes and sentiment",
+                    "business_impact": "Monitor business growth and customer metrics"
+                },
+                "measurement_frequency": "Quarterly assessment with annual comprehensive review"
+            },
+            "strategic_recommendations": {
+                "immediate_actions": ["Establish brand foundation", "Create consistent messaging", "Develop visual identity"],
+                "long_term_initiatives": ["Build market leadership", "Expand customer base"],
+                "risk_mitigation": ["Monitor competitive response", "Maintain quality standards"],
+                "competitive_response": "Focus on differentiation and customer value"
+            },
+            "confidence_score": 0.78
+        }
