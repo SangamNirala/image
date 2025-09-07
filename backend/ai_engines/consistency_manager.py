@@ -1396,9 +1396,548 @@ class BrandMemorySystem:
         return recommendations[:5]
     """Advanced consistency management for cross-asset visual coherence"""
     
+class AdvancedConsistencyManager:
+    """🚀 PHASE 3.2 - REVOLUTIONARY MULTI-ASSET CONSISTENCY SYSTEM"""
+    
     def __init__(self):
+        # Phase 3.2 Revolutionary Components
+        self.visual_dna_engine = VisualDNAExtractor()
+        self.consistency_analyzer = ConsistencyAnalyzer()
+        self.refinement_engine = AssetRefinementEngine()
+        self.brand_memory = BrandMemorySystem()
+        
+        # Legacy support for existing functionality
         self.consistency_rules = {}
         self.brand_guidelines = {}
+        self.consistency_history = []
+        self.learning_algorithms = None
+        
+        logging.info("🚀 Phase 3.2 Advanced Consistency Manager initialized with revolutionary capabilities")
+        
+    def maintain_visual_consistency(
+        self, 
+        base_assets: List[GeneratedAsset], 
+        new_asset_type: str, 
+        brand_strategy: BrandStrategy
+    ) -> Dict[str, Any]:
+        """🎯 Master consistency orchestration method - Phase 3.2 Revolutionary System"""
+        
+        logging.info(f"🎨 Phase 3.2: Maintaining visual consistency for {new_asset_type} with {len(base_assets)} base assets")
+        
+        try:
+            # PHASE 1: ADVANCED VISUAL DNA EXTRACTION
+            logging.info("🧬 Phase 1: Extracting comprehensive visual DNA")
+            visual_dna = self.extract_comprehensive_visual_dna(base_assets)
+            
+            # PHASE 2: INTELLIGENT CONSISTENCY CONSTRAINTS
+            logging.info("🧠 Phase 2: Building intelligent consistency constraints")
+            consistency_constraints = self.build_intelligent_constraints(
+                visual_dna=visual_dna,
+                brand_strategy=brand_strategy,
+                asset_type=new_asset_type,
+                historical_performance=self.get_consistency_history()
+            )
+            
+            # PHASE 3: CONSISTENCY-AWARE ASSET GENERATION INSTRUCTIONS
+            logging.info("🎯 Phase 3: Generating consistency-aware instructions")
+            generation_instructions = self.create_consistency_aware_instructions(
+                asset_type=new_asset_type,
+                consistency_constraints=consistency_constraints,
+                brand_guidelines=self.extract_brand_guidelines(brand_strategy),
+                visual_dna=visual_dna,
+                quality_threshold=0.95
+            )
+            
+            # Return comprehensive consistency package
+            result = {
+                'visual_dna': visual_dna,
+                'consistency_constraints': consistency_constraints, 
+                'generation_instructions': generation_instructions,
+                'brand_guidelines': self.extract_brand_guidelines(brand_strategy),
+                'quality_threshold': 0.95,
+                'phase': '3.2_revolutionary_consistency',
+                'confidence': visual_dna.extraction_confidence
+            }
+            
+            logging.info(f"✅ Phase 3.2 visual consistency orchestration complete - Confidence: {visual_dna.extraction_confidence:.2f}")
+            
+            return result
+            
+        except Exception as e:
+            logging.error(f"❌ Phase 3.2 consistency orchestration failed: {e}")
+            # Fallback to basic consistency
+            return self.legacy_maintain_visual_consistency(base_assets, new_asset_type, brand_strategy)
+    
+    def validate_and_refine_asset(
+        self,
+        generated_asset: GeneratedAsset,
+        base_assets: List[GeneratedAsset], 
+        brand_strategy: BrandStrategy,
+        visual_dna: Optional[VisualDNA] = None,
+        target_consistency: float = 0.85
+    ) -> Dict[str, Any]:
+        """🔍 Phase 3.2: Multi-dimensional consistency validation and intelligent refinement"""
+        
+        logging.info(f"🔍 Phase 3.2: Validating and refining {generated_asset.asset_type}")
+        
+        try:
+            # PHASE 4: MULTI-DIMENSIONAL CONSISTENCY VALIDATION
+            logging.info("📊 Phase 4: Multi-dimensional consistency validation")
+            consistency_analysis = self.validate_comprehensive_consistency(
+                new_asset=generated_asset, 
+                base_assets=base_assets,
+                brand_strategy=brand_strategy
+            )
+            
+            # PHASE 5: INTELLIGENT REFINEMENT SYSTEM (if needed)
+            refinement_result = None
+            if consistency_analysis['overall_score'] < target_consistency:
+                logging.info(f"🔧 Phase 5: Applying intelligent refinement (Score: {consistency_analysis['overall_score']:.2f} < {target_consistency})")
+                
+                # Use provided visual DNA or extract from base assets
+                if visual_dna is None:
+                    visual_dna = self.visual_dna_engine.extract_comprehensive_visual_dna(base_assets)
+                
+                refinement_result = self.execute_intelligent_refinement(
+                    asset=generated_asset,
+                    consistency_analysis=consistency_analysis,
+                    visual_dna=visual_dna,
+                    refinement_iterations=3
+                )
+                
+                # Update asset with refinement results
+                if refinement_result['improvement_achieved']:
+                    generated_asset = refinement_result['refined_asset']
+                    consistency_analysis['overall_score'] = refinement_result['final_consistency_score']
+                    
+            # PHASE 6: LEARNING AND MEMORY UPDATE
+            logging.info("🧠 Phase 6: Updating brand memory and learning")
+            self.update_brand_memory(generated_asset, consistency_analysis)
+            
+            result = {
+                'validated_asset': generated_asset,
+                'consistency_analysis': consistency_analysis,
+                'refinement_result': refinement_result,
+                'meets_threshold': consistency_analysis['overall_score'] >= target_consistency,
+                'final_score': consistency_analysis['overall_score'],
+                'phase': '3.2_validation_refinement',
+                'processing_timestamp': datetime.now().isoformat()
+            }
+            
+            logging.info(f"✅ Phase 3.2 validation and refinement complete - Final Score: {consistency_analysis['overall_score']:.2f}")
+            
+            return result
+            
+        except Exception as e:
+            logging.error(f"❌ Phase 3.2 validation and refinement failed: {e}")
+            return {
+                'validated_asset': generated_asset,
+                'consistency_analysis': {'overall_score': 0.75, 'error': str(e)},
+                'refinement_result': None,
+                'meets_threshold': False,
+                'final_score': 0.75,
+                'phase': '3.2_error_fallback'
+            }
+    
+    def extract_comprehensive_visual_dna(self, base_assets: List[GeneratedAsset]) -> VisualDNA:
+        """🧬 PHASE 1: Advanced Visual DNA Extraction"""
+        return self.visual_dna_engine.extract_comprehensive_visual_dna(base_assets)
+    
+    def build_intelligent_constraints(
+        self,
+        visual_dna: VisualDNA,
+        brand_strategy: BrandStrategy,
+        asset_type: str,
+        historical_performance: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """🧠 PHASE 2: Intelligent Consistency Constraints"""
+        
+        logging.info(f"🧠 Building intelligent constraints for {asset_type}")
+        
+        constraints = {
+            # Visual DNA Constraints
+            'color_dna_constraints': {
+                'dominant_colors': visual_dna.color_dna.get('dominant_colors', [])[:3],
+                'color_harmony_type': visual_dna.color_dna.get('color_harmony_type', 'professional'),
+                'color_psychology': visual_dna.color_psychology_mapping.get('primary_emotion', 'trustworthy'),
+                'color_temperature': visual_dna.color_dna.get('color_temperature', 'neutral')
+            },
+            
+            # Style DNA Constraints  
+            'aesthetic_constraints': {
+                'style_keywords': visual_dna.aesthetic_signature.get('style_keywords', ['modern', 'professional']),
+                'design_philosophy': visual_dna.aesthetic_signature.get('design_philosophy', 'form_follows_function'),
+                'visual_complexity': visual_dna.aesthetic_signature.get('visual_complexity', 'refined_simplicity'),
+                'personality_traits': visual_dna.visual_personality.get('personality_traits', ['professional'])
+            },
+            
+            # Layout DNA Constraints
+            'composition_constraints': {
+                'layout_principles': visual_dna.composition_rules.get('composition_style', 'rule_of_thirds'),
+                'spatial_organization': visual_dna.spatial_relationships.get('spatial_organization', 'grid_based'),
+                'visual_hierarchy': visual_dna.hierarchy_systems.get('hierarchy_structure', 'clear_levels'),
+                'white_space_usage': visual_dna.composition_rules.get('white_space_usage', 'generous')
+            },
+            
+            # Brand Strategy Integration
+            'brand_integration': {
+                'brand_personality': brand_strategy.brand_personality.get('primary_traits', []),
+                'visual_direction': brand_strategy.visual_direction,
+                'color_palette': brand_strategy.color_palette,
+                'brand_values': brand_strategy.messaging_framework.get('key_messages', [])
+            },
+            
+            # Asset-Specific Constraints
+            'asset_specific': self._get_asset_specific_constraints(asset_type, visual_dna),
+            
+            # Quality Thresholds
+            'quality_requirements': {
+                'minimum_consistency_score': 0.85,
+                'professional_quality_threshold': 0.90,
+                'brand_alignment_threshold': 0.88,
+                'visual_appeal_threshold': 0.85
+            },
+            
+            # Historical Learning Integration
+            'learning_insights': self._integrate_historical_insights(asset_type, historical_performance)
+        }
+        
+        return constraints
+    
+    def create_consistency_aware_instructions(
+        self,
+        asset_type: str,
+        consistency_constraints: Dict[str, Any],
+        brand_guidelines: Dict[str, Any],
+        visual_dna: VisualDNA,
+        quality_threshold: float = 0.95
+    ) -> Dict[str, Any]:
+        """🎯 PHASE 3: Consistency-Aware Asset Generation Instructions"""
+        
+        instructions = {
+            'generation_prompt_enhancements': self._build_consistency_prompt_enhancements(
+                asset_type, consistency_constraints, visual_dna
+            ),
+            'visual_specifications': self._create_visual_specifications(
+                consistency_constraints, brand_guidelines
+            ),
+            'quality_checkpoints': self._define_quality_checkpoints(quality_threshold),
+            'consistency_validation_rules': self._create_validation_rules(consistency_constraints),
+            'brand_coherence_requirements': self._define_brand_coherence_requirements(
+                brand_guidelines, visual_dna
+            )
+        }
+        
+        return instructions
+    
+    def validate_comprehensive_consistency(
+        self, 
+        new_asset: GeneratedAsset, 
+        base_assets: List[GeneratedAsset], 
+        brand_strategy: BrandStrategy
+    ) -> Dict[str, Any]:
+        """🔍 PHASE 4: Multi-Dimensional Consistency Validation"""
+        return self.consistency_analyzer.validate_comprehensive_consistency(
+            new_asset, base_assets, brand_strategy
+        )
+    
+    def execute_intelligent_refinement(
+        self, 
+        asset: GeneratedAsset, 
+        consistency_analysis: Dict[str, Any], 
+        visual_dna: VisualDNA, 
+        refinement_iterations: int = 3
+    ) -> Dict[str, Any]:
+        """🔧 PHASE 5: Intelligent Asset Refinement System"""
+        return self.refinement_engine.execute_intelligent_refinement(
+            asset, consistency_analysis, visual_dna, refinement_iterations
+        )
+    
+    def update_brand_memory(self, new_asset: GeneratedAsset, consistency_analysis: Dict[str, Any]):
+        """🧠 PHASE 6: Brand Memory and Learning Update"""
+        self.brand_memory.update_brand_memory(new_asset, consistency_analysis)
+        
+        # Update local consistency history
+        self.consistency_history.append({
+            'timestamp': datetime.now().isoformat(),
+            'asset_type': new_asset.asset_type,
+            'consistency_score': consistency_analysis.get('overall_score', 0.8),
+            'analysis': consistency_analysis
+        })
+        
+        # Keep only recent history (max 50 entries)
+        self.consistency_history = self.consistency_history[-50:]
+    
+    def get_consistency_history(self) -> Dict[str, Any]:
+        """Get consistency history for learning insights"""
+        
+        if not self.consistency_history:
+            return {'total_assets': 0, 'average_consistency': 0.8, 'trends': {}}
+            
+        scores = [entry['consistency_score'] for entry in self.consistency_history]
+        asset_types = {}
+        
+        for entry in self.consistency_history:
+            asset_type = entry['asset_type']
+            if asset_type not in asset_types:
+                asset_types[asset_type] = []
+            asset_types[asset_type].append(entry['consistency_score'])
+            
+        return {
+            'total_assets': len(self.consistency_history),
+            'average_consistency': sum(scores) / len(scores),
+            'recent_trend': 'improving' if len(scores) >= 5 and sum(scores[-5:]) / 5 > sum(scores) / len(scores) else 'stable',
+            'asset_type_performance': {k: sum(v) / len(v) for k, v in asset_types.items()},
+            'learning_confidence': min(len(self.consistency_history) * 0.02, 0.95)
+        }
+    
+    def extract_brand_guidelines(self, brand_strategy: BrandStrategy) -> Dict[str, Any]:
+        """Extract comprehensive brand guidelines from strategy"""
+        
+        return {
+            'brand_identity': {
+                'business_name': brand_strategy.business_name,
+                'brand_personality': brand_strategy.brand_personality,
+                'brand_values': brand_strategy.messaging_framework.get('key_messages', []),
+                'brand_promise': brand_strategy.messaging_framework.get('brand_promise', '')
+            },
+            'visual_identity': {
+                'color_palette': brand_strategy.color_palette,
+                'visual_direction': brand_strategy.visual_direction,
+                'design_preferences': brand_strategy.visual_direction.get('design_style', 'modern')
+            },
+            'communication_guidelines': {
+                'tone_of_voice': brand_strategy.brand_personality.get('tone_of_voice', 'professional'),
+                'messaging_framework': brand_strategy.messaging_framework,
+                'target_audience': brand_strategy.target_audience
+            }
+        }
+    
+    def _get_asset_specific_constraints(self, asset_type: str, visual_dna: VisualDNA) -> Dict[str, Any]:
+        """Get asset-specific consistency constraints"""
+        
+        asset_constraints = {
+            'logo': {
+                'scalability': 'vector_optimized',
+                'versatility': 'multi_format_ready',
+                'recognition': 'instantly_memorable',
+                'simplicity': 'clean_iconic',
+                'brand_essence': 'core_identity_embodiment'
+            },
+            'business_card': {
+                'information_hierarchy': 'contact_focused',
+                'professional_appeal': 'premium_quality',
+                'brand_integration': 'subtle_prominent',
+                'readability': 'high_contrast',
+                'layout_efficiency': 'space_optimized'
+            },
+            'letterhead': {
+                'document_functionality': 'text_friendly',
+                'brand_presence': 'header_footer_balance',
+                'professional_standards': 'corporate_appropriate',
+                'printing_compatibility': 'office_ready',
+                'subtle_branding': 'supportive_not_dominant'
+            },
+            'social_media_post': {
+                'platform_optimization': 'social_media_ready',
+                'visual_impact': 'scroll_stopping',
+                'message_clarity': 'quick_comprehension',
+                'engagement_potential': 'shareable_memorable',
+                'brand_visibility': 'clear_attribution'
+            },
+            'flyer': {
+                'promotional_impact': 'marketing_effective',
+                'information_density': 'balanced_comprehensive',
+                'call_to_action': 'prominent_clear',
+                'visual_appeal': 'attention_grabbing',
+                'print_optimization': 'high_quality_reproduction'
+            },
+            'banner': {
+                'visibility_distance': 'readable_from_afar',
+                'message_prominence': 'key_info_highlighted',
+                'brand_recognition': 'immediately_identifiable',
+                'format_flexibility': 'multi_size_ready',
+                'impact_maximization': 'maximum_visual_punch'
+            }
+        }
+        
+        return asset_constraints.get(asset_type, {
+            'professional_quality': 'premium_standard',
+            'brand_consistency': 'aligned_coherent',
+            'visual_appeal': 'aesthetically_pleasing',
+            'functional_excellence': 'purpose_optimized'
+        })
+    
+    def _integrate_historical_insights(self, asset_type: str, historical_performance: Dict[str, Any]) -> Dict[str, Any]:
+        """Integrate historical learning insights"""
+        
+        insights = self.brand_memory.get_optimization_insights(asset_type)
+        
+        return {
+            'success_patterns': insights.get('best_practices', []),
+            'avoid_patterns': insights.get('common_pitfalls', []),
+            'optimization_tips': insights.get('optimization_recommendations', []),
+            'historical_average': insights.get('average_consistency', 0.8),
+            'learning_confidence': insights.get('learning_confidence', 0.5),
+            'experience_level': insights.get('total_experience', 0)
+        }
+    
+    def _build_consistency_prompt_enhancements(
+        self, 
+        asset_type: str, 
+        constraints: Dict[str, Any], 
+        visual_dna: VisualDNA
+    ) -> Dict[str, str]:
+        """Build prompt enhancements for consistency-aware generation"""
+        
+        color_guidance = f"Primary Colors: {', '.join(constraints['color_dna_constraints']['dominant_colors'][:3])}"
+        style_guidance = f"Design Style: {', '.join(constraints['aesthetic_constraints']['style_keywords'][:3])}"
+        personality_guidance = f"Brand Personality: {', '.join(constraints['aesthetic_constraints']['personality_traits'][:3])}"
+        
+        base_enhancement = f"""
+        CONSISTENCY REQUIREMENTS:
+        {color_guidance}
+        {style_guidance}  
+        {personality_guidance}
+        Visual DNA Seed: {visual_dna.consistency_seed}
+        Quality Threshold: Premium Professional
+        """
+        
+        asset_specific_enhancement = {
+            'logo': base_enhancement + "\nLOGO FOCUS: Scalable, iconic, instantly recognizable brand symbol",
+            'business_card': base_enhancement + "\nBUSINESS CARD FOCUS: Professional contact information with subtle brand integration", 
+            'letterhead': base_enhancement + "\nLETTERHEAD FOCUS: Document-friendly header with elegant brand presence",
+            'social_media_post': base_enhancement + "\nSOCIAL MEDIA FOCUS: Engaging visual content optimized for social platforms",
+            'flyer': base_enhancement + "\nFLYER FOCUS: Promotional marketing material with clear call-to-action",
+            'banner': base_enhancement + "\nBANNER FOCUS: High-visibility advertising with maximum brand impact"
+        }
+        
+        return {
+            'base_enhancement': base_enhancement,
+            'asset_specific': asset_specific_enhancement.get(asset_type, base_enhancement),
+            'consistency_seed': visual_dna.consistency_seed,
+            'quality_directive': "Generate premium professional quality with perfect brand consistency"
+        }
+    
+    def _create_visual_specifications(
+        self, 
+        constraints: Dict[str, Any], 
+        brand_guidelines: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Create detailed visual specifications"""
+        
+        return {
+            'color_specifications': {
+                'primary_palette': constraints['color_dna_constraints']['dominant_colors'],
+                'color_harmony': constraints['color_dna_constraints']['color_harmony_type'],
+                'psychological_impact': constraints['color_dna_constraints']['color_psychology']
+            },
+            'typography_specifications': {
+                'hierarchy_system': constraints['composition_constraints']['visual_hierarchy'],
+                'readability_standard': 'high_contrast_accessible',
+                'brand_voice_alignment': brand_guidelines['communication_guidelines']['tone_of_voice']
+            },
+            'layout_specifications': {
+                'composition_approach': constraints['composition_constraints']['layout_principles'],
+                'spatial_organization': constraints['composition_constraints']['spatial_organization'],
+                'white_space_treatment': constraints['composition_constraints']['white_space_usage']
+            },
+            'style_specifications': {
+                'design_philosophy': constraints['aesthetic_constraints']['design_philosophy'],
+                'visual_complexity': constraints['aesthetic_constraints']['visual_complexity'],
+                'aesthetic_keywords': constraints['aesthetic_constraints']['style_keywords']
+            }
+        }
+    
+    def _define_quality_checkpoints(self, quality_threshold: float) -> Dict[str, float]:
+        """Define quality validation checkpoints"""
+        
+        return {
+            'visual_appeal_minimum': quality_threshold * 0.85,
+            'brand_alignment_minimum': quality_threshold * 0.88,
+            'professional_quality_minimum': quality_threshold * 0.90,
+            'consistency_score_minimum': quality_threshold * 0.85,
+            'technical_quality_minimum': quality_threshold * 0.87,
+            'overall_acceptance_threshold': quality_threshold
+        }
+    
+    def _create_validation_rules(self, constraints: Dict[str, Any]) -> Dict[str, Any]:
+        """Create consistency validation rules"""
+        
+        return {
+            'color_validation': {
+                'brand_colors_present': True,
+                'color_harmony_maintained': True,
+                'psychological_consistency': True
+            },
+            'style_validation': {
+                'aesthetic_consistency': True,
+                'design_philosophy_alignment': True,
+                'personality_expression': True
+            },
+            'layout_validation': {
+                'composition_rules_followed': True,
+                'hierarchy_clarity': True,
+                'spatial_organization': True
+            },
+            'brand_validation': {
+                'brand_values_reflected': True,
+                'target_audience_appropriate': True,
+                'messaging_consistency': True
+            }
+        }
+    
+    def _define_brand_coherence_requirements(
+        self, 
+        brand_guidelines: Dict[str, Any], 
+        visual_dna: VisualDNA
+    ) -> Dict[str, Any]:
+        """Define brand coherence requirements"""
+        
+        return {
+            'identity_coherence': {
+                'brand_personality_expression': visual_dna.visual_personality.get('personality_traits', []),
+                'brand_values_manifestation': brand_guidelines['brand_identity']['brand_values'],
+                'brand_promise_alignment': brand_guidelines['brand_identity']['brand_promise']
+            },
+            'visual_coherence': {
+                'color_dna_consistency': visual_dna.color_dna,
+                'aesthetic_signature_maintenance': visual_dna.aesthetic_signature,
+                'design_system_integration': visual_dna.design_system_rules
+            },
+            'communication_coherence': {
+                'tone_consistency': brand_guidelines['communication_guidelines']['tone_of_voice'],
+                'message_alignment': brand_guidelines['communication_guidelines']['messaging_framework'],
+                'audience_appropriateness': brand_guidelines['communication_guidelines']['target_audience']
+            }
+        }
+    
+    # Legacy methods for backward compatibility
+    def legacy_maintain_visual_consistency(
+        self, 
+        base_assets: List[GeneratedAsset], 
+        new_asset_type: str, 
+        brand_strategy: BrandStrategy
+    ) -> Dict[str, Any]:
+        """Legacy consistency management for backward compatibility"""
+        
+        logging.info("🔄 Falling back to legacy consistency management")
+        
+        if not base_assets:
+            return self.initialize_brand_consistency(brand_strategy)
+        
+        # Analyze existing assets for consistency patterns
+        visual_patterns = self._analyze_visual_patterns(base_assets)
+        
+        # Generate consistency constraints
+        consistency_constraints = {
+            "color_constraints": self._generate_color_constraints(visual_patterns, brand_strategy),
+            "style_constraints": self._generate_style_constraints(visual_patterns, brand_strategy),
+            "layout_constraints": self._generate_layout_constraints(visual_patterns, new_asset_type),
+            "brand_alignment": self._ensure_brand_alignment(brand_strategy)
+        }
+        
+        return consistency_constraints
         
     def initialize_brand_consistency(self, brand_strategy: BrandStrategy) -> Dict[str, Any]:
         """Initialize consistency rules based on brand strategy"""
