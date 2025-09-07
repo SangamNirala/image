@@ -162,7 +162,12 @@ class BrandStrategyEngine:
         """
         
         try:
-            response = await self.model.generate_content_async(personality_prompt)
+            response = await asyncio.get_event_loop().run_in_executor(None,
+                lambda: self.client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=personality_prompt
+                )
+            )
             return json.loads(response.text.strip().replace('```json', '').replace('```', '').strip())
         except:
             return {"core_personality": {"primary_traits": ["professional", "reliable", "innovative"]}}
