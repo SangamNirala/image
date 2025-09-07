@@ -413,41 +413,78 @@ class GeminiVisualEngine:
         else:
             return custom_requirements or f"Create a professional {asset_type} for {brand_strategy.business_name}"
     
-    def _build_logo_prompt(self, brand_strategy: BrandStrategy, style_variant: str) -> str:
-        """Build sophisticated logo generation prompt"""
+    def _build_advanced_logo_prompt(self, brand_strategy: BrandStrategy) -> str:
+        """🚀 PHASE 3: Build revolutionary logo generation prompts with brand intelligence"""
+        
+        # Extract advanced brand intelligence
+        brand_archetype = brand_strategy.brand_personality.get('brand_archetype', 'Professional')
+        primary_traits = brand_strategy.brand_personality.get('primary_traits', [])
+        visual_philosophy = brand_strategy.visual_direction.get('visual_philosophy', 'Clean and impactful')
         
         return f"""
-        Create a professional, modern logo for {brand_strategy.business_name}.
+        Create a world-class professional logo with these specifications:
         
-        Brand Guidelines:
-        - Brand Personality: {', '.join(brand_strategy.brand_personality.get('primary_traits', []))}
-        - Brand Archetype: {brand_strategy.brand_personality.get('brand_archetype', 'Professional')}
-        - Design Style: {brand_strategy.visual_direction.get('design_style', 'modern')}
-        - Visual Mood: {brand_strategy.visual_direction.get('visual_mood', 'professional')}
-        - Logo Direction: {brand_strategy.visual_direction.get('logo_direction', 'clean and memorable')}
-        - Color Palette: {', '.join(brand_strategy.color_palette)}
-        - Typography Style: {brand_strategy.visual_direction.get('typography_style', 'clean and readable')}
+        🧠 BRAND INTELLIGENCE:
+        - Business: {brand_strategy.business_name}
+        - Industry Context: {brand_strategy.industry}
+        - Brand Archetype: {brand_archetype}
+        - Personality Traits: {', '.join(primary_traits)}
+        - Visual Philosophy: {visual_philosophy}
         
-        Style Variant: {style_variant}
+        🎨 ADVANCED DESIGN REQUIREMENTS:
+        - Style: {self._extract_design_style(brand_strategy)}
+        - Color Psychology: {self._get_color_psychology(brand_strategy)}
+        - Typography Integration: {self._get_typography_guidance(brand_strategy)}
         
-        Logo Requirements:
-        - High quality, professional logo design
-        - Scalable design that works at any size  
-        - Clean, memorable, and distinctive
-        - Perfectly reflects the brand personality and values
-        - Uses the specified color palette harmoniously
-        - Modern yet timeless design approach
-        - Works excellently on both light and dark backgrounds
-        - Appropriate for the industry and target audience
+        🔧 TECHNICAL SPECIFICATIONS:
+        - Format: Vector-style, scalable design
+        - Complexity: Professional but memorable
+        - Applications: Digital and print ready
+        - Uniqueness: Highly distinctive and ownable
         
-        Technical Specifications:
-        - Vector-style design suitable for all applications
-        - Clear, bold design elements
-        - Professional typography integration
-        - Balanced composition and proportions
+        🧬 CONSISTENCY REQUIREMENTS:
+        - Brand DNA: {self.brand_dna or 'Establish primary visual identity'}
+        - Visual Coherence: Must work with complete brand system
+        - Scalability: Perfect reproduction from favicon to billboard
         
-        Create a {style_variant} logo that embodies these brand characteristics and stands out in the market.
+        📤 OUTPUT REQUIREMENTS:
+        - Resolution: High-definition, production-ready
+        - Background: Transparent with clear boundaries
+        - Style: Premium professional quality that commands attention
+        - Innovation: Push creative boundaries while maintaining commercial viability
+        
+        Create a logo that establishes the definitive visual identity for this brand.
         """
+    
+    def _extract_design_style(self, brand_strategy: BrandStrategy) -> str:
+        """Extract and enhance design style from brand strategy"""
+        base_style = brand_strategy.visual_direction.get('design_style', 'modern')
+        visual_mood = brand_strategy.visual_direction.get('visual_mood', 'professional')
+        return f"{base_style} with {visual_mood} aesthetics"
+    
+    def _get_color_psychology(self, brand_strategy: BrandStrategy) -> str:
+        """Generate color psychology guidance"""
+        primary_color = brand_strategy.color_palette[0] if brand_strategy.color_palette else "#000000"
+        
+        color_psychology = {
+            "#2563eb": "Trust, reliability, professionalism",
+            "#dc2626": "Energy, passion, urgency", 
+            "#059669": "Growth, harmony, nature",
+            "#7c3aed": "Creativity, innovation, luxury",
+            "#ea580c": "Enthusiasm, warmth, accessibility"
+        }
+        
+        closest_match = min(color_psychology.keys(), 
+                          key=lambda x: abs(int(primary_color[1:], 16) - int(x[1:], 16)))
+        
+        return f"Primary color {primary_color} conveys: {color_psychology.get(closest_match, 'professional authority')}"
+    
+    def _get_typography_guidance(self, brand_strategy: BrandStrategy) -> str:
+        """Generate typography integration guidance"""
+        typography_style = brand_strategy.visual_direction.get('typography_style', 'clean')
+        brand_personality = ', '.join(brand_strategy.brand_personality.get('primary_traits', []))
+        
+        return f"{typography_style} typography that reflects {brand_personality} personality"
     
     def _extract_brand_dna(self, brand_strategy: BrandStrategy) -> Dict[str, Any]:
         """Extract visual DNA for consistency management"""
