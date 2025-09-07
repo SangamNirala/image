@@ -398,19 +398,156 @@ class GeminiVisualEngine:
             custom_requirements=prompt
         )
     
-    def _build_asset_prompt(
-        self,
-        asset_type: str,
-        brand_strategy: BrandStrategy,
-        style_variant: str,
-        custom_requirements: Optional[str]
-    ) -> str:
-        """Build comprehensive prompt for asset generation"""
+    async def generate_complete_visual_identity(self, brand_strategy: BrandStrategy, project_id: str) -> Dict[str, Any]:
+        """🌟 PHASE 3: Generate entire visual identity system beyond logos"""
+        
+        self.set_brand_consistency(brand_strategy)
+        
+        # Start with logo suite
+        logo_results = await self.generate_logo_suite(brand_strategy, project_id)
+        primary_logo = logo_results['primary']
+        
+        visual_identity = {
+            "logo_suite": logo_results,
+            "business_cards": [],
+            "letterheads": [], 
+            "social_media_templates": [],
+            "marketing_collateral": [],
+            "brand_patterns": [],
+            "mockups": []
+        }
+        
+        # Generate business card designs (3+ layouts)
+        business_card_variants = ['standard', 'modern', 'minimal']
+        for variant in business_card_variants:
+            card = await self._generate_business_card_design(project_id, brand_strategy, variant, primary_logo)
+            visual_identity["business_cards"].append(card)
+        
+        # Generate letterhead templates (2+ styles)
+        letterhead_variants = ['formal', 'creative']
+        for variant in letterhead_variants:
+            letterhead = await self._generate_letterhead_template(project_id, brand_strategy, variant, primary_logo)
+            visual_identity["letterheads"].append(letterhead)
+        
+        # Generate social media templates (4+ formats)
+        social_formats = ['square', 'story', 'cover', 'linkedin']
+        for format_type in social_formats:
+            template = await self._generate_social_media_template(project_id, brand_strategy, format_type, primary_logo)
+            visual_identity["social_media_templates"].append(template)
+        
+        # Generate marketing collateral
+        marketing_types = ['flyer_promotional', 'flyer_informational', 'banner_web', 'banner_print']
+        for marketing_type in marketing_types:
+            collateral = await self._generate_marketing_collateral(project_id, brand_strategy, marketing_type, primary_logo)
+            visual_identity["marketing_collateral"].append(collateral)
+        
+        # Generate brand pattern/texture library
+        pattern = await self._generate_brand_pattern(project_id, brand_strategy, primary_logo)
+        visual_identity["brand_patterns"].append(pattern)
+        
+        # Generate realistic mockups
+        mockup_types = ['business_cards', 'letterhead']
+        for mockup_type in mockup_types:
+            mockup = await self._generate_realistic_mockup(project_id, brand_strategy, mockup_type, primary_logo)
+            visual_identity["mockups"].append(mockup)
+        
+        # Calculate overall system consistency
+        all_assets = []
+        for category in visual_identity.values():
+            if isinstance(category, list):
+                all_assets.extend(category)
+            elif isinstance(category, dict) and 'variations' in category:
+                all_assets.extend(category['variations'])
+                all_assets.append(category['primary'])
+        
+        system_consistency = self._calculate_system_consistency(all_assets)
+        
+        return {
+            "visual_identity_suite": visual_identity,
+            "system_consistency": system_consistency,
+            "total_assets": len(all_assets),
+            "asset_breakdown": {
+                "logos": len(logo_results['variations']) + 1,
+                "business_cards": len(visual_identity["business_cards"]),
+                "letterheads": len(visual_identity["letterheads"]),
+                "social_templates": len(visual_identity["social_media_templates"]),
+                "marketing_collateral": len(visual_identity["marketing_collateral"]),
+                "patterns": len(visual_identity["brand_patterns"]),
+                "mockups": len(visual_identity["mockups"])
+            },
+            "generation_metadata": {
+                "brand_dna": self.brand_dna,
+                "consistency_seed": self.consistency_seed,
+                "quality_tier": "premium",
+                "commercial_ready": True
+            }
+        }
+    
+    def _build_advanced_asset_prompt(self, asset_type: str, brand_strategy: BrandStrategy) -> str:
+        """🎯 Build advanced prompts for different asset types"""
         
         if asset_type.startswith("logo"):
-            return self._build_logo_prompt(brand_strategy, style_variant)
+            return self._build_advanced_logo_prompt(brand_strategy)
+        elif asset_type.startswith("business_card"):
+            return self._build_business_card_prompt(brand_strategy, asset_type.split('_')[-1])
+        elif asset_type.startswith("letterhead"):
+            return self._build_letterhead_prompt(brand_strategy, asset_type.split('_')[-1])
+        elif asset_type.startswith("social_media"):
+            return self._build_social_media_prompt(brand_strategy, asset_type.split('_')[-1])
         else:
-            return custom_requirements or f"Create a professional {asset_type} for {brand_strategy.business_name}"
+            return f"Create a professional {asset_type.replace('_', ' ')} for {brand_strategy.business_name}"
+    
+    def _create_enhanced_placeholder_asset(self, project_id: str, asset_type: str, error_message: str) -> GeneratedAsset:
+        """🔧 Create enhanced placeholder asset with better error handling"""
+        
+        placeholder_data = self._generate_enhanced_placeholder_image(asset_type)
+        
+        return GeneratedAsset(
+            project_id=project_id,
+            asset_type=asset_type,
+            asset_url=f"data:image/png;base64,{placeholder_data}",
+            metadata={
+                "status": "enhanced_placeholder",
+                "error": error_message,
+                "generation_method": "placeholder_v3",
+                "needs_regeneration": True,
+                "quality_tier": "placeholder",
+                "placeholder_type": "enhanced",
+                "retry_recommended": True,
+                "fallback_reason": "generation_failure"
+            }
+        )
+    
+    def _generate_enhanced_placeholder_image(self, asset_type: str) -> str:
+        """🖼️ Generate enhanced placeholder image with asset type indication"""
+        
+        try:
+            # Create a more sophisticated placeholder with asset type indication
+            color_map = {
+                'logo': '#2563eb',      # Blue for logos
+                'business_card': '#059669',  # Green for business cards
+                'letterhead': '#7c3aed',     # Purple for letterheads
+                'social_media': '#ea580c',   # Orange for social media
+                'flyer': '#dc2626',          # Red for flyers
+                'banner': '#0891b2'          # Cyan for banners
+            }
+            
+            base_type = asset_type.split('_')[0]
+            color = color_map.get(base_type, '#6b7280')
+            
+            img = Image.new('RGB', (800, 600), color=color)
+            
+            # Convert to base64
+            buffer = io.BytesIO()
+            img.save(buffer, format='PNG')
+            buffer.seek(0)
+            
+            return base64.b64encode(buffer.getvalue()).decode('utf-8')
+            
+        except Exception as e:
+            logging.error(f"Error creating enhanced placeholder image: {str(e)}")
+            # Return minimal base64 encoded image
+            return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
     
     def _build_advanced_logo_prompt(self, brand_strategy: BrandStrategy) -> str:
         """🚀 PHASE 3: Build revolutionary logo generation prompts with brand intelligence"""
