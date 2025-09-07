@@ -1071,7 +1071,7 @@ class AssetRefinementEngine:
         
         try:
             # Generate refinement instructions using AI
-            if self.gemini_model and refinement_prompts:
+            if self.gemini_client and refinement_prompts:
                 main_prompt = list(refinement_prompts.values())[0]
                 
                 # Generate refinement strategy
@@ -1090,7 +1090,10 @@ class AssetRefinementEngine:
                 """
                 
                 try:
-                    response = self.gemini_model.generate_content(refinement_query)
+                    response = self.gemini_client.models.generate_content(
+                        model='gemini-1.5-flash',
+                        contents=refinement_query
+                    )
                     refinement_instructions = response.text
                     
                     # Enhanced metadata with refinement info
