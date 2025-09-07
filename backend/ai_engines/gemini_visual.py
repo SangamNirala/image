@@ -65,7 +65,8 @@ class GeminiVisualEngine:
         
     def _generate_brand_seed(self, brand_strategy: BrandStrategy) -> str:
         """🔑 Generate unique consistency seed based on brand characteristics"""
-        brand_fingerprint = f"{brand_strategy.business_name}_{brand_strategy.industry}_{';'.join(brand_strategy.color_palette[:3])}"
+        # Use business_name and color palette for unique fingerprint (industry not available in BrandStrategy)
+        brand_fingerprint = f"{brand_strategy.business_name}_brand_{';'.join(brand_strategy.color_palette[:3])}"
         return hashlib.md5(brand_fingerprint.encode()).hexdigest()[:16]
     
     async def generate_logo_suite(self, brand_strategy: BrandStrategy, project_id: str) -> List[GeneratedAsset]:
