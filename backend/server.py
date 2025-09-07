@@ -335,7 +335,7 @@ class VisualAssetEngine:
             return placeholder_data
 
 # Initialize engines
-strategy_engine = BrandStrategyEngine()
+strategy_engine = EmergentStrategyEngine()
 visual_engine = VisualAssetEngine()
 
 # API Routes
