@@ -85,10 +85,19 @@ class BrandForgeAPITester:
             data=test_data
         )
         
-        if success and 'id' in response:
-            self.project_id = response['id']
-            print(f"   Project ID: {self.project_id}")
-            return True
+        if success:
+            # Check for project_id field as specified in review request
+            if 'project_id' in response:
+                self.project_id = response['project_id']
+                print(f"   Project ID: {self.project_id}")
+                return True
+            elif 'id' in response:
+                self.project_id = response['id']
+                print(f"   Project ID: {self.project_id}")
+                return True
+            else:
+                print("❌ Response missing project_id field")
+                return False
         return False
 
     def test_generate_strategy(self):
