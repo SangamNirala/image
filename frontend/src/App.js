@@ -120,7 +120,7 @@ function App() {
       setIsGenerating(true);
       
       const response = await axios.post(
-        `${API}/projects/${currentProject.id}/assets/${assetType}`,
+        `${API}/projects/${currentProject.project_id}/assets/${assetType}`,
         null,
         { params: { context } }
       );
