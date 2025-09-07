@@ -127,7 +127,7 @@ class VisualDNAExtractor:
             color_analysis["dominant_colors"] = unique_colors[:5]  # Top 5 colors
             
             # Advanced color analysis using AI
-            if unique_colors and self.gemini_model:
+            if unique_colors and self.gemini_client:
                 analysis_prompt = f"""
                 Analyze this color palette for brand consistency: {unique_colors}
                 
@@ -142,7 +142,10 @@ class VisualDNAExtractor:
                 """
                 
                 try:
-                    response = self.gemini_model.generate_content(analysis_prompt)
+                    response = self.gemini_client.models.generate_content(
+                        model='gemini-1.5-flash',
+                        contents=analysis_prompt
+                    )
                     color_analysis["ai_analysis"] = response.text
                     color_analysis["analysis_confidence"] = 0.92
                 except Exception as e:
