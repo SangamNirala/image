@@ -337,6 +337,18 @@ frontend:
         agent: "main"
         comment: "Fixed tab navigation to allow users to review brand strategy before proceeding to next step"
 
+  - task: "Fix image generation - only Logo and Business Card generating, others showing colored blocks"
+    implemented: true
+    working: "needs_testing"
+    file: "/app/backend/ai_engines/gemini_visual.py"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+      - working: "needs_testing"
+        agent: "main"
+        comment: "CRITICAL FIX: Implemented missing prompt builder methods (_build_business_card_prompt, _build_letterhead_prompt, _build_social_media_prompt, _build_flyer_prompt, _build_banner_prompt) that were causing AttributeError exceptions. The system was falling back to colored placeholder images when these methods were missing. Now all asset types should generate proper visual content instead of colored blocks."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
