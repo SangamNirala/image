@@ -38,6 +38,7 @@ gemini_client = genai.Client(api_key=os.environ['GEMINI_API_KEY'])
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+projects_collection = db.brand_projects
 
 # Create the main app without a prefix
 app = FastAPI(title="BrandForge AI", version="1.0.0")
