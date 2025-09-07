@@ -3,7 +3,7 @@ import json
 import logging
 from typing import Dict, Any, List
 import google.generativeai as genai
-from ..models.brand_strategy import BusinessInput, BrandStrategy
+from models.brand_strategy import BusinessInput, BrandStrategy
 
 class BrandStrategyEngine:
     """Advanced brand strategy generation using Gemini AI with sophisticated prompting"""
