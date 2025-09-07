@@ -358,6 +358,10 @@ class GeminiVisualEngine:
             return self._build_letterhead_prompt(brand_strategy, asset_type.split('_')[-1])
         elif asset_type.startswith("social_media"):
             return self._build_social_media_prompt(brand_strategy, asset_type.split('_')[-1])
+        elif asset_type == "flyer":
+            return self._build_flyer_prompt(brand_strategy, "promotional")
+        elif asset_type == "banner":
+            return self._build_banner_prompt(brand_strategy, "web")
         else:
             return f"Create a professional {asset_type.replace('_', ' ')} for {brand_strategy.business_name}"
     
