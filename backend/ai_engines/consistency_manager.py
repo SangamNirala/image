@@ -1970,6 +1970,95 @@ class AdvancedConsistencyManager:
             "brand_guidelines": self.brand_guidelines
         }
     
+    def validate_asset_consistency(
+        self,
+        new_asset: GeneratedAsset,
+        existing_assets: List[GeneratedAsset],
+        brand_strategy: BrandStrategy
+    ) -> Tuple[float, Dict[str, Any]]:
+        """Validate consistency of new asset against existing assets (Legacy Method)"""
+        
+        consistency_scores = {}
+        
+        # Color consistency check
+        consistency_scores['color_consistency'] = self._check_color_consistency(
+            new_asset, existing_assets, brand_strategy.color_palette
+        )
+        
+        # Style consistency check
+        consistency_scores['style_consistency'] = self._check_style_consistency(
+            new_asset, existing_assets, brand_strategy.visual_direction
+        )
+        
+        # Brand alignment check
+        consistency_scores['brand_alignment'] = self._check_brand_alignment(
+            new_asset, brand_strategy
+        )
+        
+        # Overall consistency score
+        overall_score = sum(consistency_scores.values()) / len(consistency_scores)
+        
+        # Generate recommendations if score is low
+        recommendations = []
+        if overall_score < 0.8:
+            recommendations = self._generate_consistency_recommendations(
+                consistency_scores, new_asset, brand_strategy
+            )
+        
+        return overall_score, {
+            "individual_scores": consistency_scores,
+            "overall_score": overall_score,
+            "recommendations": recommendations,
+            "passes_threshold": overall_score >= 0.8
+        }
+    
+    def refine_asset_consistency(
+        self,
+        asset: GeneratedAsset,
+        visual_dna: Dict[str, Any],
+        target_score: float = 0.9
+    ) -> Dict[str, Any]:
+        """Generate refinement instructions to improve asset consistency (Legacy Method)"""
+        
+        refinement_instructions = {
+            "color_adjustments": self._suggest_color_adjustments(asset, visual_dna),
+            "style_adjustments": self._suggest_style_adjustments(asset, visual_dna),
+            "layout_adjustments": self._suggest_layout_adjustments(asset, visual_dna),
+            "regeneration_prompt": self._build_refinement_prompt(asset, visual_dna)
+        }
+        
+        return refinement_instructions
+    
+    def generate_brand_guidelines_document(self, brand_strategy: BrandStrategy, assets: List[GeneratedAsset]) -> Dict[str, Any]:
+        """Generate comprehensive brand guidelines document (Legacy Method)"""
+        
+        guidelines = {
+            "brand_overview": {
+                "brand_name": brand_strategy.business_name,
+                "brand_essence": brand_strategy.brand_personality.get('brand_essence', ''),
+                "brand_personality": brand_strategy.brand_personality,
+                "brand_values": brand_strategy.messaging_framework.get('key_messages', [])
+            },
+            "visual_identity": {
+                "logo_usage": self._generate_logo_usage_guidelines(assets),
+                "color_palette": self._generate_color_guidelines(brand_strategy.color_palette),
+                "typography": self._generate_typography_guidelines(brand_strategy.visual_direction),
+                "imagery_style": brand_strategy.visual_direction.get('imagery_style', '')
+            },
+            "brand_voice": {
+                "tone_of_voice": brand_strategy.brand_personality.get('tone_of_voice', ''),
+                "messaging_framework": brand_strategy.messaging_framework,
+                "communication_guidelines": self._generate_communication_guidelines(brand_strategy)
+            },
+            "application_guidelines": {
+                "do_and_donts": self._generate_usage_guidelines(brand_strategy),
+                "asset_specifications": self._generate_asset_specifications(assets),
+                "consistency_checklist": self._generate_consistency_checklist()
+            }
+        }
+        
+        return guidelines
+    
     def maintain_visual_consistency(
         self,
         base_assets: List[GeneratedAsset],
