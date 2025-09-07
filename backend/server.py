@@ -66,78 +66,16 @@ export_engine = ExportEngine()
 # Legacy API Routes - maintaining backward compatibility
 @api_router.post("/projects", response_model=Dict[str, Any])
 async def create_brand_project_legacy(business_input: BusinessInput):
-        """Generate comprehensive brand strategy using Gemini"""
+    """Generate comprehensive brand strategy using EmergentStrategyEngine"""
+    try:
+        # Use the strategy engine to generate brand strategy
+        brand_strategy = await strategy_engine.analyze_brand_strategy(business_input)
         
-        strategy_prompt = f"""
-        You are an expert brand strategist. Analyze this business concept and create a comprehensive brand strategy.
-
-        BUSINESS INFORMATION:
-        - Name: {business_input.business_name}
-        - Description: {business_input.business_description}
-        - Industry: {business_input.industry}
-        - Target Audience: {business_input.target_audience}
-        - Values: {', '.join(business_input.business_values)}
-        - Preferred Style: {business_input.preferred_style}
-        - Color Preferences: {business_input.preferred_colors}
-
-        Generate a detailed brand strategy with the following structure (respond in JSON format):
-        {{
-            "brand_personality": {{
-                "primary_traits": ["trait1", "trait2", "trait3", "trait4", "trait5"],
-                "brand_archetype": "archetype_name",
-                "tone_of_voice": "description",
-                "brand_essence": "one_sentence_summary"
-            }},
-            "visual_direction": {{
-                "design_style": "style_description",
-                "visual_mood": "mood_description",
-                "typography_style": "typography_recommendations",
-                "imagery_style": "imagery_recommendations",
-                "logo_direction": "detailed_logo_guidance"
-            }},
-            "color_palette": ["#hex1", "#hex2", "#hex3", "#hex4", "#hex5"],
-            "messaging_framework": {{
-                "tagline": "compelling_tagline",
-                "key_messages": ["message1", "message2", "message3"],
-                "brand_promise": "brand_promise_statement",
-                "unique_value_proposition": "uvp_statement"
-            }},
-            "consistency_rules": {{
-                "logo_usage": "usage_guidelines",
-                "color_usage": "color_application_rules",
-                "typography_rules": "typography_guidelines",
-                "visual_consistency": "visual_consistency_requirements"
-            }}
-        }}
+        return brand_strategy.dict()
         
-        Make sure the strategy is cohesive, professional, and perfectly aligned with the business concept.
-        """
-        
-        try:
-            response = await self.model.generate_content_async(strategy_prompt)
-            
-            # Extract JSON from response
-            strategy_text = response.text.strip()
-            if strategy_text.startswith('```json'):
-                strategy_text = strategy_text.replace('```json', '').replace('```', '').strip()
-            
-            strategy_data = json.loads(strategy_text)
-            
-            # Create BrandStrategy object
-            brand_strategy = BrandStrategy(
-                business_name=business_input.business_name,
-                brand_personality=strategy_data["brand_personality"],
-                visual_direction=strategy_data["visual_direction"],
-                color_palette=strategy_data["color_palette"],
-                messaging_framework=strategy_data["messaging_framework"],
-                consistency_rules=strategy_data["consistency_rules"]
-            )
-            
-            return brand_strategy
-            
-        except Exception as e:
-            logging.error(f"Error generating brand strategy: {str(e)}")
-            raise HTTPException(status_code=500, detail=f"Failed to generate brand strategy: {str(e)}")
+    except Exception as e:
+        logging.error(f"Error generating brand strategy: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate brand strategy: {str(e)}")
 
 class VisualAssetEngine:
     def __init__(self):
