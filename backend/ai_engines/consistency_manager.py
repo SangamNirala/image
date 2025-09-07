@@ -1,8 +1,8 @@
 import logging
 from typing import Dict, Any, List, Optional, Tuple
 import json
-from ..models.brand_strategy import BrandStrategy
-from ..models.visual_assets import GeneratedAsset, AssetVariation
+from models.brand_strategy import BrandStrategy
+from models.visual_assets import GeneratedAsset, AssetVariation
 
 class ConsistencyManager:
     """Advanced consistency management for cross-asset visual coherence"""
