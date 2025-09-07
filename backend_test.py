@@ -392,16 +392,13 @@ def main():
     
     tester = BrandForgeAPITester()
     
-    # Test sequence
+    # Phase 2 Test sequence focusing on Advanced Brand Strategy Engine
     tests = [
         ("Health Check", tester.test_health_check),
-        ("Create Project", tester.test_create_project),
-        ("Generate Strategy", tester.test_generate_strategy),
-        ("Get Project", tester.test_get_project),
-        ("Generate Logo", lambda: tester.test_generate_single_asset("logo")),
-        ("Generate Business Card", lambda: tester.test_generate_single_asset("business_card")),
-        ("Generate Complete Package", tester.test_generate_complete_package),
-        ("Get All Projects", tester.test_get_all_projects),
+        ("Create Project (Phase2 TestCorp)", tester.test_create_project),
+        ("Phase 2 Advanced Analysis", tester.test_phase2_advanced_analysis),
+        ("Enhanced Strategy Generation", tester.test_generate_strategy),
+        ("Data Validation - Get Project", tester.test_get_project),
     ]
     
     failed_tests = []
