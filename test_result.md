@@ -246,6 +246,18 @@ backend:
         agent: "testing"
         comment: "PHASE 1 ARCHITECTURE TESTING COMPLETE: New advanced architecture tested comprehensively with 83.3% success rate. Core functionality working: ✅ Health Check, ✅ Advanced Project Creation, ✅ Advanced Strategy Generation (Emergent Engine), ✅ Visual Asset Generation (Gemini Engine), ✅ Marketing Asset Generation, ✅ Consistency Management, ✅ Analytics. Fixed MongoDB document size limits and export parameter formats. Phase 1 foundation is solid and ready for Phase 2."
 
+  - task: "Fix Google AI SDK migration from deprecated google-generativeai to google-genai"
+    implemented: true
+    working: "needs_testing"
+    file: "/app/backend/*.py"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+      - working: "needs_testing"
+        agent: "main"
+        comment: "CRITICAL FIX: Migrated from deprecated google-generativeai package to new google-genai SDK. Updated requirements.txt, changed imports from 'import google.generativeai as genai' to 'from google import genai', replaced genai.configure() with genai.Client() initialization, and updated all API calls from model.generate_content_async() to client.models.generate_content(). Backend service now starts successfully after fixing ModuleNotFoundError."
+
   - task: "Fix base64 image data URL encoding issue"
     implemented: true
     working: "needs_testing" 
