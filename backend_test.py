@@ -101,17 +101,17 @@ class BrandForgeAPITester:
         return False
 
     def test_generate_strategy(self):
-        """Test brand strategy generation"""
+        """Test enhanced brand strategy generation with Phase 2 capabilities"""
         if not self.project_id:
             print("❌ Cannot test strategy generation - no project ID")
             return False
             
         success, response = self.run_test(
-            "Generate Brand Strategy",
+            "Generate Enhanced Brand Strategy",
             "POST",
             f"projects/{self.project_id}/strategy",
             200,
-            timeout=120  # Increased timeout for AI generation
+            timeout=180  # Increased timeout for Phase 2 AI generation
         )
         
         if success:
@@ -121,8 +121,69 @@ class BrandForgeAPITester:
                 if field not in response:
                     print(f"❌ Missing required field: {field}")
                     return False
-            print("   ✅ Strategy structure validated")
+            print("   ✅ Enhanced strategy structure validated")
         
+        return success
+
+    def test_phase2_advanced_analysis(self):
+        """Test Phase 2 Advanced Analysis endpoint - NEW FEATURE"""
+        if not self.project_id:
+            print("❌ Cannot test advanced analysis - no project ID")
+            return False
+            
+        print("🔍 Testing Phase 2 Advanced Analysis (5-layer strategic analysis)...")
+        success, response = self.run_test(
+            "Phase 2 Advanced Analysis",
+            "POST",
+            f"projects/{self.project_id}/advanced-analysis",
+            200,
+            timeout=180  # Advanced analysis takes time
+        )
+        
+        if success:
+            # Verify Phase 2 analysis structure
+            required_fields = ['project_id', 'analysis_complete', 'analysis_layers', 'confidence_scores']
+            for field in required_fields:
+                if field not in response:
+                    print(f"❌ Missing required field: {field}")
+                    return False
+            
+            # Verify 5-layer analysis structure
+            analysis_layers = response.get('analysis_layers', {})
+            expected_layers = [
+                'market_intelligence',
+                'competitive_positioning', 
+                'brand_personality',
+                'visual_direction',
+                'strategic_recommendations'
+            ]
+            
+            missing_layers = []
+            for layer in expected_layers:
+                if layer not in analysis_layers:
+                    missing_layers.append(layer)
+                else:
+                    print(f"   ✅ {layer} analysis complete")
+            
+            if missing_layers:
+                print(f"❌ Missing analysis layers: {missing_layers}")
+                return False
+            
+            # Verify confidence scores
+            confidence_scores = response.get('confidence_scores', {})
+            if not confidence_scores:
+                print("⚠️  No confidence scores provided")
+            else:
+                print(f"   ✅ Confidence scores provided: {list(confidence_scores.keys())}")
+            
+            # Verify analysis completion flag
+            if response.get('analysis_complete') != True:
+                print("❌ Analysis not marked as complete")
+                return False
+            
+            print("   ✅ Phase 2 Advanced Analysis structure validated")
+            print("   ✅ 5-layer strategic analysis confirmed")
+            
         return success
 
     def test_get_project(self):
