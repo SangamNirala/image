@@ -202,36 +202,104 @@ Be specific, data-driven, and actionable. Focus on insights that inform brand st
             logging.error(f"Error in market analysis: {str(e)}")
             return self._get_fallback_market_analysis()
     
-    async def _analyze_competitive_landscape(self, business_input: BusinessInput) -> Dict[str, Any]:
-        """Analyze competitive landscape and differentiation opportunities"""
+    async def analyze_competitive_landscape(self, business_input: BusinessInput, market_analysis: Dict[str, Any]) -> Dict[str, Any]:
+        """Layer 2: Advanced Competitive Landscape & Differentiation Analysis"""
         
-        competitive_prompt = f"""
-        As a competitive intelligence expert, analyze the competitive landscape:
-        
-        Business: {business_input.business_name}
-        Industry: {business_input.industry}
-        Description: {business_input.business_description}
-        
-        Provide competitive analysis in JSON format:
-        {{
-            "key_competitors": ["competitor1", "competitor2", "competitor3"],
-            "competitive_advantages": ["advantage1", "advantage2"],
-            "differentiation_opportunities": ["opportunity1", "opportunity2"],
-            "market_gaps": ["gap1", "gap2"],
-            "positioning_strategy": "strategy_description"
+        competitive_analysis_prompt = f"""
+You are a competitive intelligence expert. Analyze the competitive landscape:
+
+BUSINESS CONTEXT: {business_input.business_description}
+INDUSTRY: {business_input.industry}
+TARGET MARKET: {business_input.target_audience}
+MARKET ANALYSIS: {market_analysis.get('positioning_recommendations', {}).get('optimal_position', 'Standard positioning')}
+
+Provide detailed competitive analysis:
+
+1. COMPETITIVE LANDSCAPE MAPPING
+   - Direct competitors (3-5 main players)
+   - Indirect competitors and substitutes
+   - Competitive intensity assessment
+
+2. COMPETITOR STRENGTH ANALYSIS
+   - Market share and positioning
+   - Brand strength and recognition
+   - Competitive advantages
+
+3. COMPETITIVE GAPS & OPPORTUNITIES
+   - Unmet customer needs
+   - Service/product gaps in market
+   - Positioning white spaces
+
+4. DIFFERENTIATION STRATEGY
+   - Unique value propositions
+   - Competitive moats to build
+   - Positioning against competitors
+
+5. STRATEGIC RECOMMENDATIONS
+   - Competitive response strategies
+   - Market entry/expansion tactics
+   - Brand positioning vs. competition
+
+Respond in this exact JSON format:
+{{
+    "competitive_landscape": {{
+        "direct_competitors": [
+            {{"name": "competitor1", "market_share": "percentage", "strengths": ["strength1", "strength2"]}},
+            {{"name": "competitor2", "market_share": "percentage", "strengths": ["strength1", "strength2"]}},
+            {{"name": "competitor3", "market_share": "percentage", "strengths": ["strength1", "strength2"]}}
+        ],
+        "indirect_competitors": ["substitute1", "substitute2", "substitute3"],
+        "competitive_intensity": "high/medium/low with explanation"
+    }},
+    "competitor_analysis": {{
+        "market_leaders": ["leader1", "leader2"],
+        "brand_strength_ranking": ["brand1", "brand2", "brand3"],
+        "competitive_advantages_by_player": {{
+            "competitor1": ["advantage1", "advantage2"],
+            "competitor2": ["advantage1", "advantage2"]
         }}
+    }},
+    "market_gaps": {{
+        "unmet_customer_needs": ["need1", "need2", "need3"],
+        "service_gaps": ["gap1", "gap2"],
+        "positioning_white_spaces": ["space1", "space2"],
+        "underserved_segments": ["segment1", "segment2"]
+    }},
+    "differentiation_strategy": {{
+        "unique_value_propositions": ["uvp1", "uvp2", "uvp3"],
+        "competitive_moats": ["moat1", "moat2"],
+        "positioning_against_competition": "how to position vs competitors",
+        "differentiation_pillars": ["pillar1", "pillar2", "pillar3"]
+    }},
+    "strategic_recommendations": {{
+        "competitive_response_strategies": ["strategy1", "strategy2"],
+        "market_entry_tactics": ["tactic1", "tactic2"],
+        "brand_positioning_strategy": "recommended positioning vs competition",
+        "competitive_messaging": "how to message against competition"
+    }},
+    "confidence_score": 0.90
+}}
+
+Focus on actionable insights for brand differentiation and positioning.
         """
         
         try:
             response = await asyncio.get_event_loop().run_in_executor(None,
                 lambda: self.client.models.generate_content(
-                    model="gemini-2.5-flash", 
-                    contents=competitive_prompt
+                    model=self.gemini_model,
+                    contents=competitive_analysis_prompt
                 )
             )
-            return json.loads(response.text.strip().replace('```json', '').replace('```', '').strip())
-        except:
-            return {"key_competitors": [], "competitive_advantages": [], "differentiation_opportunities": []}
+            
+            response_text = response.text.strip()
+            if response_text.startswith('```json'):
+                response_text = response_text.replace('```json', '').replace('```', '').strip()
+            
+            return json.loads(response_text)
+            
+        except Exception as e:
+            logging.error(f"Error in competitive analysis: {str(e)}")
+            return self._get_fallback_competitive_analysis()
     
     async def _develop_brand_personality(self, business_input: BusinessInput, market_analysis: Dict, competitive_analysis: Dict) -> Dict[str, Any]:
         """Develop sophisticated brand personality based on analysis"""
