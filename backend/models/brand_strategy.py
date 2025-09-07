@@ -20,4 +20,5 @@ class BrandStrategy(BaseModel):
     color_palette: List[str]
     messaging_framework: Dict[str, Any]
     consistency_rules: Dict[str, Any]
+    advanced_analysis: Optional[Dict[str, Any]] = None  # Phase 2: Advanced multi-layer analysis data
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
