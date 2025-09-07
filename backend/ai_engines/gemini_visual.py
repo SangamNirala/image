@@ -146,7 +146,12 @@ class GeminiVisualEngine:
         
         try:
             loop = asyncio.get_event_loop()
-            response = await loop.run_in_executor(None, self.model.generate_content, variant_prompt)
+            response = await loop.run_in_executor(None,
+                lambda: self.client.models.generate_content(
+                    model="gemini-2.5-flash-image-preview", 
+                    contents=variant_prompt
+                )
+            )
             
             image_data = self._extract_image_data(response)
             
