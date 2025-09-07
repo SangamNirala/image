@@ -84,6 +84,19 @@ function App() {
     setStoredState('brandforge_activeTab', activeTab);
   }, [activeTab]);
 
+  // Function to clear all stored state (for starting new project)
+  const clearStoredState = () => {
+    const keys = ['brandforge_currentStep', 'brandforge_businessInput', 'brandforge_currentProject', 
+                  'brandforge_brandStrategy', 'brandforge_generatedAssets', 'brandforge_progress', 'brandforge_activeTab'];
+    keys.forEach(key => {
+      try {
+        localStorage.removeItem(key);
+      } catch (error) {
+        console.error(`Error clearing ${key} from localStorage:`, error);
+      }
+    });
+  };
+
   const steps = [
     { id: 'business-info', title: 'Business Information', icon: Target },
     { id: 'brand-strategy', title: 'AI Brand Strategy', icon: Lightbulb },
