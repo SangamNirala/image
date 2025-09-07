@@ -9,7 +9,7 @@ class BrandStrategyEngine:
     """Advanced brand strategy generation using Gemini AI with sophisticated prompting"""
     
     def __init__(self):
-        self.model = genai.GenerativeModel('gemini-2.5-flash')
+        self.client = genai.Client(api_key=os.environ.get('GEMINI_API_KEY'))
         
     async def analyze_business_concept(self, business_input: BusinessInput) -> Dict[str, Any]:
         """Multi-layer strategic analysis of business concept"""
