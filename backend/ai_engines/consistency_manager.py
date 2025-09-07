@@ -1942,7 +1942,7 @@ class AdvancedConsistencyManager:
     # ========== LEGACY CONSISTENCY MANAGER METHODS (Backward Compatibility) ==========
     
     def initialize_brand_consistency(self, brand_strategy: BrandStrategy) -> Dict[str, Any]:
-        """Initialize consistency rules based on brand strategy"""
+        """Initialize consistency rules based on brand strategy (Legacy Method)"""
         
         self.brand_guidelines = {
             "color_palette": brand_strategy.color_palette,
