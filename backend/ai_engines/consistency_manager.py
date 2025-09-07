@@ -1938,7 +1938,9 @@ class AdvancedConsistencyManager:
         }
         
         return consistency_constraints
-        
+    
+    # ========== LEGACY CONSISTENCY MANAGER METHODS (Backward Compatibility) ==========
+    
     def initialize_brand_consistency(self, brand_strategy: BrandStrategy) -> Dict[str, Any]:
         """Initialize consistency rules based on brand strategy"""
         
