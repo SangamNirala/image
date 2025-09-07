@@ -485,16 +485,121 @@ class GeminiVisualEngine:
         
         return f"{typography_style} typography that reflects {brand_personality} personality"
     
-    def _extract_brand_dna(self, brand_strategy: BrandStrategy) -> Dict[str, Any]:
-        """Extract visual DNA for consistency management"""
+    def _extract_advanced_brand_dna(self, brand_strategy: BrandStrategy) -> Dict[str, Any]:
+        """🧬 PHASE 3: Extract sophisticated visual DNA for consistency management"""
         
         return {
-            "primary_colors": brand_strategy.color_palette[:3],
-            "design_style": brand_strategy.visual_direction.get('design_style', 'modern'),
-            "visual_mood": brand_strategy.visual_direction.get('visual_mood', 'professional'),
-            "personality_traits": brand_strategy.brand_personality.get('primary_traits', []),
-            "typography_style": brand_strategy.visual_direction.get('typography_style', 'clean')
+            "brand_fingerprint": {
+                "business_name": brand_strategy.business_name,
+                "industry": brand_strategy.industry,
+                "brand_archetype": brand_strategy.brand_personality.get('brand_archetype', 'Professional')
+            },
+            "visual_identity": {
+                "primary_colors": brand_strategy.color_palette[:2],
+                "secondary_colors": brand_strategy.color_palette[2:5],
+                "design_style": brand_strategy.visual_direction.get('design_style', 'modern'),
+                "visual_mood": brand_strategy.visual_direction.get('visual_mood', 'professional'),
+                "typography_style": brand_strategy.visual_direction.get('typography_style', 'clean')
+            },
+            "brand_psychology": {
+                "personality_traits": brand_strategy.brand_personality.get('primary_traits', []),
+                "emotional_tone": brand_strategy.brand_personality.get('tone_of_voice', 'professional'),
+                "brand_essence": brand_strategy.brand_personality.get('brand_essence', ''),
+                "target_perception": brand_strategy.brand_personality.get('target_perception', 'trustworthy')
+            },
+            "consistency_rules": {
+                "color_dominance": "primary_color_prominence",
+                "style_coherence": "maintain_design_language",
+                "personality_reflection": "consistent_emotional_tone",
+                "scalability": "works_all_sizes"
+            },
+            "dna_hash": hashlib.md5(
+                f"{brand_strategy.business_name}_{brand_strategy.industry}_{';'.join(brand_strategy.color_palette[:3])}".encode()
+            ).hexdigest()[:12]
         }
+    
+    def _extract_visual_dna_from_asset(self, asset: GeneratedAsset, brand_strategy: BrandStrategy) -> Dict[str, Any]:
+        """Extract visual DNA from existing asset for consistency tracking"""
+        
+        return {
+            "asset_id": asset.id,
+            "asset_type": asset.asset_type,
+            "consistency_seed": asset.metadata.get('consistency_seed'),
+            "brand_alignment_score": asset.metadata.get('brand_alignment_score', 0.95),
+            "dna_hash": asset.metadata.get('brand_dna_hash'),
+            "generation_method": asset.metadata.get('generation_method'),
+            "visual_consistency_indicators": {
+                "color_palette": brand_strategy.color_palette,
+                "design_style": brand_strategy.visual_direction.get('design_style'),
+                "brand_personality": brand_strategy.brand_personality.get('primary_traits', [])
+            }
+        }
+    
+    def _calculate_consistency_scores(self, primary_logo: GeneratedAsset, variations: List[GeneratedAsset]) -> Dict[str, Any]:
+        """🧮 PHASE 3: Calculate sophisticated consistency metrics"""
+        
+        if not variations:
+            return {"overall_consistency": 1.0, "variation_scores": [], "quality_assessment": "excellent"}
+        
+        # Calculate individual variation scores
+        variation_scores = []
+        for variation in variations:
+            base_score = variation.metadata.get('brand_alignment_score', 0.9)
+            consistency_bonus = 0.05 if variation.metadata.get('consistency_maintained') else 0
+            quality_bonus = 0.03 if variation.metadata.get('quality_tier') == 'premium' else 0
+            
+            final_score = min(base_score + consistency_bonus + quality_bonus, 1.0)
+            variation_scores.append({
+                "asset_type": variation.asset_type,
+                "consistency_score": final_score,
+                "quality_indicators": {
+                    "base_alignment": base_score,
+                    "consistency_maintained": variation.metadata.get('consistency_maintained', False),
+                    "premium_quality": variation.metadata.get('quality_tier') == 'premium'
+                }
+            })
+        
+        # Calculate overall consistency
+        individual_scores = [score["consistency_score"] for score in variation_scores]
+        overall_consistency = sum(individual_scores) / len(individual_scores)
+        
+        # Quality assessment
+        quality_assessment = "excellent" if overall_consistency >= 0.95 else \
+                           "very_good" if overall_consistency >= 0.90 else \
+                           "good" if overall_consistency >= 0.85 else "needs_improvement"
+        
+        return {
+            "overall_consistency": round(overall_consistency, 3),
+            "variation_scores": variation_scores,
+            "quality_assessment": quality_assessment,
+            "consistency_indicators": {
+                "total_variations": len(variations),
+                "premium_quality_count": sum(1 for v in variations if v.metadata.get('quality_tier') == 'premium'),
+                "consistency_maintained_count": sum(1 for v in variations if v.metadata.get('consistency_maintained'))
+            },
+            "recommendations": self._generate_consistency_recommendations(overall_consistency)
+        }
+    
+    def _generate_consistency_recommendations(self, consistency_score: float) -> List[str]:
+        """Generate recommendations based on consistency analysis"""
+        
+        if consistency_score >= 0.95:
+            return ["Excellent consistency achieved - ready for professional use"]
+        elif consistency_score >= 0.90:
+            return ["Very good consistency - minor refinements may enhance coherence"]
+        elif consistency_score >= 0.85:
+            return [
+                "Good baseline consistency achieved",
+                "Consider refining color usage across variations",
+                "Ensure design style remains consistent"
+            ]
+        else:
+            return [
+                "Consistency needs improvement",
+                "Review brand DNA adherence",
+                "Consider regenerating with stricter consistency enforcement",
+                "Validate color palette usage and design style alignment"
+            ]
     
     def _extract_image_data(self, response) -> Optional[str]:
         """Extract base64 image data from Gemini response"""
