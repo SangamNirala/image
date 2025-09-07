@@ -492,7 +492,7 @@ class GeminiVisualEngine:
         return {
             "brand_fingerprint": {
                 "business_name": brand_strategy.business_name,
-                "industry": brand_strategy.industry,
+                "industry": "Professional services",  # Fallback since industry not in BrandStrategy model
                 "brand_archetype": brand_strategy.brand_personality.get('brand_archetype', 'Professional')
             },
             "visual_identity": {
