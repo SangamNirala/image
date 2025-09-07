@@ -5,7 +5,7 @@ import asyncio
 import base64
 import io
 from typing import Dict, Any, List, Optional
-import google.generativeai as genai
+from google import genai
 from PIL import Image
 from models.brand_strategy import BrandStrategy
 from models.visual_assets import GeneratedAsset, AssetGenerationRequest, AssetVariation
