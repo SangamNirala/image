@@ -515,7 +515,7 @@ class GeminiVisualEngine:
                 "scalability": "works_all_sizes"
             },
             "dna_hash": hashlib.md5(
-                f"{brand_strategy.business_name}_{brand_strategy.industry}_{';'.join(brand_strategy.color_palette[:3])}".encode()
+                f"{brand_strategy.business_name}_brand_{';'.join(brand_strategy.color_palette[:3])}".encode()
             ).hexdigest()[:12]
         }
     
