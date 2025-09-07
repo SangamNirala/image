@@ -47,11 +47,11 @@ class VisualDNAExtractor:
         """Initialize Gemini for visual analysis"""
         try:
             api_key = os.getenv('GEMINI_API_KEY', 'AIzaSyDF5OScBQWbdM6o6tsm8-YGxQLBOVjt-yA')
-            genai.configure(api_key=api_key)
-            self.gemini_model = genai.GenerativeModel('gemini-pro')
+            self.gemini_client = genai.Client(api_key=api_key)
             logging.info("✅ Visual DNA Extractor - Gemini initialized successfully")
         except Exception as e:
             logging.error(f"❌ Visual DNA Extractor - Gemini initialization failed: {e}")
+            self.gemini_client = None
             
     def extract_comprehensive_visual_dna(self, base_assets: List[GeneratedAsset]) -> VisualDNA:
         """Extract multi-dimensional visual DNA from existing assets"""
