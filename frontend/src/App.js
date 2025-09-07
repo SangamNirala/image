@@ -142,7 +142,7 @@ function App() {
       setIsGenerating(true);
       setProgress(60);
       
-      const response = await axios.post(`${API}/projects/${currentProject.id}/complete-package`);
+      const response = await axios.post(`${API}/projects/${currentProject.project_id}/complete-package`);
       setGeneratedAssets(response.data.generated_assets);
       setProgress(100);
       
