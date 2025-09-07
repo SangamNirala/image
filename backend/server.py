@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timezone
-import google.generativeai as genai
+from google import genai
 import base64
 import io
 from PIL import Image
