@@ -57,42 +57,8 @@ visual_engine = GeminiVisualEngine()
 consistency_manager = ConsistencyManager()
 export_engine = ExportEngine()
 
-# Pydantic Models
-class BusinessInput(BaseModel):
-    business_name: str
-    business_description: str
-    industry: str
-    target_audience: str
-    business_values: List[str]
-    preferred_style: Optional[str] = "modern"
-    preferred_colors: Optional[str] = "flexible"
-
-class BrandStrategy(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    business_name: str
-    brand_personality: Dict[str, Any]
-    visual_direction: Dict[str, Any]
-    color_palette: List[str]
-    messaging_framework: Dict[str, Any]
-    consistency_rules: Dict[str, Any]
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-class GeneratedAsset(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    project_id: str
-    asset_type: str  # logo, business_card, social_media, etc.
-    asset_url: str
-    metadata: Dict[str, Any]
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-class BrandProject(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    business_input: BusinessInput
-    brand_strategy: Optional[BrandStrategy] = None
-    generated_assets: List[GeneratedAsset] = []
-    status: str = "created"  # created, strategy_generated, assets_generated, completed
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+# Legacy API Routes for backward compatibility
+# These routes maintain the existing API while using the new architecture
 
 # AI Engines
 class BrandStrategyEngine:
