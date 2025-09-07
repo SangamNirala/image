@@ -328,48 +328,31 @@ class GeminiVisualEngine:
         """Extract base64 image data from Gemini response"""
         
         try:
-            logging.info(f"Extracting image data from response: {type(response)}")
             if hasattr(response, 'candidates') and response.candidates:
-                logging.info(f"Found {len(response.candidates)} candidates")
                 for candidate in response.candidates:
                     if hasattr(candidate, 'content') and candidate.content:
-                        logging.info(f"Found {len(candidate.content.parts)} parts in content")
                         for part in candidate.content.parts:
-                            logging.info(f"Processing part: {type(part)}")
                             if hasattr(part, 'inline_data') and part.inline_data:
-                                logging.info(f"Found inline_data: {type(part.inline_data)}")
                                 # Get the raw data from Gemini
                                 raw_data = part.inline_data.data
-                                logging.info(f"Raw data type: {type(raw_data)}, length: {len(raw_data) if raw_data else 'None'}")
                                 
                                 # If it's already a string (base64), return it
                                 if isinstance(raw_data, str):
-                                    logging.info("Data is string, returning as-is")
                                     return raw_data
                                 
                                 # If it's bytes, encode to base64
                                 if isinstance(raw_data, bytes):
-                                    logging.info(f"Data is bytes ({len(raw_data)} bytes), encoding to base64")
-                                    encoded = base64.b64encode(raw_data).decode('utf-8')
-                                    logging.info(f"Encoded to base64 string: {len(encoded)} chars")
-                                    return encoded
+                                    return base64.b64encode(raw_data).decode('utf-8')
                                 
                                 # If it's something else, try to convert
                                 try:
-                                    logging.info(f"Data is {type(raw_data)}, trying to convert")
                                     return base64.b64encode(raw_data).decode('utf-8')
                                 except:
                                     # Try converting to string first
-                                    logging.warning(f"Failed to encode {type(raw_data)}, returning as string")
                                     return str(raw_data)
-                            else:
-                                logging.info(f"Part has no inline_data or it's None")
-            logging.warning("No image data found in response")
             return None
         except Exception as e:
             logging.error(f"Error extracting image data: {str(e)}")
-            import traceback
-            logging.error(traceback.format_exc())
             return None
     
     def _generate_placeholder_image(self, asset_type: str) -> str:
