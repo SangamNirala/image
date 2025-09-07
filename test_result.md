@@ -291,12 +291,10 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Fix base64 image data URL encoding issue"
     - "Fix brand strategy display issue"
     - "Fix UI state management and tab navigation"
-    - "Fix complete brand package generation to return all 6 assets"
-    - "Fix Phase 1 export engine parameter format"
-  stuck_tasks:
-    - "Fix complete brand package generation to return all 6 assets"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
