@@ -1,8 +1,19 @@
 import logging
 from typing import Dict, Any, List, Optional, Tuple
 import json
+import base64
+import io
+import numpy as np
+from PIL import Image
+import hashlib
+import asyncio
+import time
+from datetime import datetime
 from models.brand_strategy import BrandStrategy
 from models.visual_assets import GeneratedAsset, AssetVariation
+import google.generativeai as genai
+import os
+from dataclasses import dataclass, field
 
 class ConsistencyManager:
     """Advanced consistency management for cross-asset visual coherence"""
