@@ -59,7 +59,7 @@ class AdvancedBrandStrategyEngine:
         competitive_analysis = await self.analyze_competitive_landscape(business_input, market_analysis)
         
         # Layer 3: Brand Personality Development
-        personality_analysis = await self._develop_brand_personality(business_input, market_analysis, competitive_analysis)
+        personality_analysis = await self.develop_brand_personality(business_input, market_analysis, competitive_analysis)
         
         return {
             "market_analysis": market_analysis,
