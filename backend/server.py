@@ -272,9 +272,11 @@ class VisualAssetEngine:
             placeholder_data = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
             return placeholder_data
 
-# Initialize engines
-strategy_engine = EmergentStrategyEngine()
-visual_engine = VisualAssetEngine()
+# Initialize engines (already done above)
+# strategy_engine = EmergentStrategyEngine()
+# visual_engine = GeminiVisualEngine()
+# consistency_manager = ConsistencyManager()
+# export_engine = ExportEngine()
 
 # API Routes
 @api_router.post("/projects", response_model=BrandProject)
