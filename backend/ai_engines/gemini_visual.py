@@ -7,8 +7,8 @@ import io
 from typing import Dict, Any, List, Optional
 import google.generativeai as genai
 from PIL import Image
-from ..models.brand_strategy import BrandStrategy
-from ..models.visual_assets import GeneratedAsset, AssetGenerationRequest, AssetVariation
+from models.brand_strategy import BrandStrategy
+from models.visual_assets import GeneratedAsset, AssetGenerationRequest, AssetVariation
 
 class GeminiVisualEngine:
     """Advanced visual asset generation using Gemini with consistency management"""
