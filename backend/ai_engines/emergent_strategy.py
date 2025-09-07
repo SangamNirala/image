@@ -49,23 +49,7 @@ class AdvancedBrandStrategyEngine:
             )
         }
         
-    async def analyze_business_concept(self, business_input: BusinessInput) -> Dict[str, Any]:
-        """Multi-layer strategic analysis of business concept"""
-        
-        # Layer 1: Market Analysis
-        market_analysis = await self.analyze_market_position(business_input)
-        
-        # Layer 2: Competitive Landscape
-        competitive_analysis = await self.analyze_competitive_landscape(business_input, market_analysis)
-        
-        # Layer 3: Brand Personality Development
-        personality_analysis = await self.develop_brand_personality(business_input, market_analysis, competitive_analysis)
-        
-        return {
-            "market_analysis": market_analysis,
-            "competitive_analysis": competitive_analysis,
-            "personality_analysis": personality_analysis
-        }
+
     
     async def generate_comprehensive_strategy(self, business_input: BusinessInput) -> BrandStrategy:
         """Generate comprehensive brand strategy using Phase 2 advanced multi-layer analysis"""
