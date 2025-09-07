@@ -294,30 +294,29 @@ async def generate_complete_brand_package(project_id: str, package_type: str = "
         # Combine all assets
         all_assets = logo_assets + marketing_assets
         
-        # Store all assets in database
+        # Store assets individually in database (don't store in project to avoid size limits)
         for asset in all_assets:
             asset_dict = asset.dict()
             asset_dict['created_at'] = asset_dict['created_at'].isoformat()
             await db.generated_assets.insert_one(asset_dict)
         
-        # Update project
-        project.generated_assets.extend(all_assets)
+        # Update project with only asset references (not full asset data)
+        asset_references = [{"id": asset.id, "asset_type": asset.asset_type} for asset in all_assets]
         project.status = "completed"
         project.export_ready = True
         project.updated_at = datetime.now(timezone.utc)
         
-        # Update project in database
-        project_dict = project.dict()
-        project_dict['created_at'] = project_dict['created_at'].isoformat()
-        project_dict['updated_at'] = project_dict['updated_at'].isoformat()
-        if project_dict['brand_strategy']:
-            project_dict['brand_strategy']['created_at'] = project_dict['brand_strategy']['created_at'].isoformat()
-        for generated_asset in project_dict['generated_assets']:
-            generated_asset['created_at'] = generated_asset['created_at'].isoformat()
+        # Update project in database with references only
+        project_update = {
+            "status": "completed",
+            "export_ready": True,
+            "updated_at": project.updated_at.isoformat(),
+            "asset_count": len(all_assets)
+        }
         
         await db.brand_projects.update_one(
             {"id": project_id},
-            {"$set": project_dict}
+            {"$set": project_update}
         )
         
         # Generate professional export package
