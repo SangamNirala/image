@@ -55,6 +55,35 @@ function App() {
   const [progress, setProgress] = useState(() => getStoredState('brandforge_progress', 0));
   const [activeTab, setActiveTab] = useState(() => getStoredState('brandforge_activeTab', 'business-info'));
 
+  // Persist critical state to localStorage whenever it changes
+  useEffect(() => {
+    setStoredState('brandforge_currentStep', currentStep);
+  }, [currentStep]);
+
+  useEffect(() => {
+    setStoredState('brandforge_businessInput', businessInput);
+  }, [businessInput]);
+
+  useEffect(() => {
+    setStoredState('brandforge_currentProject', currentProject);
+  }, [currentProject]);
+
+  useEffect(() => {
+    setStoredState('brandforge_brandStrategy', brandStrategy);
+  }, [brandStrategy]);
+
+  useEffect(() => {
+    setStoredState('brandforge_generatedAssets', generatedAssets);
+  }, [generatedAssets]);
+
+  useEffect(() => {
+    setStoredState('brandforge_progress', progress);
+  }, [progress]);
+
+  useEffect(() => {
+    setStoredState('brandforge_activeTab', activeTab);
+  }, [activeTab]);
+
   const steps = [
     { id: 'business-info', title: 'Business Information', icon: Target },
     { id: 'brand-strategy', title: 'AI Brand Strategy', icon: Lightbulb },
