@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 
 class BrandForgeAPITester:
-    def __init__(self, base_url="https://brandforge-debug.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://websocket-image-fix.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.tests_run = 0
         self.tests_passed = 0

@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 class CompletePackageTest:
-    def __init__(self, base_url="https://brandforge-debug.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://websocket-image-fix.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.project_id = None
         
