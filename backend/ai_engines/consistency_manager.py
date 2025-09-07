@@ -432,11 +432,11 @@ class ConsistencyAnalyzer:
         """Initialize Gemini for consistency analysis"""
         try:
             api_key = os.getenv('GEMINI_API_KEY', 'AIzaSyDF5OScBQWbdM6o6tsm8-YGxQLBOVjt-yA')
-            genai.configure(api_key=api_key)
-            self.gemini_model = genai.GenerativeModel('gemini-pro')
+            self.gemini_client = genai.Client(api_key=api_key)
             logging.info("✅ Consistency Analyzer - Gemini initialized successfully")
         except Exception as e:
             logging.error(f"❌ Consistency Analyzer - Gemini initialization failed: {e}")
+            self.gemini_client = None
     
     def validate_comprehensive_consistency(
         self, 
