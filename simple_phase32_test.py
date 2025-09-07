@@ -3,7 +3,7 @@ import json
 
 def test_phase32_endpoints():
     """Simple test of Phase 3.2 endpoints availability"""
-    base_url = "https://asset-harmony.preview.emergentagent.com/api"
+    base_url = "https://logo-vanisher.preview.emergentagent.com/api"
     
     print("🚀 PHASE 3.2 ENDPOINT AVAILABILITY TEST")
     print("=" * 50)

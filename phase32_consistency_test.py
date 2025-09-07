@@ -7,7 +7,7 @@ from datetime import datetime
 class Phase32ConsistencyTester:
     """🚀 PHASE 3.2 REVOLUTIONARY MULTI-ASSET CONSISTENCY SYSTEM TESTING"""
     
-    def __init__(self, base_url="https://asset-harmony.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://logo-vanisher.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.tests_run = 0
         self.tests_passed = 0

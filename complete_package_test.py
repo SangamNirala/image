@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 class CompletePackageTest:
-    def __init__(self, base_url="https://asset-harmony.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://logo-vanisher.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.project_id = None
         
