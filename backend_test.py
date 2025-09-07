@@ -387,7 +387,10 @@ class BrandForgeAPITester:
         return success
 
 def main():
-    print("🚀 Starting BrandForge AI Backend API Tests")
+    print("🚀 Starting Phase 2 Advanced Brand Strategy Engine Tests")
+    print("=" * 60)
+    print("🎯 Focus: Testing Phase 2 Advanced Analysis Implementation")
+    print("📋 Business Input: Phase2 TestCorp - AI productivity platform")
     print("=" * 60)
     
     tester = BrandForgeAPITester()
