@@ -66,13 +66,13 @@ class BrandForgeAPITester:
         return success
 
     def test_create_project(self):
-        """Test project creation with Phase 2 business input"""
+        """Test project creation with Phase 3 business input"""
         test_data = {
-            "business_name": "Phase2 TestCorp",
-            "business_description": "AI-powered productivity platform for remote teams",
-            "industry": "Technology/SaaS",
-            "target_audience": "Remote teams and project managers",
-            "business_values": ["innovation", "efficiency", "collaboration"],
+            "business_name": "Phase3 Revolutionary Corp",
+            "business_description": "Revolutionary AI-powered visual identity platform with advanced generation capabilities",
+            "industry": "Technology/AI",
+            "target_audience": "Creative professionals and brand designers",
+            "business_values": ["innovation", "creativity", "excellence"],
             "preferred_style": "modern",
             "preferred_colors": "blue"
         }
