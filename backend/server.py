@@ -130,6 +130,65 @@ async def generate_brand_strategy(project_id: str, advanced_analysis: bool = Tru
         logging.error(f"Error generating brand strategy: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to generate brand strategy: {str(e)}")
 
+@api_router.post("/projects/{project_id}/advanced-analysis", response_model=Dict[str, Any])
+async def generate_advanced_analysis(project_id: str):
+    """Phase 2: Generate comprehensive 5-layer strategic analysis using Advanced Brand Strategy Engine"""
+    try:
+        # Get project
+        project_doc = await db.brand_projects.find_one({"id": project_id})
+        if not project_doc:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Convert back to Pydantic model
+        project_doc['created_at'] = datetime.fromisoformat(project_doc['created_at'])
+        project_doc['updated_at'] = datetime.fromisoformat(project_doc['updated_at'])
+        project = BrandProject(**project_doc)
+        
+        if not project.business_input:
+            raise HTTPException(status_code=400, detail="Business input is required for analysis")
+        
+        logging.info(f"Starting Phase 2 advanced multi-layer analysis for project: {project_id}")
+        
+        # Generate comprehensive 5-layer analysis using Phase 2 engine
+        advanced_analysis = await brand_strategy_engine.analyze_business_concept(project.business_input)
+        
+        # Store advanced analysis in project
+        project.advanced_analysis = advanced_analysis
+        project.status = "advanced_analysis_complete"
+        project.updated_at = datetime.now(timezone.utc)
+        
+        # Update project in database
+        project_dict = project.dict()
+        project_dict['created_at'] = project_dict['created_at'].isoformat()
+        project_dict['updated_at'] = project_dict['updated_at'].isoformat()
+        if project_dict.get('brand_strategy') and project_dict['brand_strategy'].get('created_at'):
+            project_dict['brand_strategy']['created_at'] = project_dict['brand_strategy']['created_at'].isoformat()
+        
+        await db.brand_projects.update_one(
+            {"id": project_id},
+            {"$set": project_dict}
+        )
+        
+        logging.info(f"Phase 2 advanced analysis completed for project: {project_id}")
+        
+        return {
+            "project_id": project_id,
+            "analysis_complete": True,
+            "analysis_layers": advanced_analysis,
+            "confidence_scores": advanced_analysis.get("confidence_scores", {}),
+            "analysis_summary": {
+                "market_intelligence": "Comprehensive market analysis complete",
+                "competitive_positioning": "Advanced competitive landscape analysis complete", 
+                "brand_personality": "Sophisticated brand personality development complete",
+                "visual_direction": "Strategic visual brief created",
+                "strategic_synthesis": "Multi-layer strategic recommendations generated"
+            }
+        }
+        
+    except Exception as e:
+        logging.error(f"Error generating advanced analysis: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate advanced analysis: {str(e)}")
+
 @api_router.get("/projects", response_model=List[Dict[str, Any]])
 async def get_all_projects():
     """Get all brand projects"""
