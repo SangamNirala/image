@@ -1,4 +1,9 @@
-from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File
+"""
+BrandForge AI - Advanced Brand Identity Generator
+Main FastAPI server with advanced architecture
+"""
+
+from fastapi import FastAPI, APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -6,34 +11,51 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
-import uuid
+from typing import Dict, Any
 from datetime import datetime, timezone
-import google.generativeai as genai
-import base64
-import io
-from PIL import Image
-import aiofiles
-import json
-import asyncio
+
+# Import models and engines
+from models.brand_strategy import BusinessInput, BrandStrategy
+from models.visual_assets import AssetType, AssetCollection, GeneratedAsset
+from models.project_state import BrandProject, ProjectStatus
+from ai_engines.emergent_strategy import EmergentStrategyEngine
+from ai_engines.gemini_visual import GeminiVisualEngine
+from ai_engines.consistency_manager import ConsistencyManager
+from ai_engines.export_engine import ExportEngine
+
+# Import routes
+from routes.brand_routes import brand_router
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# Configure Gemini API
-genai.configure(api_key=os.environ['GEMINI_API_KEY'])
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# Create the main app without a prefix
-app = FastAPI(title="BrandForge AI", version="1.0.0")
+# Create the main app
+app = FastAPI(
+    title="BrandForge AI - Advanced Brand Identity Generator",
+    version="2.0.0",
+    description="AI-powered brand identity creation combining strategic thinking with consistent visual generation"
+)
 
-# Create a router with the /api prefix
+# Create main API router
 api_router = APIRouter(prefix="/api")
+
+# Initialize AI engines
+strategy_engine = EmergentStrategyEngine()
+visual_engine = GeminiVisualEngine()
+consistency_manager = ConsistencyManager()
+export_engine = ExportEngine()
 
 # Pydantic Models
 class BusinessInput(BaseModel):
