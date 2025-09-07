@@ -69,7 +69,7 @@ async def create_brand_project_legacy(business_input: BusinessInput):
     """Generate comprehensive brand strategy using EmergentStrategyEngine"""
     try:
         # Use the strategy engine to generate brand strategy
-        brand_strategy = await strategy_engine.analyze_brand_strategy(business_input)
+        brand_strategy = await strategy_engine.analyze_business_concept(business_input)
         
         return brand_strategy.dict()
         
