@@ -319,9 +319,26 @@ async def generate_complete_brand_package(project_id: str, package_type: str = "
             {"$set": project_update}
         )
         
-        # Generate professional export package
+        # Generate professional export package by retrieving assets from database
+        project_assets = []
+        async for asset_doc in db.generated_assets.find({"project_id": project_id}):
+            # Convert back to Pydantic model
+            asset_doc['created_at'] = datetime.fromisoformat(asset_doc['created_at'])
+            asset = GeneratedAsset(**asset_doc)
+            project_assets.append(asset)
+        
+        # Create a temporary project object with assets for export
+        temp_project = BrandProject(
+            id=project.id,
+            business_input=project.business_input,
+            brand_strategy=project.brand_strategy,
+            generated_assets=project_assets,
+            status="completed",
+            export_ready=True
+        )
+        
         export_package = await export_engine.generate_complete_brand_package(
-            project, package_type
+            temp_project, package_type
         )
         
         return {
